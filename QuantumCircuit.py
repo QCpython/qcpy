@@ -7,7 +7,7 @@ class QuantumCircuit:
     def __init__(self, bit_str: str):
         self._bit_str = bit_str # string of qubits bits in system
         self._qubit_array = [] # array holding qubits
-        # 
+        # using bit_str, generate qubits and add to array
     def x(self, bit: int):
         """
         X-Gate Operation on specified qubit.
