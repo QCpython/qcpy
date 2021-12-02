@@ -5,9 +5,9 @@ Sources:
 https://en.wikipedia.org/wiki/Quantum_logic_gate
 """
 from Qubit import Qubit
-from .LinearAlg import *
 from .Graph import *
 import numpy as np
+import math
 
 class QuantumCircuit:
     def __init__(self, bit_str: str):
@@ -95,9 +95,18 @@ class QuantumCircuit:
             probability_matrix (list): matrix with all weighted probabilities.
         """
         # tensor all of the qubits in self._qubit_array together to get a final matrix
-
+        q = self._qubit_array.copy() # make a copy of self._qubit_array which will be used as a queue
+        if len(q) > 1: # tensor only if the length of self._qubit_array is greater than 1
+            final_matrix = np.kron(q[0], q[1]) # create our final_matrix
+            # use numpy's Kronecker product on the first 2 qubit states and then delete them from the queue
+            del q[0]
+            del q[0]
+            while q: # go through the rest of the queue
+                final_matrix = np.kron(final_matrix, q[0])
+                del q[0]
         # square all of the values in matrix to get probabilties of each qubit state
-        pass
+        probability_matrix = np.square(final_matrix)
+        return(probability_matrix)
     def graph(self):
         """
         Generate a graph using probabilities().
