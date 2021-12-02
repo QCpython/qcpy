@@ -7,6 +7,7 @@ https://en.wikipedia.org/wiki/Quantum_logic_gate
 from Qubit import Qubit
 from .LinearAlg import *
 from .Graph import *
+import numpy as np
 
 class QuantumCircuit:
     def __init__(self, bit_str: str):
