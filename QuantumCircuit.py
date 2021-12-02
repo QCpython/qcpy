@@ -13,16 +13,11 @@ class QuantumCircuit:
         self._bit_str = bit_str # string of qubits bits in system
         self._qubit_array = [] # array holding qubits
         # using bit_str, generate qubits and add to array
-    def __tensor_matrices(self, m1: list, m2: list) -> list:
-        """
-        Tensor two matrices together and return a larger matrix.
-        Params:
-            m1 (list): matrix one.
-            m2 (list): matrix two.
-        Returns:
-            final_matrix (list): tensor product of m1 (x) m2.
-        """
-        pass
+        bits = bit_str.split()
+        for bit in bits:
+            qb = Qubit(int(bit))
+            self._qubit_array.append(qb)
+
     def x(self, bit: int):
         """
         X-Gate Operation on specified qubit.
@@ -58,25 +53,6 @@ class QuantumCircuit:
             None
         """
         pass
-    def swap(self, bit_1: int, bit_2: int):
-        """
-        Swap-Gate Operation on specifid qubit.
-        Params:
-            bit_1 (int): the nth-bit position on circuit for swap.
-            bit_2 (int): the nth-bit position on circuit for swap.
-        Returns:
-            None
-        """
-    def cnot(self, control: int, target: int):
-        """
-        Controlled-NOT-Gate Operation on specifid qubit.
-        Params:
-            bit_1 (int): the nth-bit position on circuit for swap.
-            bit_2 (int): the nth-bit position on circuit for swap.
-        Returns:
-            None
-        """
-        pass
     def measure(self):
         """
         Collapses circuit into one state.
@@ -85,6 +61,10 @@ class QuantumCircuit:
         Returns:
             final_matrix (list): collapse matrix.
         """
+        # get probabilities matrix from self.probabilities()
+        
+        # get final matrix based off randomizer using each value in probabilities matrix as weights
+        pass
     def probalities(self):
         """
         Returns matrix with all probabilities for each state.
@@ -93,6 +73,10 @@ class QuantumCircuit:
         Returns:
             probability_matrix (list): matrix with all weighted probabilities.
         """
+        # tensor all of the qubits in self._qubit_array together to get a final matrix
+
+        # square all of the values in matrix to get probabilties of each qubit state
+        pass
     def graph(self):
         """
         Generate a graph using probabilities().

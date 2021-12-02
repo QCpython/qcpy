@@ -1,5 +1,13 @@
-import numpy as np
-
+"""
+Qubit.py
+"""
 class Qubit:
     def __init__(self, state: int):
-        self._init_state = state # state qubit was init in
+        self._INIT_STATE = state # the state the qubit was init in
+        self.state = None # state of the qubit
+        # create 2x1 matrix for state
+        if(state == 0):
+            self.state = [[1], [0]]
+        if(state == 1):
+            self.state = [[0], [1]]
+        
