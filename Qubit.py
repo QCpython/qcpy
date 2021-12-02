@@ -1,5 +1,7 @@
 """
 Qubit.py
+
+A 2D vector representing the state of a single bit.
 """
 class Qubit:
     def __init__(self, state: int):

@@ -26,6 +26,11 @@ class QuantumCircuit:
         Returns:
             None
         """
+        # pull out qubit at bit position in self._qubit_array[bit]
+
+        # multiply the NOT gate against the qubit.state array
+
+        # put result of that product back in to the self._qubit_array[bit]
         pass
     def y(self, bit: int):
         """
@@ -34,6 +39,11 @@ class QuantumCircuit:
         Returns:
             None
         """
+        # pull out qubit at bit position in self._qubit_array[bit]
+
+        # multiply the Y gate against the qubit.state array
+
+        # put result of that product back in to the self._qubit_array[bit]
         pass
     def z(self, bit: int):
         """
@@ -43,6 +53,11 @@ class QuantumCircuit:
         Returns:
             None
         """
+        # pull out qubit at bit position in self._qubit_array[bit]
+
+        # multiply the Z gate against the qubit.state array
+
+        # put result of that product back in to the self._qubit_array[bit]
         pass
     def hadamard(self, bit: int):
         """
@@ -52,6 +67,11 @@ class QuantumCircuit:
         Returns:
             None
         """
+        # pull out qubit at bit position in self._qubit_array[bit]
+
+        # multiply the Hadamard gate against the qubit.state array
+
+        # put result of that product back in to the self._qubit_array[bit]
         pass
     def measure(self):
         """
