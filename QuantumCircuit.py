@@ -7,7 +7,7 @@ https://en.wikipedia.org/wiki/Quantum_logic_gate
 from Qubit import Qubit
 from .Graph import *
 import numpy as np
-import math
+import random
 
 class QuantumCircuit:
     def __init__(self, bit_str: str):
@@ -80,13 +80,23 @@ class QuantumCircuit:
         Params:
             None
         Returns:
-            final_matrix (list): collapse matrix.
+            final_state (int): collapse matrix.
         """
         # get probabilities matrix from self.probabilities()
-        
-        # get final matrix based off randomizer using each value in probabilities matrix as weights
-        pass
-    def probalities(self):
+        probability_matrix = self.probabilities()
+        # create a 1D array of the states, 2 ** n(qubits)
+        bits = len(self._qubit_array) # number of bits
+        state_list = [format(i, 'b').zfill(bits) for i in range(2**bits)] # creates a list of bits in strings
+        state_list = list(map(int, state_list)) # turns state_list from list of strings to list of ints
+        # create a temporary np.array to flatten the 2D probability_matrix into a 1D array which can
+        # hold all the probabilities as weights
+        temp_array = np.array(probability_matrix) 
+        weight_list = temp_array.flatten()
+        # numpy.random.choice takes in the list we will select from, size of the returning list,
+        # and weights of each element 
+        final_state = np.random.choice(state_list, 1, weight_list)
+        return(final_state[0]) # return the final state as an int
+    def probabilities(self):
         """
         Returns matrix with all probabilities for each state.
         Params:
@@ -94,18 +104,18 @@ class QuantumCircuit:
         Returns:
             probability_matrix (list): matrix with all weighted probabilities.
         """
-        # tensor all of the qubits in self._qubit_array together to get a final matrix
         q = self._qubit_array.copy() # make a copy of self._qubit_array which will be used as a queue
+        probability_matrix = np.square(q) #square all of the values in matrix to get probabilties of each qubit state
         if len(q) > 1: # tensor only if the length of self._qubit_array is greater than 1
-            final_matrix = np.kron(q[0], q[1]) # create our final_matrix
+            temp_matrix = np.kron(q[0].state, q[1].state) # create our temporary matrix
             # use numpy's Kronecker product on the first 2 qubit states and then delete them from the queue
             del q[0]
             del q[0]
             while q: # go through the rest of the queue
-                final_matrix = np.kron(final_matrix, q[0])
+                temp_matrix = np.kron(temp_matrix, q[0].state)
                 del q[0]
-        # square all of the values in matrix to get probabilties of each qubit state
-        probability_matrix = np.square(final_matrix)
+            # square all of the values in matrix to get probabilties of each qubit state
+            probability_matrix = np.square(temp_matrix)
         return(probability_matrix)
     def graph(self):
         """
