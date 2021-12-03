@@ -69,6 +69,7 @@ class QuantumCircuit:
             None
         """
         # pull out qubit at bit position in self._qubit_array[bit]
+        
 
         # multiply the Hadamard gate against the qubit.state array
 
@@ -93,9 +94,12 @@ class QuantumCircuit:
         temp_array = np.array(probability_matrix) 
         weight_list = temp_array.flatten()
         # numpy.random.choice takes in the list we will select from, size of the returning list,
-        # and weights of each element 
-        final_state = np.random.choice(state_list, 1, weight_list)
-        return(final_state[0]) # return the final state as an int
+        # and p = weights of each element 
+        final_state = np.random.choice(state_list, 1, p = weight_list)
+        final_state = final_state[0] # take out the bits from the returned list
+        final_state = str(final_state) # turn the bits back into a string
+        final_state = "|" + final_state + ">" # put the bits into ket notation
+        return(final_state) # return the final state
     def probabilities(self):
         """
         Returns matrix with all probabilities for each state.
