@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 import numpy as np
-import math
+from math import log, sqrt
 
 """
 Graph.py
@@ -33,7 +33,7 @@ class Graph:
         for i in range(self._size):
             placeBin = str(bin(i))
             placeBin = placeBin[2:]
-            placeBin = (round((math.log(self._size)) + 1 - len(placeBin)) * '0') + placeBin
+            placeBin = (round((log(self._size)) + 1 - len(placeBin)) * '0') + placeBin
             self._qubitValues.append(placeBin)      
 
     def getPercents(self):
@@ -46,7 +46,7 @@ class Graph:
         """
         total = 0
         for i in range(self._size):
-            if (self._qubits[i][0] == 1/math.sqrt(2)):
+            if (self._qubits[i][0] == 1/sqrt(2)):
                 self.percents.append(100 * .5)
             else:
                 self._percents.append(100 * self._qubits[i][0])
