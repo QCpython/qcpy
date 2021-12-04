@@ -8,6 +8,7 @@ from Qubit import Qubit
 from .Graph import *
 import numpy as np
 import random
+import math
 
 class QuantumCircuit:
     def __init__(self, bit_str: str):
@@ -21,45 +22,50 @@ class QuantumCircuit:
 
     def x(self, bit: int):
         """
-        X-Gate Operation on specified qubit.
+        Pauli-X-Gate Operation on specified qubit.
         Params:
             bit (int): the nth-bit position on circuit.
         Returns:
             None
         """
         # pull out qubit at bit position in self._qubit_array[bit]
-
+        temp_arr = self._qubit_array[bit].state
         # multiply the NOT gate against the qubit.state array
-
+        not_gate = [[0 + 0j, 1 + 0j], [1 + 0j, 0 + 0j]]
+        temp_arr = np.dot(temp_arr, not_gate)
         # put result of that product back in to the self._qubit_array[bit]
-        pass
+        self._qubit_array[bit].state = temp_arr
+
     def y(self, bit: int):
         """
+        Pauli-Y-Gate Operatrion on specified qubit.
         Params:
             bit (int): the nth-bit position on circuit.
         Returns:
             None
         """
         # pull out qubit at bit position in self._qubit_array[bit]
-
+        temp_arr = self._qubit_array[bit].state
         # multiply the Y gate against the qubit.state array
-
+        y_gate = [[0 + 0j, 0 - 1j], [1 + 0j, 0 + 0j]]
+        temp_arr = np.dot(temp_arr, y_gate)
         # put result of that product back in to the self._qubit_array[bit]
-        pass
+        self._qubit_array[bit].state = temp_arr
     def z(self, bit: int):
         """
-        Z-Gate Operation on specifid qubit.
+        Pauli-Z-Gate Operation on specifid qubit.
         Params:
             bit (int): the nth-bit position on circuit.
         Returns:
             None
         """
         # pull out qubit at bit position in self._qubit_array[bit]
-
+        temp_arr = self._qubit_array[bit].state
         # multiply the Z gate against the qubit.state array
-
+        z_gate = [[1 + 0j, 0 + 0j], [0 + 0j, -1 + 0j]]
+        temp_arr = np.dot(temp_arr, z_gate)
         # put result of that product back in to the self._qubit_array[bit]
-        pass
+        self._qubit_array[bit].state = temp_arr
     def hadamard(self, bit: int):
         """
         Hadamard-Gate Operation on specifid qubit.
@@ -69,12 +75,30 @@ class QuantumCircuit:
             None
         """
         # pull out qubit at bit position in self._qubit_array[bit]
-        
-
+        temp_arr = self._qubit_array[bit].state
+        # make hadamard_gate a numpy array to apply the 1/sqrt(2) scaler
+        hadamard_gate = np.array([[1 + 0j, 1 + 0j], [1 + 0J, -1 + 0j]]) * 1/math.sqrt(2)
+        # turn hadamard_gate back into a regular list
+        hadamard_gate = hadamard_gate.tolist()
         # multiply the Hadamard gate against the qubit.state array
-
+        temp_arr = np.dot(temp_arr, hadamard_gate)
         # put result of that product back in to the self._qubit_array[bit]
-        pass
+        self._qubit_array[bit].state = temp_arr
+    def phase(self, bit: int):
+        """
+        Phase-Gate Operation on specifid qubit.
+        Params:
+            bit (int): the nth-bit position on circuit.
+        Returns:
+            None
+        """
+        # pull out qubit at bit position in self._qubit_array[bit]
+        temp_arr = self._qubit_array[bit].state
+        # multiply the Phase gate against the qubit.state array
+        phase_gate = [[1 + 0j, 0 + 0j], [0 + 0j, 0 + 1j]]
+        temp_arr = np.dot(temp_arr, phase_gate)
+        # put result of that product back in to the self._qubit_array[bit]
+        self._qubit_array[bit].state = temp_arr
     def measure(self):
         """
         Collapses circuit into one state.
@@ -86,8 +110,8 @@ class QuantumCircuit:
         # get probabilities matrix from self.probabilities()
         probability_matrix = self.probabilities()
         # create a 1D array of the states, 2 ** n(qubits)
-        bits = len(self._qubit_array) # number of bits
-        state_list = [format(i, 'b').zfill(bits) for i in range(2**bits)] # creates a list of bits in strings
+        num_bits = len(self._qubit_array) # number of bits
+        state_list = [format(i, 'b').zfill(num_bits) for i in range(2**num_bits)] # creates a list of bits in strings
         state_list = list(map(int, state_list)) # turns state_list from list of strings to list of ints
         # create a temporary np.array to flatten the 2D probability_matrix into a 1D array which can
         # hold all the probabilities as weights
@@ -96,9 +120,7 @@ class QuantumCircuit:
         # numpy.random.choice takes in the list we will select from, size of the returning list,
         # and p = weights of each element 
         final_state = np.random.choice(state_list, 1, p = weight_list)
-        final_state = final_state[0] # take out the bits from the returned list
-        final_state = str(final_state) # turn the bits back into a string
-        final_state = "|" + final_state + ">" # put the bits into ket notation
+        final_state = str(final_state[0]) # take out the bits from the returned list and convert to a string
         return(final_state) # return the final state
     def probabilities(self):
         """
@@ -120,6 +142,8 @@ class QuantumCircuit:
                 del q[0]
             # square all of the values in matrix to get probabilties of each qubit state
             probability_matrix = np.square(temp_matrix)
+        # turn all the complex numbers into real numbers
+        probability_matrix = probability_matrix.real
         return(probability_matrix)
     def graph(self):
         """
