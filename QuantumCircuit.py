@@ -163,7 +163,7 @@ class QuantumCircuit:
                 temp_matrix = np.kron(temp_matrix, q[0])
                 del q[0]
             # turn all the complex numbers into real numbers
-            probability_matrix = probability_matrix.real
+            temp_matrix = temp_matrix.real
             # square all of the values in matrix to get probabilties of each qubit state
             probability_matrix = np.square(temp_matrix)
         return(probability_matrix)
