@@ -119,7 +119,7 @@ class QuantumCircuit:
         Params:
             None
         Returns:
-            final_state (int): collapse matrix.
+            final_state (str): a single state 
         """
         # get probabilities matrix from self.probabilities()
         probability_matrix = self.probabilities()
