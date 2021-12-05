@@ -9,13 +9,14 @@ from .Graph import *
 import numpy as np
 import random
 import math
+import itertools
 
 class QuantumCircuit:
     def __init__(self, bit_str: str):
         self._bit_str = bit_str # string of qubits bits in system
         self._qubit_array = [] # array holding qubits
         # using bit_str, generate qubits and add to array
-        bits = bit_str.split()
+        bits = [char for char in bit_str]
         for bit in bits:
             qb = Qubit(int(bit))
             self._qubit_array.append(qb)
@@ -123,7 +124,7 @@ class QuantumCircuit:
         # get probabilities matrix from self.probabilities()
         probability_matrix = self.probabilities()
         # create a 1D array of the states, 2 ** n(qubits)
-        num_bits = len(self._qubit_array) # number of bits
+        num_bits = len(self._qubit_array)# number of bits
         state_list = [format(i, 'b').zfill(num_bits) for i in range(2**num_bits)] # creates a list of bits in strings
         state_list = list(map(int, state_list)) # turns state_list from list of strings to list of ints
         # create a temporary np.array to flatten the 2D probability_matrix into a 1D array which can
@@ -134,6 +135,7 @@ class QuantumCircuit:
         # and p = weights of each element 
         final_state = np.random.choice(state_list, 1, p = weight_list)
         final_state = str(final_state[0]) # take out the bits from the returned list and convert to a string
+        final_state = final_state.zfill(num_bits) # pad with zeroes if needed
         return(final_state) # return the final state
     def probabilities(self):
         """
@@ -149,12 +151,12 @@ class QuantumCircuit:
             q.append(self._qubit_array[i].state)
         probability_matrix = np.square(q) #square all of the values in matrix to get probabilties of each qubit state
         if len(q) > 1: # tensor only if the length of self._qubit_array is greater than 1
-            temp_matrix = np.kron(q[0].state, q[1].state) # create our temporary matrix
+            temp_matrix = np.kron(q[0], q[1]) # create our temporary matrix
             # use numpy's Kronecker product on the first 2 qubit states and then delete them from the queue
             del q[0]
             del q[0]
             while q: # go through the rest of the queue
-                temp_matrix = np.kron(temp_matrix, q[0].state)
+                temp_matrix = np.kron(temp_matrix, q[0])
                 del q[0]
             # square all of the values in matrix to get probabilties of each qubit state
             probability_matrix = np.square(temp_matrix)
