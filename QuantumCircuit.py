@@ -31,7 +31,7 @@ class QuantumCircuit:
         # pull out qubit at bit position in self._qubit_array[bit]
         temp_arr = self._qubit_array[bit].state
         # multiply the NOT gate against the qubit.state array
-        identity_gate = [[1 + 0j, 0 + 0j], [0 + 0j, 1 + 0j]]
+        identity_gate = [[1+0j, 0+0j], [0+0j, 1+0j]]
         temp_arr = np.dot(identity_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
@@ -46,7 +46,7 @@ class QuantumCircuit:
         # pull out qubit at bit position in self._qubit_array[bit]
         temp_arr = self._qubit_array[bit].state
         # multiply the NOT gate against the qubit.state array
-        x_gate = [[0 + 0j, 1 + 0j], [1 + 0j, 0 + 0j]]
+        x_gate = [[0+0j, 1+0j], [1+0j, 0+0j]]
         temp_arr = np.dot(x_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
@@ -61,7 +61,7 @@ class QuantumCircuit:
         # pull out qubit at bit position in self._qubit_array[bit]
         temp_arr = self._qubit_array[bit].state
         # multiply the Y gate against the qubit.state array
-        y_gate = [[0 + 0j, 0 - 1j], [1 + 0j, 0 + 0j]]
+        y_gate = [[0+0j, 0-1j], [0+1j, 0+0j]]
         temp_arr = np.dot(y_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
@@ -76,7 +76,7 @@ class QuantumCircuit:
         # pull out qubit at bit position in self._qubit_array[bit]
         temp_arr = self._qubit_array[bit].state
         # multiply the Z gate against the qubit.state array
-        z_gate = [[1 + 0j, 0 + 0j], [0 + 0j, -1 + 0j]]
+        z_gate = [[1+0j, 0+0j], [0+0j, -1+0j]]
         temp_arr = np.dot(z_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
@@ -91,7 +91,7 @@ class QuantumCircuit:
         # pull out qubit at bit position in self._qubit_array[bit]
         temp_arr = self._qubit_array[bit].state
         # make hadamard_gate a numpy array to apply the 1/sqrt(2) scaler
-        hadamard_gate = np.array([[1 + 0j, 1 + 0j], [1 + 0J, -1 + 0j]]) * 1/math.sqrt(2)
+        hadamard_gate = np.array([[1+0j, 1+0j], [1+0J, -1+0j]]) * 1/math.sqrt(2)
         # turn hadamard_gate back into a regular list
         hadamard_gate = hadamard_gate.tolist()
         # multiply the Hadamard gate against the qubit.state array
@@ -109,7 +109,7 @@ class QuantumCircuit:
         # pull out qubit at bit position in self._qubit_array[bit]
         temp_arr = self._qubit_array[bit].state
         # multiply the Phase gate against the qubit.state array
-        phase_gate = [[1 + 0j, 0 + 0j], [0 + 0j, 0 + 1j]]
+        phase_gate = [[1+0j, 0+0j], [0+0j, 0+1j]]
         temp_arr = np.dot(phase_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
