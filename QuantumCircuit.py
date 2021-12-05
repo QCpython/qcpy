@@ -4,7 +4,7 @@ QuantumCircuit.py
 Sources:
 https://en.wikipedia.org/wiki/Quantum_logic_gate
 """
-from Qubit import Qubit
+from .Qubit import Qubit
 from .Graph import *
 import numpy as np
 import random
@@ -19,7 +19,21 @@ class QuantumCircuit:
         for bit in bits:
             qb = Qubit(int(bit))
             self._qubit_array.append(qb)
-
+    def identity(self, bit: int):
+        """
+        Identity-Gate Operation on specified qubit.
+        Params:
+            bit (int): the nth-bit position on circuit.
+        Returns:
+            None
+        """
+        # pull out qubit at bit position in self._qubit_array[bit]
+        temp_arr = self._qubit_array[bit].state
+        # multiply the NOT gate against the qubit.state array
+        identity_gate = [[1 + 0j, 0 + 0j], [0 + 0j, 1 + 0j]]
+        temp_arr = np.dot(identity_gate, temp_arr)
+        # put result of that product back in to the self._qubit_array[bit]
+        self._qubit_array[bit].state = temp_arr
     def x(self, bit: int):
         """
         Pauli-X-Gate Operation on specified qubit.
@@ -31,11 +45,10 @@ class QuantumCircuit:
         # pull out qubit at bit position in self._qubit_array[bit]
         temp_arr = self._qubit_array[bit].state
         # multiply the NOT gate against the qubit.state array
-        not_gate = [[0 + 0j, 1 + 0j], [1 + 0j, 0 + 0j]]
-        temp_arr = np.dot(temp_arr, not_gate)
+        x_gate = [[0 + 0j, 1 + 0j], [1 + 0j, 0 + 0j]]
+        temp_arr = np.dot(x_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
-
     def y(self, bit: int):
         """
         Pauli-Y-Gate Operatrion on specified qubit.
@@ -48,7 +61,7 @@ class QuantumCircuit:
         temp_arr = self._qubit_array[bit].state
         # multiply the Y gate against the qubit.state array
         y_gate = [[0 + 0j, 0 - 1j], [1 + 0j, 0 + 0j]]
-        temp_arr = np.dot(temp_arr, y_gate)
+        temp_arr = np.dot(y_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
     def z(self, bit: int):
@@ -63,7 +76,7 @@ class QuantumCircuit:
         temp_arr = self._qubit_array[bit].state
         # multiply the Z gate against the qubit.state array
         z_gate = [[1 + 0j, 0 + 0j], [0 + 0j, -1 + 0j]]
-        temp_arr = np.dot(temp_arr, z_gate)
+        temp_arr = np.dot(z_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
     def hadamard(self, bit: int):
@@ -81,7 +94,7 @@ class QuantumCircuit:
         # turn hadamard_gate back into a regular list
         hadamard_gate = hadamard_gate.tolist()
         # multiply the Hadamard gate against the qubit.state array
-        temp_arr = np.dot(temp_arr, hadamard_gate)
+        temp_arr = np.dot(hadamard_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
     def phase(self, bit: int):
@@ -96,7 +109,7 @@ class QuantumCircuit:
         temp_arr = self._qubit_array[bit].state
         # multiply the Phase gate against the qubit.state array
         phase_gate = [[1 + 0j, 0 + 0j], [0 + 0j, 0 + 1j]]
-        temp_arr = np.dot(temp_arr, phase_gate)
+        temp_arr = np.dot(phase_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
     def measure(self):
@@ -130,7 +143,10 @@ class QuantumCircuit:
         Returns:
             probability_matrix (list): matrix with all weighted probabilities.
         """
-        q = self._qubit_array.copy() # make a copy of self._qubit_array which will be used as a queue
+        # make a copy of self._qubit_array which will be used as a queue
+        q = [] 
+        for i in range(len(self._qubit_array)):
+            q.append(self._qubit_array[i].state)
         probability_matrix = np.square(q) #square all of the values in matrix to get probabilties of each qubit state
         if len(q) > 1: # tensor only if the length of self._qubit_array is greater than 1
             temp_matrix = np.kron(q[0].state, q[1].state) # create our temporary matrix
