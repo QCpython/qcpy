@@ -129,8 +129,8 @@ class QuantumCircuit:
         state_list = list(map(int, state_list)) # turns state_list from list of strings to list of ints
         # create a temporary np.array to flatten the 2D probability_matrix into a 1D array which can
         # hold all the probabilities as weights
-        temp_array = np.array(probability_matrix) 
-        weight_list = temp_array.flatten()
+        #temp_array = np.array(probability_matrix) 
+        weight_list = probability_matrix.flatten()
         # numpy.random.choice takes in the list we will select from, size of the returning list,
         # and p = weights of each element 
         final_state = np.random.choice(state_list, 1, p = weight_list)
@@ -150,23 +150,23 @@ class QuantumCircuit:
         for i in range(len(self._qubit_array)):
             q.append(self._qubit_array[i].state)
         if len(q) == 1:   
+            temp_arr = np.array(q[0]) # q is a 3d array so convert to a 2d array
+            # square all of the values to get probabilties of each qubit state
+            temp_arr = np.square(temp_arr)
             # turn all the complex numbers into real numbers
-            temp_arr = np.array(q[0])
-            temp_arr = temp_arr.real
-            # square all of the values in matrix to get probabilties of each qubit state
-            probability_matrix = np.square(temp_arr)
+            probability_matrix = np.abs(temp_arr.real)
         if len(q) > 1: # tensor only if the length of self._qubit_array is greater than 1
-            temp_matrix = np.kron(q[0], q[1]) # create our temporary matrix
             # use numpy's Kronecker product on the first 2 qubit states and then delete them from the queue
+            temp_arr = np.kron(q[0], q[1])
             del q[0]
             del q[0]
             while q: # go through the rest of the queue
-                temp_matrix = np.kron(temp_matrix, q[0])
+                temp_arr = np.kron(temp_arr, q[0])
                 del q[0]
+            # square all of the values to get probabilties of each qubit state
+            temp_arr = np.square(temp_arr)
             # turn all the complex numbers into real numbers
-            temp_matrix = temp_matrix.real
-            # square all of the values in matrix to get probabilties of each qubit state
-            probability_matrix = np.square(temp_matrix)
+            probability_matrix = np.abs(temp_arr.real)
         return(probability_matrix)
     def graph(self):
         """
