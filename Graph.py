@@ -1,6 +1,4 @@
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
-import numpy as np
 from math import log, sqrt
 
 """
@@ -27,7 +25,7 @@ class Graph:
         Returns:
             None
         """
-        if (self._size % 2 != 0):
+        if (self._size % 2 != 0 and self._size != 1):
             print("QCpy: A critical error has occured and the occuring size of final qubit is: " + str(self._size))
             exit(1)
         for i in range(self._size):
@@ -46,11 +44,8 @@ class Graph:
         """
         total = 0
         for i in range(self._size):
-            if (self._qubits[i][0] == 1/sqrt(2)):
-                self.percents.append(100 * .5)
-            else:
-                self._percents.append(100 * self._qubits[i][0])
-                total += self._qubits[i][0]
+            self._percents.append(100 * self._qubits[i][0])
+            total += self._qubits[i][0]
         if 1 < total:
             print("QCpy: A critical error has occured and the calculation is above 100%")
             exit(1)
@@ -63,7 +58,7 @@ class Graph:
         Returns:
             None
         """
-        plt.figure(figsize=(self._size,5)) 
+        plt.figure(figsize=(self._size + 3,5)) 
         ax = plt.axes()
         ax.bar(self._qubitValues, self._percents, align='center', color='#34b4fc')
         ax.set_ylim(0, 100)
