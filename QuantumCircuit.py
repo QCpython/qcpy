@@ -146,14 +146,15 @@ class QuantumCircuit:
             probability_matrix (list): matrix with all weighted probabilities.
         """
         # make a copy of self._qubit_array states which will be used as a queue
-        q = [] 
+        q = []
         for i in range(len(self._qubit_array)):
             q.append(self._qubit_array[i].state)
         if len(q) == 1:   
             # turn all the complex numbers into real numbers
-            q = q.real
+            temp_arr = np.array(q[0])
+            temp_arr = temp_arr.real
             # square all of the values in matrix to get probabilties of each qubit state
-            probability_matrix = np.square(q) 
+            probability_matrix = np.square(temp_arr)
         if len(q) > 1: # tensor only if the length of self._qubit_array is greater than 1
             temp_matrix = np.kron(q[0], q[1]) # create our temporary matrix
             # use numpy's Kronecker product on the first 2 qubit states and then delete them from the queue
@@ -175,4 +176,5 @@ class QuantumCircuit:
         Returns:
             png file.
         """
-        pass
+        qubits_graph = Graph(self.probabilities())
+        return qubits_graph.makeGraph()
