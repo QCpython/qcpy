@@ -92,27 +92,25 @@ class QuantumCircuit:
         temp_arr = self._qubit_array[bit].state
         # make hadamard_gate a numpy array to apply the 1/sqrt(2) scaler
         hadamard_gate = np.array([[1+0j, 1+0j], [1+0J, -1+0j]]) * 1/math.sqrt(2)
-        # turn hadamard_gate back into a regular list
-        hadamard_gate = hadamard_gate.tolist()
         # multiply the Hadamard gate against the qubit.state array
         temp_arr = np.dot(hadamard_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
-    def phase(self, bit: int):
-        """
-        Phase-Gate Operation on specifid qubit.
-        Params:
-            bit (int): the nth-bit position on circuit.
-        Returns:
-            None
-        """
-        # pull out qubit at bit position in self._qubit_array[bit]
-        temp_arr = self._qubit_array[bit].state
-        # multiply the Phase gate against the qubit.state array
-        phase_gate = [[1+0j, 0+0j], [0+0j, 0+1j]]
-        temp_arr = np.dot(phase_gate, temp_arr)
-        # put result of that product back in to the self._qubit_array[bit]
-        self._qubit_array[bit].state = temp_arr
+    # def phase(self, bit: int):
+    #     """
+    #     Phase-Gate Operation on specifid qubit.
+    #     Params:
+    #         bit (int): the nth-bit position on circuit.
+    #     Returns:
+    #         None
+    #     """
+    #     # pull out qubit at bit position in self._qubit_array[bit]
+    #     temp_arr = self._qubit_array[bit].state
+    #     # multiply the Phase gate against the qubit.state array
+    #     phase_gate = [[1+0j, 0+0j], [0+0j, 0+1j]]
+    #     temp_arr = np.dot(phase_gate, temp_arr)
+    #     # put result of that product back in to the self._qubit_array[bit]
+    #     self._qubit_array[bit].state = temp_arr
     def measure(self):
         """
         Collapses circuit into one state.
@@ -149,12 +147,13 @@ class QuantumCircuit:
         q = []
         for i in range(len(self._qubit_array)):
             q.append(self._qubit_array[i].state)
-        if len(q) == 1:   
-            temp_arr = np.array(q[0]) # q is a 3d array so convert to a 2d array
-            # square all of the values to get probabilties of each qubit state
-            temp_arr = np.square(temp_arr)
-            # turn all the complex numbers into real numbers
-            probability_matrix = np.abs(temp_arr.real)
+        # if len(q) == 1:   
+        #     temp_arr = np.array(q[0]) # q is a 3d array so convert to a 2d array
+        #     # square all of the values to get probabilties of each qubit state
+        #     temp_arr = np.square(temp_arr)
+        #     # turn all the complex numbers into real numbers
+        #    probability_matrix = np.abs(temp_arr.real)
+        temp_arr = np.array(q[0])
         if len(q) > 1: # tensor only if the length of self._qubit_array is greater than 1
             # use numpy's Kronecker product on the first 2 qubit states and then delete them from the queue
             temp_arr = np.kron(q[0], q[1])
@@ -163,10 +162,11 @@ class QuantumCircuit:
             while q: # go through the rest of the queue
                 temp_arr = np.kron(temp_arr, q[0])
                 del q[0]
-            # square all of the values to get probabilties of each qubit state
-            temp_arr = np.square(temp_arr)
-            # turn all the complex numbers into real numbers
-            probability_matrix = np.abs(temp_arr.real)
+        # square all of the values to get probabilties of each qubit state
+        #print(temp_arr)
+        temp_arr = np.square(temp_arr)
+        # turn all the complex numbers into real numbers
+        probability_matrix = np.abs(temp_arr.real)
         return(probability_matrix)
     def graph(self):
         """
