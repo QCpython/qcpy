@@ -28,10 +28,13 @@ class Graph:
         if (self._size % 2 != 0 and self._size != 1):
             print("QCpy: A critical error has occured and the occuring size of final qubit is: " + str(self._size))
             exit(1)
+        val = 1
         for i in range(self._size):
+            if self._size < 3:
+                val = 0
             placeBin = str(bin(i))
             placeBin = placeBin[2:]
-            placeBin = (round((log(self._size)) + 1 - len(placeBin)) * '0') + placeBin
+            placeBin = (round((log(self._size)) + val - len(placeBin)) * '0') + placeBin
             self._qubitValues.append(placeBin)      
 
     def getPercents(self):
@@ -68,5 +71,6 @@ class Graph:
         plt.ylabel('Probability (%)')
         plt.title('Probabilities')
         plt.savefig('probability.png')
+
 
     
