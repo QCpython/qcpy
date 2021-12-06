@@ -7,9 +7,7 @@ https://en.wikipedia.org/wiki/Quantum_logic_gate
 from .Qubit import Qubit
 from .Graph import *
 import numpy as np
-import random
-import math
-import itertools
+from math import sqrt
 
 class QuantumCircuit:
     def __init__(self, bit_str: str):
@@ -90,34 +88,18 @@ class QuantumCircuit:
         """
         # pull out qubit at bit position in self._qubit_array[bit]
         temp_arr = self._qubit_array[bit].state
-        # make hadamard_gate a numpy array to apply the 1/sqrt(2) scaler
-        hadamard_gate = np.array([[1+0j, 1+0j], [1+0J, -1+0j]]) * 1/math.sqrt(2)
         # multiply the Hadamard gate against the qubit.state array
+        hadamard_gate = np.array([[1+0j, 1+0j], [1+0J, -1+0j]]) * 1/sqrt(2)
         temp_arr = np.dot(hadamard_gate, temp_arr)
         # put result of that product back in to the self._qubit_array[bit]
         self._qubit_array[bit].state = temp_arr
-    # def phase(self, bit: int):
-    #     """
-    #     Phase-Gate Operation on specifid qubit.
-    #     Params:
-    #         bit (int): the nth-bit position on circuit.
-    #     Returns:
-    #         None
-    #     """
-    #     # pull out qubit at bit position in self._qubit_array[bit]
-    #     temp_arr = self._qubit_array[bit].state
-    #     # multiply the Phase gate against the qubit.state array
-    #     phase_gate = [[1+0j, 0+0j], [0+0j, 0+1j]]
-    #     temp_arr = np.dot(phase_gate, temp_arr)
-    #     # put result of that product back in to the self._qubit_array[bit]
-    #     self._qubit_array[bit].state = temp_arr
     def measure(self):
         """
-        Collapses circuit into one state.
+        Collapses quantum circuit into classical bits.
         Params:
             None
         Returns:
-            final_state (str): a single state 
+            final_state (str): classical bits
         """
         # get probabilities matrix from self.probabilities()
         probability_matrix = self.probabilities()
@@ -127,7 +109,6 @@ class QuantumCircuit:
         state_list = list(map(int, state_list)) # turns state_list from list of strings to list of ints
         # create a temporary np.array to flatten the 2D probability_matrix into a 1D array which can
         # hold all the probabilities as weights
-        #temp_array = np.array(probability_matrix) 
         weight_list = probability_matrix.flatten()
         # numpy.random.choice takes in the list we will select from, size of the returning list,
         # and p = weights of each element 
@@ -147,12 +128,6 @@ class QuantumCircuit:
         q = []
         for i in range(len(self._qubit_array)):
             q.append(self._qubit_array[i].state)
-        # if len(q) == 1:   
-        #     temp_arr = np.array(q[0]) # q is a 3d array so convert to a 2d array
-        #     # square all of the values to get probabilties of each qubit state
-        #     temp_arr = np.square(temp_arr)
-        #     # turn all the complex numbers into real numbers
-        #    probability_matrix = np.abs(temp_arr.real)
         temp_arr = np.array(q[0])
         if len(q) > 1: # tensor only if the length of self._qubit_array is greater than 1
             # use numpy's Kronecker product on the first 2 qubit states and then delete them from the queue
@@ -163,7 +138,6 @@ class QuantumCircuit:
                 temp_arr = np.kron(temp_arr, q[0])
                 del q[0]
         # square all of the values to get probabilties of each qubit state
-        #print(temp_arr)
         temp_arr = np.square(temp_arr)
         # turn all the complex numbers into real numbers
         probability_matrix = np.abs(temp_arr.real)
