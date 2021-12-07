@@ -2,26 +2,26 @@
 Quantum Computing Python Library
 By Paris Osuch, Brennan Freeze, and Aundre Barras
 
-QCpy Documentation
+# QCpy Documentation
 
-Class QCpy.QuantumCircuit
-Attributes
-_bit_str
-Type: string
-String of qubits in the quantum circuit
-_qubit_array
-Type: List
-Array holding Qubit objects representing the state of each wire and its corresponding qubit
-Methods
-QuantumCircuit.__init__(bit_str)
-Parameters:
-bit_str (string): initialized bits for circuit
-QuantumCircuit.identity(bit)
-Identity-Gate operation on a specified bit.
-Parameters:
-bit (int): the n-th bit position of the circuit
-Returns:
-None
+## Class QCpy.QuantumCircuit
+### Attributes
+#### _bit_str
+- Type: string
+- String of qubits in the quantum circuit
+#### _qubit_array
+- Type: List
+- Array holding Qubit objects representing the state of each wire and its corresponding qubit
+### Methods
+#### QuantumCircuit.__init__(bit_str)
+- Parameters:
+-- bit_str (string): initialized bits for circuit
+#### QuantumCircuit.identity(bit)
+- Identity-Gate operation on a specified bit.
+- Parameters:
+-- bit (int): the n-th bit position of the circuit
+- Returns:
+-- None
 QuantumCircuit.x(bit)
 Pauli-X-Gate operation on a specified bit.
 Parameters:
