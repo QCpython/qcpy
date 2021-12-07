@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from math import log, sqrt
+from math import log
 
 """
 Graph.py
@@ -8,9 +8,13 @@ Creates a .png  matplotlib graph of the called in array from QauntumCircuit.py c
 
 class Graph:
     def __init__(self, qubits):
+        # array of values of the qubits to be placed on the x axis of the bar graph.
         self._qubitValues = []
+        # array of values that have converted the 2D array that was called into the constructor into a 1D array to be plotted on the bar graph as valeus.
         self._percents = []
+        # stores the called paramaters in the constructor for further use.
         self._qubits = []
+        # stores the size of the qubits array being called in for other functions usage.
         self._size = len(qubits)
         self._qubits = qubits
 
