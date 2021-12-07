@@ -15,13 +15,13 @@ By Paris Osuch, Brennan Freeze, and Aundre Barras
 ### Methods
 #### QuantumCircuit.__init__(bit_str)
 - Parameters:
--- bit_str (string): initialized bits for circuit
+bit_str (string): initialized bits for circuit
 #### QuantumCircuit.identity(bit)
 - Identity-Gate operation on a specified bit.
 - Parameters:
--- bit (int): the n-th bit position of the circuit
+bit (int): the n-th bit position of the circuit
 - Returns:
--- None
+None
 QuantumCircuit.x(bit)
 Pauli-X-Gate operation on a specified bit.
 Parameters:
