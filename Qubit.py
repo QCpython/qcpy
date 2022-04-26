@@ -1,15 +1,16 @@
 """
 Qubit.py
-
-A 2D vector representing the state of a single bit.
 """
+import numpy as np
+from sys import exit
+
 class Qubit:
-    def __init__(self, state: int):
-        self._INIT_STATE = state # the state the qubit was init in
-        self.state = None # state of the qubit
-        # create 2x1 matrix for state
-        if(state == 0):
-            self.state = [[1+0j], [0+0j]]
-        if(state == 1):
-            self.state = [[0+0j], [1+0j]]
-        
+    def __init__(self, initial_state: int):
+        self._INITIAL_STATE = initial_state
+        self.state = None
+        if(initial_state == 0):
+            self.state = np.array([[1+0j], [0+0j]])
+        elif(initial_state == 1):
+            self.state = np.array([[0+0j], [1+0j]])
+        else:
+            exit(f"Error: Qubit.__init__() -- Qubit must be initialized in a 0 or 1 state \n Qubit was initialized in state: {initial_state}")
