@@ -114,10 +114,6 @@ class QuantumCircuit:
         gate_queue[qubit] = gate_matrix
         # if double is true, then CNOT, toffli, or any gate more than one qubit is being asked to be implemented.
         if double:
-            for gate in gate_queue:
-                print(gate)
-            print(f"gate queue length: {len(gate_queue)}")
-            print(f"qubit position: {qubit}")
             gate_queue.pop(qubit+1)
         # if little_endian variable is true to follow IBM and Qiskit notation. Inverses queue of operation
         if (self._little_endian):
@@ -267,10 +263,8 @@ class QuantumCircuit:
                 temp_target -= 1
         # perform cnot operation
         if inverse:
-            print("1")
             self._state = np.dot(self.__operator_matrix__(cnot_matrix, temp_target, double=True), self._state)
         else:
-            print("2")
             self._state = np.dot(self.__operator_matrix__(cnot_matrix, control, double=True), self._state)
         # while the temp target does not equal the original target
         while(temp_target != target):
@@ -291,7 +285,6 @@ class QuantumCircuit:
     def hadamard(self, qubit: int):
         # get the hadamard matrix
         h_matrix = Hadamard().matrix
-        #print(h_matrix[np.abs(h_matrix) < 1e-9])
         self._state = np.dot(self.__operator_matrix__(h_matrix, qubit), self._state)
     def y(self, qubit: int):
         # get the Y matrix
