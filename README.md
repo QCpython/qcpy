@@ -177,4 +177,69 @@ class * Gate Name Here * :
 [0+0j, 0+0j, 0+0j, exp(0-1j * (theta / 2))]
 ```
 ## QuantumCircuit
+###### Where all calculations occur. Call the class object and initialize the simulated circuit
+###### Please note that the placement of the qubit must be enplaced based off of certain number of qubits needed to complete the gate.
 
+```
+circuit = QuantumCircuit(3, little_endian = True)
+circuit.hadamard(0)
+circuit.cnot(0,1)
+circuit.t(2)
+```
+
+### _ _operator_matrix_ _(gate_matrix: np.array, qubit: int, double: bool = False):
+##### Returns the tensor product of the desired gates, see method itself for more information.
+
+### amplitude(round: int = 3):
+##### Returns an array of values to signify the amplitude of each and every value possible from the state.
+
+### phaseAngle(round: int = 2):
+##### Returns the radian value for each and every possible value within the state it is being applied to.
+
+### state(round: int = 3):
+##### Returns the initial state values within a vector state.
+
+### probabilities(round: int = 3):
+##### Returns all probabilities from the possible values found within the state.
+### measure():
+###### Returns the measurement of the state and will result in a random collapsing.
+### cnot(control: int, target: int):
+##### Calls the CNOT gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### x(qubit: int):
+##### Calls the PauliX gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### y(qubit: int):
+##### Calls the PauliY gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### z(qubit: int):
+##### Calls the PauliZ gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### swap(qubit_1: int, qubit_2: int):
+##### Calls the SWAP gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### toffoli(control_1: int, control_2: int, target: int):
+##### Calls the TOFFOLI gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### phase(qubit: int, theta: float = np.pi / 2):
+##### Calls the Phase gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### hadamard(qubit: int):
+##### Calls the Hadamard gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### s(qubit: int):
+##### Calls the S gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### sdg(qubit: int):
+##### Calls the SDG gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### t(qubit: int):
+##### Calls the T gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### tdg(qubit: int):
+##### Calls the TDG gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### rz(qubit: int):
+##### Calls the RZ gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### rx(qubit: int):
+##### Calls the RX gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### ry(qubit: int):
+##### Calls the RY gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### sx(qubit: int):
+##### Calls the SX gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### sxdg(qubit: int):
+##### Calls the SXDG gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### u(qubit: int, theta: float = np.pi / 2, phi: float = np.pi / 2, lbmda: float = np.pi / 2):
+##### Calls the U gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### rxx(qubit_1: int, qubit_2: int, theta: float = np.pi / 2):
+##### Calls the RXX gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+### rzz(qubit_1: int, qubit_2: int, theta: float = np.pi / 2):
+##### Calls the RZZ gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
