@@ -246,3 +246,25 @@ circuit.t(2)
 
 ## Visualizer.py
 ###### A collection of classes to visualize the quantum circuit
+
+'''
+circuit = QuantumCircuit(3, little_endian = True)
+circuit.hadamard(0)
+circuit.hadamard(1)
+circuit.hadamard(2)
+circuit.cnot(0,1)
+
+test = Probabilities(circuit)
+test.makeGraph(save=True, show=True, darkmode=True)
+
+test = StateVector(circuit)
+test.makeGraph(save=True, show=True, darkmode=True)
+'''
+
+#### StateVector
+###### The amplitudes of the quantum circuit visualized as a graph
+### makeGraph(self, path: str = "statevector.png", save: bool = True, show: bool = False, darkmode: bool = True)
+
+#### Probabilities
+###### The probabilities of each state being measured visualized as a graph
+### makeGraph(self, path: str = "probabilities.png", save: bool = True, show: bool = False, darkmode: bool = True)
