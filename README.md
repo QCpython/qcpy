@@ -243,3 +243,6 @@ circuit.t(2)
 ##### Calls the RXX gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
 ### rzz(qubit_1: int, qubit_2: int, theta: float = np.pi / 2):
 ##### Calls the RZZ gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
+
+## Visualizer.py
+###### A collection of classes to visualize the quantum circuit
