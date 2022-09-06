@@ -261,10 +261,10 @@ test = StateVector(circuit)
 test.makeGraph(save=True, show=True, darkmode=True)
 ```
 
-#### StateVector
-###### The amplitudes of the quantum circuit visualized as a graph
-### makeGraph(self, path: str = "statevector.png", save: bool = True, show: bool = False, darkmode: bool = True)
+### StateVector:
+#### makeGraph(self, path: str = "statevector.png", save: bool = True, show: bool = False, darkmode: bool = True)
+##### The amplitudes of the quantum circuit visualized as a graph
 
-#### Probabilities
-###### The probabilities of each state being measured visualized as a graph
-### makeGraph(self, path: str = "probabilities.png", save: bool = True, show: bool = False, darkmode: bool = True)
+### Probabilities:
+#### makeGraph(self, path: str = "probabilities.png", save: bool = True, show: bool = False, darkmode: bool = True)
+##### The probabilities of each state being measured visualized as a graph
