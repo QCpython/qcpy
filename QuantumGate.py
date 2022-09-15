@@ -75,6 +75,7 @@ class Swap:
                 [0+0j, 1+0j, 0+0j, 0+0j],
                 [0+0j, 0+0j, 0+0j, 1+0j]
             ])
+# As of right now not in technical use, need to find systems of algorithms to implement it if possible.
 class Toffoli:
     def __init__(self):
         self.matrix = np.array([
@@ -118,7 +119,7 @@ class Tdg:
             [0+0j, np.e ** ((0-1j * np.pi) / 4)]
         ])
 class Rz: #theta is equal to the rotation through angle phi around the z-axis
-    def __init__(self, theta: float):
+    def __init__(self, theta: float = np.pi / 2):
         self.matrix = np.array([
             [np.exp((0-1j * (theta / 2))), 0+0j],
             [0+0j, np.exp(0+1j * (theta / 2))]
@@ -130,7 +131,7 @@ class Rx: #theta is equal to the rotation through angle phi around the x-axis
             [0-1j * np.sin(theta / 2), np.cos(theta / 2)]
         ])
 class Ry: #theta is equal to the rotation through angle phi around the y-axis
-    def __init__(self, theta: float):
+    def __init__(self, theta: float = np.pi / 2):
         self.matrix = np.array([
             [np.cos(theta / 2), -1 * np.sin(theta / 2)],
             [np.sin(theta / 2), np.cos(theta / 2)]
@@ -167,3 +168,40 @@ class Rzz:
                 [0+0j, 0+0j, np.exp(0+1j * (theta / 2)), 0+0j],
                 [0+0j, 0+0j, 0+0j, np.exp(0-1j * (theta / 2))]
             ])
+
+class Cr:
+    def __init__(self, theta: float = np.pi / 2):
+        self.matrix = np.array([
+            [1+0j, 0+0j, 0+0j, 0+0j],
+            [0+0j, 1+0j, 0+0j, 0+0j],
+            [0+0j, 0+0j, 1+0j, 0+0j],
+            [0+0j, 0+0j, 0+0j, np.exp(theta * 0+1j)]
+        ])
+
+class Cz:
+    def __init__(self):
+        self.matrix = np.array([
+            [1+0j, 0+0j, 0+0j, 0+0j],
+            [0+0j, 1+0j, 0+0j, 0+0j],
+            [0+0j, 0+0j, 1+0j, 0+0j],
+            [0+0j, 0+0j, 0+0j, -1+0j]
+        ])
+
+"""
+class CRk:
+    def __init__(self, theta: float = np.pi / 2, phi: float = np.pi / 2):
+        self.matrix = np.array([
+            [1+0j, 0+0j, 0+0j, 0+0j],
+            [0+0j, 1+0j, 0+0j, 0+0j],
+            [0+0j, 0+0j, 1+0j, 0+0j],
+            [0+0j, 0+0j, 0+0j, -1+0j]
+        ])
+class Reset:
+    def __init__(self):
+        self.matrix = np.array([
+            [1+0j, 0+0j],
+            [0+0j, 1+0j]
+        ])
+
+
+"""
