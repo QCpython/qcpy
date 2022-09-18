@@ -1,7 +1,6 @@
 """
 QuantumCircuit.py
 """
-from signal import sigwaitinfo
 from Qubit import Qubit
 from QuantumGate import *
 import numpy as np
@@ -135,6 +134,7 @@ class QuantumCircuit:
         # create temp target variable
         calculate_matrix = gate_to_product
         temp_target = target
+        hadamard = Hadamard().matrix
         if(abs(target - control) == 1):
                 if inverse:
                     self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
@@ -163,7 +163,6 @@ class QuantumCircuit:
         # perform controlled_phase operation
         if inverse:
             # will create inversed controlled_phase of what is inputted through here, determined if the inversed variable is marked true.
-            hadamard = Hadamard().matrix
             #call hadamard gates on control and target variables
             self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
             self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
@@ -204,7 +203,7 @@ class QuantumCircuit:
             #calculates sqrt(x^2 + y^2 for amplitude), x = real value, y = imaginary value
             statevector.append(np.sqrt(np.power(self._state[i].real, 2) + np.power(self._state[i].imag, 2)))
         # rounds value based off of parameter
-        return np.around(statevector, decimals = round)
+        return np.around(statevector, decimals = round).flatten()
     def phaseAngle(self, round: int = 2, radian: bool = True):
         """
         Calculates an array of possible phase angles based off the state. Converts each value using np.angle() function then degree to radian.
@@ -216,10 +215,10 @@ class QuantumCircuit:
         """
         if (round < 0):
             exit(f"Error: QuantumCircuit().phaseAngle -- round placement must be a value greater than 0.")
-        temp = (np.mod(np.angle(self._state).flatten(), 2*np.pi) * (180/np.pi))
+        temp = (np.mod(np.angle(self._state), 2*np.pi) * (180/np.pi))
         if (radian):
             temp *= (np.pi / 180)
-        return temp
+        return temp.flatten()
     def state(self, round: int = 3):
         """
         Return a vector of all possible phase angles for the given state.
