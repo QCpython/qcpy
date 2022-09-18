@@ -203,7 +203,7 @@ class QuantumCircuit:
             #calculates sqrt(x^2 + y^2 for amplitude), x = real value, y = imaginary value
             statevector.append(np.sqrt(np.power(self._state[i].real, 2) + np.power(self._state[i].imag, 2)))
         # rounds value based off of parameter
-        return np.around(statevector, decimals = round).flatten()
+        return np.around(statevector, decimals = round)
     def phaseAngle(self, round: int = 2, radian: bool = True):
         """
         Calculates an array of possible phase angles based off the state. Converts each value using np.angle() function then degree to radian.
@@ -218,7 +218,7 @@ class QuantumCircuit:
         temp = (np.mod(np.angle(self._state), 2*np.pi) * (180/np.pi))
         if (radian):
             temp *= (np.pi / 180)
-        return temp.flatten()
+        return temp
     def state(self, round: int = 3):
         """
         Return a vector of all possible phase angles for the given state.
