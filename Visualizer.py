@@ -3,14 +3,72 @@ Visualizer.py
 
 A collection of classes to visualize the quantum circuit
 
-QSphere : global view of the quantum circuit visualized as a Sphere
-Statevector : the amplitudes of the quantum circuit visualized as a graph and/or sphere
+BlochSphere : visualizes the quantum state of a single qubit as a sphere
+QSphere : global view of the quantum circuit visualized as a sphere
+Statevector : the amplitudes of the quantum circuit visualized as a graph 
 Probabilities : the probabilities of each state being measured visualized as a graph
 """
 import numpy as np
 from QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
 from matplotlib.cm import ScalarMappable
+
+class BlochSphere:
+    """
+    Visualizes the quantum state of a single qubit as a sphere
+    
+    Methods
+    --------
+    makeSphere():
+        returns a Bloch Sphere that plots the quantum state of a single qubit in a 
+        3D global view
+    """
+    
+    def __init__(self, circuit = None, blochQubit = None):
+        """
+        Args:
+            circuit: 
+                the quantum circuit
+            blochQubit:
+                the qubit that will be visualized 
+        ------
+        Variables:
+            _amplitudes :
+                an array of the amplitude for every state
+            _phase_angles :
+                an array of the phase angle for every state
+        """
+        self._amplitutes = circuit.amplitude().flatten()
+        self._phase_angles = circuit.phaseAngle().flatten()
+        # self._bloch_qubit = #this needs to be figured out still
+        
+    def makeSphere(self, path: str = "BlochSphere.png", save: bool = True, show: bool = False):
+        """
+            Creates a sphere of the circuit's probabilties
+        Args:
+            path (str): name of the image to be saved
+            save (bool): pass True for the graph to be saved
+            show (bool): pass True for the sphere to be shown instead of saved
+        """
+        plt.clf()
+        plt.close()
+        ax = plt.axes(projection="3d")
+        u = np.linspace(0,2*np.pi, 100)
+        v = np.linspace(0, np.pi, 100)
+        r = 1
+        x = r * np.outer(np.cos(u), np.sin(v))
+        y = r * np.outer(np.sin(u), np.sin(v))
+        z = r * np.outer(np.ones(np.size(u)), np.cos(v))
+        ax.plot_wireframe(x, y, z, rstride = 10, cstride = 10, linewidth=1, color="gray")
+        ax.scatter(0,0,0)
+        
+        
+            
+        plt.axis('off')
+        if save:
+            plt.savefig(path)
+        if show:
+            plt.show()
 
 class QSphere:
     """
@@ -38,11 +96,17 @@ class QSphere:
                 an array of all the probabilities of the qubits being measured
             _percents :
                 the array of probabilities turned into an array of values adding to 100
+            _amplitudes :
+                an array of the amplitude for every state
+            _phase_angles :
+                an array of the phase angle for every state
         """
         self._num_qubits =  int(np.log2(len(circuit.probabilities())))
         self._state_list = [format(i, 'b').zfill(self._num_qubits) for i in range(2**self._num_qubits)]
         self._probabilities = circuit.probabilities()
         self._percents = [i * 100 for i in self._probabilities]
+        self._amplitutes = circuit.amplitude().flatten()
+        self._phase_angles = circuit.phaseAngle().flatten()
         
     def __hamming_distance__(self, l1 ,l2):
         return sum(ket1 != ket2 for ket1, ket2 in zip(l1, l2))
@@ -71,7 +135,7 @@ class QSphere:
     
     def makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False):
         """
-            Creates a aphere of the circuit's probabilties
+            Creates a sphere of the circuit's probabilties
         Args:
             path (str): name of the image to be saved
             save (bool): pass True for the graph to be saved
@@ -110,10 +174,6 @@ class StateVector:
     --------
     makeGraph() :
         returns a graph that plots all the amplitudes of the qubits being measured
-
-    makeSphere() :
-        returns a sphere that plots a global visualization of the quantum amplitudes
-        in a 3D global view
     """
 
     def __init__(self, circuit=None):
@@ -194,7 +254,7 @@ class StateVector:
             plt.savefig(path)
         if show:
             plt.show()
-            
+                     
 class Probabilities:
     """
     Visualizes the quantum circuit using a bar graph
