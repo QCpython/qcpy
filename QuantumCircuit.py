@@ -94,9 +94,10 @@ class QuantumCircuit:
         self._circuit_size = qubits
         # Makes tensored vector state of all qubits, and stores it within _state to get a vector of [[1], [0], [0],....2^n]
         self._state = Qubit(prep).state
+        # represent the circuit in dict
+        self._circuit = {i:[] for i in range(qubits)}
         for _ in range(qubits-1):
             self._state = np.kron(self._state, Qubit(prep).state)
-        # end of constructor
     def __operator_matrix__(self, gate_matrix: np.array, qubit: int, double: bool = False):
         """
         Return a matrix from the tensor product calculation algorithm from any inplaced quantum gate.
@@ -125,7 +126,7 @@ class QuantumCircuit:
         for gate in gate_queue[1:]:
             operator_matrix = np.kron(operator_matrix, gate)
         return operator_matrix
-    def __controlled_phase_handeler__(self, gate_to_product: np.array, control: int, target: int):
+    def __controlled_phase_handler__(self, gate_to_product: np.array, control: int, target: int):
         # inverse bool
         inverse = False
         # checking to see if target is less than control indices:
@@ -185,6 +186,8 @@ class QuantumCircuit:
                 self.swap(temp_target, temp_target+1)
                 # update temp target position
                 temp_target +=1
+    def circuit(self):
+        return self._circuit
     def amplitude(self, round: int = 3):
         """
         Return a vector of all possible amplitudes for the given state.
@@ -290,6 +293,10 @@ class QuantumCircuit:
         self.t(control_1)
         self.tdg(control_2)
         self.cnot(control_1, control_2)
+        # append gate to self._circuit
+        self._circuit[control_1].append('toffoli_control')
+        self._circuit[control_2].append('toffoli_control')
+        self._circuit[target].append('toffoli_target')
     def rccx(self, control_1: int, control_2: int, target: int):
         if (self._circuit_size < 3):
             exit(f"Error: QuantumCircuit().rccx -- Quantum Circuit size must be 3 or more qubits. Current number of qubits is: {self._circuit_size}")
@@ -302,6 +309,10 @@ class QuantumCircuit:
         self.cnot(control_2, target)
         self.u(target, 0,0,(-1 * np.pi) / 4)
         self.u(target, np.pi / 2, 0, np.pi)
+        # append gate to self._circuit
+        self._circuit[control_1].append('rccx_control')
+        self._circuit[control_2].append('rccx_control')
+        self._circuit[target].append('rccx_target')
     def rc3x(self, control_1: int, control_2: int, control_3: int, target: int):
         if (self._circuit_size < 4):
             exit(f"Error: QuantumCircuit().rc3x -- Quantum Circuit size must be 4 or more qubits. Current number of qubits is: {self._circuit_size}")
@@ -323,19 +334,33 @@ class QuantumCircuit:
         self.cnot(control_3, target)
         self.u(target, 0, 0, (-1 * np.pi / 4))
         self.u(target, np.pi / 2, 0, np.pi)
+        # append gate to self._circuit
+        self._circuit[control_1].append('rc3x_control')
+        self._circuit[control_2].append('rc3x_control')
+        self._circuit[control_3].append('rc3x_control')
+        self._circuit[target].append('rc3x_target')
     def cnot(self, control: int, target: int):
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().cnot -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         cnot_matrix = CNot().matrix
-        self.__controlled_phase_handeler__(cnot_matrix, control, target)
+        self.__controlled_phase_handler__(cnot_matrix, control, target)
+        # append gate to self._circuit
+        self._circuit[control].append('cnot_control')
+        self._circuit[target].append('cnot_target')
     def cr(self, control: int, target:int):
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().cr -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
-        self.__controlled_phase_handeler__(Cr().matrix, control, target)
+        self.__controlled_phase_handler__(Cr().matrix, control, target)
+        # append gate to self._circuit
+        self._circuit[control].append('cr_control')
+        self._circuit[target].append('cr_target')
     def cz(self, control: int, target:int):
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().cz -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
-        self.__controlled_phase_handeler__(Cz().matrix, control, target)
+        self.__controlled_phase_handler__(Cz().matrix, control, target)
+        # append gate to self._circuit
+        self._circuit[control].append('cz_control')
+        self._circuit[target].append('cz_target')
     def swap(self, qubit_1: int, qubit_2: int):
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().swap -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
@@ -343,22 +368,31 @@ class QuantumCircuit:
         swap_matrix = Swap().matrix
         # determines if the two values at play are at distance greater than one, if so it will call in private method for larger matrix operations.
         if(qubit_1 - qubit_2 != 1 and qubit_1 - qubit_2 != -1):
-            self.__controlled_phase_handeler__(swap_matrix, qubit_1, qubit_2)
+            self.__controlled_phase_handler__(swap_matrix, qubit_1, qubit_2)
         elif(qubit_1 > qubit_2):
             self._state = np.dot(self.__operator_matrix__(swap_matrix, qubit_2, double=True), self._state)
         else:
             self._state = np.dot(self.__operator_matrix__(swap_matrix, qubit_1, double=True), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit_1].append('swap')
+        self._circuit[qubit_2].append('swap')
     def rxx(self, qubit_1: int, qubit_2: int, theta: float = np.pi / 2):
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().rxx -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         rxx_matrix = Rxx(theta).matrix
-        self.__controlled_phase_handeler__(rxx_matrix, qubit_1, qubit_2)
+        self.__controlled_phase_handler__(rxx_matrix, qubit_1, qubit_2)
+        # append gate to self._circuit
+        self._circuit[qubit_1].append('rxx')
+        self._circuit[qubit_2].append('rxx')
     def rzz(self, qubit_1: int, qubit_2: int, theta: float = np.pi / 2):
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().rzz -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         rzz_matrix = Rzz(theta).matrix
         # determines if the two values at play are at distance greater than one, if so it will call in private method for larger matrix operations.
-        self.__controlled_phase_handeler__(rzz_matrix, qubit_1, qubit_2)
+        self.__controlled_phase_handler__(rzz_matrix, qubit_1, qubit_2)
+        # append gate to self._circuit
+        self._circuit[qubit_1].append('rzz')
+        self._circuit[qubit_2].append('rzz')
     """
     Single Qubit Gates
     """
@@ -367,96 +401,128 @@ class QuantumCircuit:
             exit(f"Error: QuantumCircuit().identity -- Must select a qubit to enact on quantum gate.")
         identity_matrix = Identity().matrix
         self._state = np.dot(self.__operator_matrix__(identity_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('identity')
     def x(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().x -- Must select a qubit to enact on quantum gate.")
         # get the not matrix
         x_matrix = PauliX().matrix
         self._state = np.dot(self.__operator_matrix__(x_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('x')
     def hadamard(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().hadamard -- Must select a qubit to enact on quantum gate.")
         # get the hadamard matrix
         h_matrix = Hadamard().matrix
         self._state = np.dot(self.__operator_matrix__(h_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('hadamard')
     def y(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().y -- Must select a qubit to enact on quantum gate.")
         # get the Y matrix
         y_matrix = PauliY().matrix
         self._state = np.dot(self.__operator_matrix__(y_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('y')
     def z(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().z -- Must select a qubit to enact on quantum gate.")
         # get the Z matrix
         z_matrix = PauliZ().matrix
         self._state = np.dot(self.__operator_matrix__(z_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('z')
     def phase(self, qubit: int, theta: float = np.pi / 2):
         if qubit == None:
             exit(f"Error: QuantumCircuit().phase -- Must select a qubit to enact on quantum gate.")
         # get the Phase matrix
         phase_matrix = Phase(theta).matrix
         self._state = np.dot(self.__operator_matrix__(phase_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('phase')
     def s(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().s -- Must select a qubit to enact on quantum gate.")
         # get the Phase matrix
         phase_matrix = S().matrix
         self._state = np.dot(self.__operator_matrix__(phase_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('s')
     def sdg(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().sdg -- Must select a qubit to enact on quantum gate.")
         # get the Sdg matrix
         sdg_matrix = Sdg().matrix
         self._state = np.dot(self.__operator_matrix__(sdg_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('sdg')
     def t(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().t -- Must select a qubit to enact on quantum gate.")
         # get the T matrix
         t_matrix = T().matrix
         self._state = np.dot(self.__operator_matrix__(t_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('t')
     def tdg(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().tdg -- Must select a qubit to enact on quantum gate.")
         # get the Tdg matrix
         tdg_matrix = Tdg().matrix
         self._state = np.dot(self.__operator_matrix__(tdg_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('tdg')
     def rz(self, qubit: int, theta: float = np.pi / 2):
         if qubit == None:
             exit(f"Error: QuantumCircuit().rz -- Must select a qubit to enact on quantum gate.")
         # get the Rz matrix
         rz_matrix = Rz(theta).matrix
         self._state = np.dot(self.__operator_matrix__(rz_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('rz')
     def ry(self, qubit: int, theta: float = np.pi / 2):
         if qubit == None:
             exit(f"Error: QuantumCircuit().ry -- Must select a qubit to enact on quantum gate.")
         # get the Ry matrix
         ry_matrix = Ry(theta).matrix
         self._state = np.dot(self.__operator_matrix__(ry_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('ry')
     def rx(self, qubit: int, theta: float = np.pi / 2):
         if qubit == None:
             exit(f"Error: QuantumCircuit().rx -- Must select a qubit to enact on quantum gate.")
         # get the Ry matrix
         ry_matrix = Ry(theta).matrix
         self._state = np.dot(self.__operator_matrix__(ry_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('rx')
     def sx(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().sx -- Must select a qubit to enact on quantum gate.")
         # get the Sx matrix
         sx_matrix = Sx().matrix
-        self._state = np.dot(self.__operator_matrix__(sx_matrix, qubit), self._state)                                           
+        self._state = np.dot(self.__operator_matrix__(sx_matrix, qubit), self._state)  
+        # append gate to self._circuit
+        self._circuit[qubit].append('sx')                                         
     def sxdg(self, qubit: int):
         if qubit == None:
             exit(f"Error: QuantumCircuit().sxdg -- Must select a qubit to enact on quantum gate.")
         # get the Sxdg matrix
         sxdg_matrix = Sxdg().matrix
         self._state = np.dot(self.__operator_matrix__(sxdg_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('sxdg')
     def u(self, qubit: int, theta: float = np.pi / 2, phi: float = np.pi / 2, lbmda: float = np.pi / 2):
         if qubit == None:
             exit(f"Error: QuantumCircuit().u -- Must select a qubit to enact on quantum gate.")
         # get the U matrix
         u_matrix = U(theta, phi, lbmda).matrix
         self._state = np.dot(self.__operator_matrix__(u_matrix, qubit), self._state)
+        # append gate to self._circuit
+        self._circuit[qubit].append('u')
 """
     def matrixInsert(self, qubit_1: int = -1, qubit_2: int = -1, custom_matrix: np.array = []):
         if((qubit_1 - qubit_2 != 1 and qubit_1 - qubit_2 != -1) or custom_matrix.shape[0] != custom_matrix.shape[1]):
