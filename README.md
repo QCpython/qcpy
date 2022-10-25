@@ -268,3 +268,7 @@ test.makeGraph(save=True, show=True, darkmode=True)
 ### Probabilities:
 #### makeGraph(self, path: str = "probabilities.png", save: bool = True, show: bool = False, darkmode: bool = True)
 ##### The probabilities of each state being measured visualized as a graph
+
+### QSphere:
+#### makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False)
+##### Creates a sphere of the circuit's probabilities
