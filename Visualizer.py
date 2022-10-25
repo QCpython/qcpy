@@ -228,10 +228,11 @@ class QSphere:
         for i, j in zip(coords, ham_states):
             cur_prob = self._dict[j]
             if cur_prob > 0:
-                print(j, i, cur_prob)
+                # print(j, i, cur_prob)
                 x, y, z = i[0], i[1], i[2]
-                ax.plot3D(x, y, z, color="red")
-                ax.text(x[1], y[1], z[1], f"|{j}") 
+                ax.plot3D(x, y, z, color="blue")
+                ax.scatter(x[1], y[1], z[1], s=5, color="blue")
+                ax.text(x[1], y[1], z[1], f"|{j}>") 
             
         plt.axis('off')
         if save:
