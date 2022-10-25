@@ -16,16 +16,16 @@ from collections import deque
 
 class BlochSphere:
     """
-    Visualizes the geometric state of a qubit
+    Visualizes the quantum state of a single qubit as a sphere
     
     Methods
     --------
     makeSphere():
-        returns a Bloch Sphere that plots the geometric state of a qubit
-        in a 3D global view
+        returns a Bloch Sphere that plots the quantum state of a single qubit in a 
+        3D global view
     """
     
-    def __init__(self, circuit = None):
+    def __init__(self, circuit = None, blochQubit = None):
         """
         Args:
             circuit: 
@@ -62,35 +62,7 @@ class BlochSphere:
         z = r * np.outer(np.ones(np.size(u)), np.cos(v))
         ax.plot_wireframe(x, y, z, rstride = 10, cstride = 10, linewidth=1, color="gray")
         ax.scatter(0,0,0)
-        # ax.quiver(0, 0, 0, 0, 0, 1)
-        ax.text(0, 0, 1, f"|0>")
-        # ax.quiver(0, 0, 0, 0, 0, -1)
-        ax.text(0, 0, -1, f"|1>")
-        
-        
-        ## CONSTANTS TO RANGE ON A BLOCH SPHERE
-        zero = np.array([[
-            1+0j,
-            0+0j
-        ]])
-        one = np.array([[
-            0+0j,
-            1+0j
-        ]])
-        ## RETURN ARRAY
-        final = np.array([]) 
-        
-        for n in range(len(self._phase_angles)):
-            theta = self._amplitutes[n]
-            phi = self._phase_angles[n]
-            placement = np.cos(theta / 2) * zero + (np.exp(0+1j * phi) * np.sin(theta / 2) * one)
-            final = np.append(final, placement)
-            
-        z = final[1::2].flatten()
-        y = final[::2].flatten()
-        
-        # print(z)
-        # print(y)
+             
         ### For testing purposes only now
         zero = np.array([[
             1+0j,
@@ -198,49 +170,28 @@ class QSphere:
         
         return ph
         
-            
+        
     def __getCoords__(self):
         """ 
         Returns an array of x, y, z line coords for all the states
         """
         coords = []
-        if self._num_qubits == 1: #base case
-            x, y, z = [0, 0], [0, 0], [0, 1]
-            coords.append([x, y, z]) #|0>
-            z = [0, -1]
-            coords.append([x, y, z]) #|1>
-        elif self._num_qubits == 2:
-            x, y, z = [0, 0], [0, 0], [0, 1] 
-            coords.append([x, y, z]) #|00>
-            x, z = [0, -1], [0, 0]
-            coords.append([x, y, z]) #|01>
-            x = [0, 1]
-            coords.append([x, y, z]) #|10>
-            x, z = [0, 0], [0, -1]
-            coords.append([x, y, z]) #|11>
-
-        else:
-            # make lists for the phi and theta vals
-            lat_vals = self.__latitude_finder__()
-            phi = []
-            theta = []
+        # make lists for the phi and theta vals
+        lat_vals = self.__latitude_finder__()
+        phi = []
+        theta = []
+        
+        for i in range(len(lat_vals)): #gets theta vals
+            temp_arr = (np.linspace(2*(np.pi)/len(lat_vals[i]), 2*(np.pi), len(lat_vals[i])))
+            theta.append(temp_arr)
+        
+        phi = np.linspace(0, np.pi, self._num_qubits + 1) #gets phi vals
             
-            for i in range(len(lat_vals)): #gets theta vals
-                temp_arr = (np.linspace(2*(np.pi)/len(lat_vals[i]), 2*(np.pi), len(lat_vals[i])))
-                for j in range(len(temp_arr)):
-                    theta.append(temp_arr[j])
-            
-            phi = np.linspace(0, np.pi, self._num_qubits + 1) #gets phi vals
-            # these phi vals are not completly accurate but close enough for testing purposes rn
-                
-            # print(f"theta: {theta}")
-            # print(f"phi: {phi}")
-            for i in range(len(theta)):
-                for j in range(len(phi)):
-                    x1 = np.cos(phi[j]) * np.sin(theta[i])
-                    y1 = np.sin(phi[j]) * np.sin(theta[i])
-                    z1 = np.cos(theta[i])
-                
+        for i in range(len(phi)):
+            for j in range(len(theta[i])):
+                x1 = 1 * np.sin(phi[i]) * np.cos(theta[i][j])
+                y1 = 1 * np.sin(phi[i]) * np.sin(theta[i][j])
+                z1 = 1 * np.cos(phi[i])
                 x, y, z = [0, x1], [0, y1], [0, z1]
                 coords.append([x, y, z])
         
@@ -266,29 +217,21 @@ class QSphere:
         ax.plot_wireframe(x, y, z, rstride = 10, cstride = 10, linewidth=1, color="gray")
         ax.scatter(0,0,0)
         
-        coords = self.__getCoords__()
-        
-        if(self._num_qubits < 3):
-            for i, j, k in zip(self._probabilities, coords, self._state_list):
-                if i > 0: # if probability of curent state is greater than 0
-                    x, y, z = j[0], j[1], j[2]
-                    ax.plot3D(x, y, z, color="red")
-                    ax.text(x[1], y[1], z[1], f"|{k}>")
-        
-        else: #self._num_qubits >= 3
         # coords will be in the order of states from the __latitude_finder__ function
         # so we will need a list of that order of states as well, we can use our dict to
         # look up each states probability in any order now b/c we do not want to plot
         # a qubit if it has a probability of 0
-            ham_states = self.__latitude_finder__()
-            ham_states = [item for sublist in ham_states for item in sublist]  
-                     
-            for i, j in zip(coords, ham_states):
-                cur_prob = self._dict[j]
-                if cur_prob > 0:
-                    x, y, z = i[0], i[1], i[2]
-                    ax.plot3D(x, y, z, color="red")
-                    ax.text(x[1], y[1], z[1], f"|{j}") 
+        coords = self.__getCoords__()
+        ham_states = self.__latitude_finder__()
+        ham_states = [item for sublist in ham_states for item in sublist]  
+                    
+        for i, j in zip(coords, ham_states):
+            cur_prob = self._dict[j]
+            if cur_prob > 0:
+                print(j, i, cur_prob)
+                x, y, z = i[0], i[1], i[2]
+                ax.plot3D(x, y, z, color="red")
+                ax.text(x[1], y[1], z[1], f"|{j}") 
             
         plt.axis('off')
         if save:
