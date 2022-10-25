@@ -16,16 +16,16 @@ from collections import deque
 
 class BlochSphere:
     """
-    Visualizes the quantum state of a single qubit as a sphere
+    Visualizes the geometric state of a qubit
     
     Methods
     --------
     makeSphere():
-        returns a Bloch Sphere that plots the quantum state of a single qubit in a 
-        3D global view
+        returns a Bloch Sphere that plots the geometric state of a qubit
+        in a 3D global view
     """
     
-    def __init__(self, circuit = None, blochQubit = None):
+    def __init__(self, circuit = None):
         """
         Args:
             circuit: 
@@ -62,7 +62,35 @@ class BlochSphere:
         z = r * np.outer(np.ones(np.size(u)), np.cos(v))
         ax.plot_wireframe(x, y, z, rstride = 10, cstride = 10, linewidth=1, color="gray")
         ax.scatter(0,0,0)
+        # ax.quiver(0, 0, 0, 0, 0, 1)
+        ax.text(0, 0, 1, f"|0>")
+        # ax.quiver(0, 0, 0, 0, 0, -1)
+        ax.text(0, 0, -1, f"|1>")
         
+        
+        ## CONSTANTS TO RANGE ON A BLOCH SPHERE
+        zero = np.array([[
+            1+0j,
+            0+0j
+        ]])
+        one = np.array([[
+            0+0j,
+            1+0j
+        ]])
+        ## RETURN ARRAY
+        final = np.array([]) 
+        
+        for n in range(len(self._phase_angles)):
+            theta = self._amplitutes[n]
+            phi = self._phase_angles[n]
+            placement = np.cos(theta / 2) * zero + (np.exp(0+1j * phi) * np.sin(theta / 2) * one)
+            final = np.append(final, placement)
+            
+        z = final[1::2].flatten()
+        y = final[::2].flatten()
+        
+        # print(z)
+        # print(y)
         ### For testing purposes only now
         zero = np.array([[
             1+0j,
