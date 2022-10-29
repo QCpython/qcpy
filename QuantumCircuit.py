@@ -523,6 +523,19 @@ class QuantumCircuit:
         self._state = np.dot(self.__operator_matrix__(u_matrix, qubit), self._state)
         # append gate to self._circuit
         self._circuit[qubit].append('u')
+
+    def reverse(self):
+        # reverses the entire state, useful for quantum algorithms.
+        self._state = self._state[::-1]
+
+    def custom(self, qubit: int, custom_matrix: np.array):
+        # if gate is not a single qubit, will exit.
+        if (custom_matrix.shape != (2,2)):
+            exit(f"Error: QuantumCircuit().insertGate -- insertGate can only include a single qubit (2,2) matrix for state manipulation.")
+        # calls gate and will operate on state as per usual
+        self._state = np.dot(self.__operator_matrix__(custom_matrix, qubit), self._state)
+    
+
 """
     def matrixInsert(self, qubit_1: int = -1, qubit_2: int = -1, custom_matrix: np.array = []):
         if((qubit_1 - qubit_2 != 1 and qubit_1 - qubit_2 != -1) or custom_matrix.shape[0] != custom_matrix.shape[1]):
