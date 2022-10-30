@@ -126,7 +126,7 @@ class QuantumCircuit:
         for gate in gate_queue[1:]:
             operator_matrix = np.kron(operator_matrix, gate)
         return operator_matrix
-    def __controlled_phase_handler__(self, gate_to_product: np.array, control: int, target: int):
+    def __controlled_phase_handler__(self, gate_to_product: np.array, control: int, target: int, is_cnot: bool = False):
         # inverse bool
         inverse = False
         # checking to see if target is less than control indices:
@@ -138,18 +138,23 @@ class QuantumCircuit:
         hadamard = Hadamard().matrix
         if(abs(target - control) == 1):
                 if inverse:
-                    self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
-                    self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
-                    #perform 
+                    if is_cnot:
+                        self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
+                        self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
+                    
                     self._state = np.dot(self.__operator_matrix__(calculate_matrix, temp_target, double=True), self._state)
 
-                    self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
-                    self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
+                    if is_cnot:
+                        self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
+                        self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
+                    else:
+                        self.swap(control, temp_target)
                 else:
                     self._state = np.dot(self.__operator_matrix__(calculate_matrix, control, double=True), self._state)
                 return
         # while the difference between the temp target and control is not -1 or 1
         while(abs(temp_target - control) != 1):
+            
             # if the distance between target and control is already 1
             if inverse:
                 # swap the temp target closer to the target
@@ -165,13 +170,17 @@ class QuantumCircuit:
         if inverse:
             # will create inversed controlled_phase of what is inputted through here, determined if the inversed variable is marked true.
             #call hadamard gates on control and target variables
-            self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
-            self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
+            if is_cnot:
+                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
+                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
             #perform 
             self._state = np.dot(self.__operator_matrix__(calculate_matrix, temp_target, double=True), self._state)
 
-            self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
-            self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
+            if is_cnot:
+                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
+                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
+            else:
+                self.swap(control, temp_target)
         else:
             self._state = np.dot(self.__operator_matrix__(calculate_matrix, control, double=True), self._state)
         # while the temp target does not equal the original target
@@ -254,6 +263,8 @@ class QuantumCircuit:
         # turn all the complex numbers into real values
         prob_matrix = np.abs(prob_matrix)
         prob_matrix = np.around(prob_matrix, decimals=round)
+        #if (np.sum(prob_matrix) != 1):
+             #exit(f"Error: QuantumCircuit().probailities -- probabilities does not have a total value of 100% making it in improper quantum circuit.")
         return prob_matrix
     def measure(self):
         """
@@ -342,8 +353,11 @@ class QuantumCircuit:
     def cnot(self, control: int, target: int):
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().cnot -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
-        cnot_matrix = CNot().matrix
-        self.__controlled_phase_handler__(cnot_matrix, control, target)
+        if self._little_endian:
+            cnot_matrix = CNot().matrix
+        else:
+            cnot_matrix = CNot(inverse = True).matrix
+        self.__controlled_phase_handler__(cnot_matrix, control, target, is_cnot = True)
         # append gate to self._circuit
         self._circuit[control].append('cnot_control')
         self._circuit[target].append('cnot_target')
@@ -531,9 +545,33 @@ class QuantumCircuit:
     def custom(self, qubit: int, custom_matrix: np.array):
         # if gate is not a single qubit, will exit.
         if (custom_matrix.shape != (2,2)):
-            exit(f"Error: QuantumCircuit().insertGate -- insertGate can only include a single qubit (2,2) matrix for state manipulation.")
+            exit(f"Error: QuantumCircuit().insertGate -- can only include a single qubit based quantum gate (2,2) matrix for state manipulation.")
         # calls gate and will operate on state as per usual
         self._state = np.dot(self.__operator_matrix__(custom_matrix, qubit), self._state)
+
+    def customControlPhase(self, control: int, target: int, custom_matrix: np.array):
+        if (custom_matrix.shape != (2,2)):
+            exit(f"Error: QuantumCircuit().customControlPhase -- can only include a single qubit based quantum gate (2,2) matrix for state manipulation.")
+        if self._little_endian:
+            controlled_custom_matrix = np.array([
+                        [1+0j, 0+0j, 0+0j, 0+0j],
+                        [0+0j, custom_matrix[0][0], 0+0j, custom_matrix[0][1]],
+                        [0+0j, 0+0j, 1+0j, 0+0j],
+                        [0+0j, custom_matrix[1][0], 0+0j, custom_matrix[1][1]]
+                    ])
+        else:
+            # issue is occuring here when the gate is being reversed in a poor manner
+            controlled_custom_matrix = np.array([
+                    [1+0j, 0+0j, 0+0j, 0+0j],
+                    [0+0j, 1+0j, 0+0j, 0+0j],
+                    [0+0j, 0+0j, custom_matrix[0][0], custom_matrix[0][1]],
+                    [0+0j, 0+0j,custom_matrix[1][0], custom_matrix[1][1]]
+                ])
+        self.__controlled_phase_handler__(controlled_custom_matrix, control, target)
+
+
+
+    
     
 
 """

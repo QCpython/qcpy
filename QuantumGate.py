@@ -63,9 +63,9 @@ class CNot:
         else:
             self.matrix = np.array([
                     [1+0j, 0+0j, 0+0j, 0+0j],
+                    [0+0j, 1+0j, 0+0j, 0+0j],
                     [0+0j, 0+0j, 0+0j, 1+0j],
-                    [0+0j, 0+0j, 0+0j, 1+0j],
-                    [0+0j, 1+0j, 1+0j, 0+0j]
+                    [0+0j, 0+0j, 1+0j, 0+0j]
                 ])
 class Swap:
     def __init__(self):
