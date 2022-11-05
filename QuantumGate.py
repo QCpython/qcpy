@@ -40,30 +40,41 @@ SDG Gate:
     DG gate is the inverse of the S gate and will change the qubits direction by -pi / 2 on the phase angle.
 
 T Gate:
+    T gate is a special use case gate that in implemented from the P Gate.
 
 TDG Gate:
+    TDG gate is the inverse of the T Gate that will impose the opposite rotation and shift of the gate.
 
 RZ gate:
+    RZ gate commits a rotation around the z-axis for a qubit.
 
 RX Gate:
+    RX gate commits a rotaiton around the x-axis for a given qubit.
 
 RY Gate:
+    RY gate commits a rotaiton around the y-axis for a given qubit.
 
 SX Gate:
+    SX gate in other terms is called a "square root of X (Inverse) gate" that creates a superposition of the qubit with a different positioning of the phase.
 
 SXDG Gate:
+    SXDG gate is the inverse of the SX gate and will inact the same logic as the SX but in a oppsite manner of what the original gate intended.
 
 U Gate:
+    U gate is given three inputs (theta, phi, and lambda) that allow the inputs to manipulate the base matrix to allow for the position of the enacted qubit
+    around the bloch sphere representation.
 
 RXX Gate:
+    RXX gate is a 2-qubit gate that will rotate both of the qubits around the x-axis at the same time.
 
 RZZ Gate:
+    RZZ gate is a 2-qubit gate that will rotate both of the qubits around the z-axis at the same time.
 
 CR Gate:
+    CR gate is a controlled phase shift roatation gate that applies to 2-qubits.
 
 CZ Gate:
-
-
+    CZ gate is a controlled phase shift roatation gate that applies to 2-qubits.
 """
 import numpy as np
 
@@ -206,8 +217,7 @@ class Toffoli:
     """
     Toffoli Gate (CCX) acts similar in nature to the CNOT gate and will entangle qubits together, only it has two control qubits instead of one.
 
-    Alongside the CNOT gate, the Toffoli gate needs to be implemented based off of the little or big endian assignment, which will be 
-    implemented in a later feature.
+    Alongside the CNOT gate, the Toffoli gate needs to be implemented based off of the little or big endian assignment.
     Matrix:
         Toffoli = [1, 0, 0, 0, 0, 0, 0, 0]
                   [0, 1, 0, 0, 0, 0, 0, 0]
@@ -286,7 +296,7 @@ class Sdg:
         ])
 class T:
     """
-    T gate .
+    T gate is a special use case gate that in implemented from the P Gate.
     Matrix:
         T = [1, 0] 
             [0, e^((i * pi) / 4]
@@ -302,7 +312,7 @@ class T:
         ])
 class Tdg:
     """
-    TDG gate .
+    TDG gate is the inverse of the T Gate that will impose the opposite rotation and shift of the gate.
     Matrix:
         T = [1, 0] 
             [0, e^((-i * pi) / 4]
@@ -318,10 +328,14 @@ class Tdg:
         ])
 class Rz: #theta is equal to the rotation through angle phi around the z-axis
     """
-    RZ gate .
+    RZ gate commits a rotation around the z-axis for a qubit.
     Matrix:
         RZ = [e^(-i * (θ / 2)), 0] 
              [0,  e^(i * (θ / 2))]
+    ...
+    Args:
+        theta: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+    ----
     ...
     Variables:
         self.matrix (numpy.Array): 
@@ -334,12 +348,16 @@ class Rz: #theta is equal to the rotation through angle phi around the z-axis
         ])
 class Rx: #theta is equal to the rotation through angle phi around the x-axis
     """
-    RX gate .
+    RX gate commits a rotaiton around the x-axis for a given qubit.
     Matrix:
         RX = [cos(θ / 2), -i * sin(θ / 2)] 
              [-i * sin(θ / 2),  cos((θ / 2))]
     ...
+    Args:
+        theta: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+    ----
     Variables:
+    
         self.matrix (numpy.Array): 
             matrix for the RX gate.
     """
@@ -350,11 +368,14 @@ class Rx: #theta is equal to the rotation through angle phi around the x-axis
         ])
 class Ry: #theta is equal to the rotation through angle phi around the y-axis
     """
-    RY gate .
+    RY gate commits a rotaiton around the y-axis for a given qubit.
     Matrix:
         RY = [cos(θ / 2), -1 * sin(θ / 2)] 
              [sin(θ / 2),  cos((θ / 2))]
     ...
+    Args:
+        theta: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+    ----
     Variables:
         self.matrix (numpy.Array): 
             matrix for the RY gate.
@@ -366,7 +387,7 @@ class Ry: #theta is equal to the rotation through angle phi around the y-axis
         ])
 class Sx:
     """
-    SX gate .
+    SX gate in other terms is called a "square root of X (Inverse) gate" that creates a superposition of the qubit with a different positioning of the phase.
     Matrix:
         SX = [1 + i, 1 - i] 
              [1 - i, 1 + i] * (1 / 2)
@@ -381,7 +402,7 @@ class Sx:
                 [1-1j, 1+1j]]) * (1 / 2)
 class Sxdg:
     """
-    SXDG gate .
+    SXDG gate is the inverse of the SX gate and will inact the same logic as the SX but in a oppsite manner of what the original gate intended.
     Matrix:
         SXDG = [1 - i, 1 + i] 
                [1 + i, 1 - i] * (1 / 2)
@@ -396,11 +417,17 @@ class Sxdg:
                 [1+1j, 1-1j]]) * (1 / 2)
 class U:
     """
-    U gate .
+    U gate is given three inputs (theta, phi, and lambda) that allow the inputs to manipulate the base matrix to allow for the position of the enacted qubit
+    around the bloch sphere representation.
     Matrix:
         U = [cos(θ / 2), -1 * e^(i * λ) * sin(θ / 2)] 
             [e^(i * φ) * sin(θ / 2), e^(i * (λ + φ)) * cos(θ / 2)]
     ...
+    Args:
+        theta: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+        phi: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+        lbmda: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+    ----
     Variables:
         self.matrix (numpy.Array): 
             matrix for the U gate.
@@ -412,13 +439,16 @@ class U:
                 [np.exp(0+1j * phi) * np.sin(theta / 2), np.exp(0+1j * (lbmda + phi)) * np.cos(theta / 2)]])
 class Rxx:
     """
-    RXX gate .
+    RXX gate is a 2-qubit gate that will rotate both of the qubits around the x-axis at the same time.
     Matrix:
         RXX = [cos(θ / 2), 0, 0, -i * sin(θ / 2)]
               [0, cos(θ / 2), -i * sin(θ / 2), 0]
               [0, -i * sin(θ / 2), cos(θ / 2), 0]
               [-i * sin(θ / 2), 0, 0, cos(θ / 2)]
     ...
+    Args:
+        theta: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+    ----
     Variables:
         self.matrix (numpy.Array): 
             matrix for the RXX gate.
@@ -432,13 +462,16 @@ class Rxx:
             ])
 class Rzz:
     """
-    RZZ gate .
+    RZZ gate is a 2-qubit gate that will rotate both of the qubits around the z-axis at the same time.
     Matrix:
         RZZ = [e^(-i * (θ / 2)), 0, 0, 0]
               [0,  e^(i * (θ / 2)), 0, 0]
               [0, 0,  e^(i * (θ / 2)), 0]
               [0, 0, 0, e^(-i * (θ / 2))]
     ...
+    Args:
+        theta: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+    ----
     Variables:
         self.matrix (numpy.Array): 
             matrix for the RZZ gate.
@@ -453,13 +486,16 @@ class Rzz:
 
 class Cr:
     """
-    CR gate .
+    CR gate is a controlled phase shift roatation gate that applies to 2-qubits.
     Matrix:
         CR = [1, 0, 0, 0]
              [0, 1, 0, 0]
              [0, 0, 1, 0]
              [0, 0, 0, e^(θ * i)]
     ...
+    Args:
+        theta: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+    ----
     Variables:
         self.matrix (numpy.Array): 
             matrix for the CR gate.
@@ -474,7 +510,7 @@ class Cr:
 
 class Cz:
     """
-    CZ gate .
+    CZ gate is a controlled phase shift roatation gate that applies to 2-qubits.
     Matrix:
         CZ = [1, 0, 0, 0]
              [0, 1, 0, 0]
