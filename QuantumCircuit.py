@@ -6,63 +6,10 @@ from QuantumGate import *
 import numpy as np
 
 """
-Purpose: To Interpret the Gates and present the calculated information through the probabilities, amplitude, etc.
+Purpose: 
 
 Methods
 --------
-
-__operator_matrix__(gate_matrix: np.array, qubit: int, double: bool = False) :
-    Returns the tensor product of the desired gates, see method itself for more information.
-amplitude():
-    Returns an array of values to signify the amplitude of each and every value possible from the state.
-phaseAngle():
-    Returns the radian value for each and every possible value within the state it is being applied to.
-state():
-    Returns the initial state values within a vector state.
-probabilities():
-    Returns all probabilities from the possible values found within the state.
-measure():
-    Returns the measurement of the state and will result in a random collapsing.
-cnot():
-    Calls the CNOT gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-x():
-    Calls the PauliX gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-y():
-    Calls the PauliY gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-z():
-    Calls the PauliZ gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-swap():
-    Calls the SWAP gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-toffoli():
-    Calls the TOFFOLI gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-phase():
-    Calls the Phase gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-hadamard():
-    Calls the Hadamard gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-s():
-    Calls the S gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-sdg():
-    Calls the SDG gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-t():
-    Calls the T gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-tdg():
-    Calls the TDG gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-rz():
-    Calls the RZ gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-rx():
-    Calls the RX gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-ry():
-    Calls the RY gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-sx():
-    Calls the SX gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-sxdg():
-    Calls the SXDG gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-u():
-    Calls the U gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-rxx():
-    Calls the RXX gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
-rzz():
-    Calls the RZZ gate from the QuatumGate.py file to be interpreted into the __operator_matrix__ method.
 
 """
 class QuantumCircuit:
@@ -96,7 +43,9 @@ class QuantumCircuit:
         self._state = Qubit(prep).state
         # represent the circuit in dict
         self._circuit = {i:[] for i in range(qubits)}
+        # increases the current vector size on the number of qubits - 1
         for _ in range(qubits-1):
+            # _state is converted into the new lengthed vector based on the kronocker product on the prepped qubit state.
             self._state = np.kron(self._state, Qubit(prep).state)
     def __operator_matrix__(self, gate_matrix: np.array, qubit: int, double: bool = False):
         """
@@ -109,6 +58,7 @@ class QuantumCircuit:
             operator_matrix (numpy array): 
                 Matrix after final calculation from the tensor product algorithm.
         """
+        # Identity matrix is called.
         i_matrix = Identity().matrix
         # gate queue for the computation
         gate_queue = [i_matrix for _ in range(self._circuit_size)]
@@ -127,7 +77,19 @@ class QuantumCircuit:
             operator_matrix = np.kron(operator_matrix, gate)
         return operator_matrix
     def __controlled_phase_handler__(self, gate_to_product: np.array, control: int, target: int, is_cnot: bool = False):
-        # inverse bool
+        """
+        Calls a control and target qubits represented as integers and will then correctly create a system of mathematic implementations of 
+        any given controlled quantum gate. 
+        Boolean is_cnot determines if further action is needed to invert the structure of the CNOT gate and no other gate.
+        Params:
+            gate_to_product: np.array
+            control: integer
+            target: integer
+            is_cnot: boolean
+        Returns:
+            None.
+        """
+        # inverse bool variable to determine if controlled gate representation needs to invert for confirming logic structuring.
         inverse = False
         # checking to see if target is less than control indices:
         if(target < control):
@@ -135,54 +97,66 @@ class QuantumCircuit:
         # create temp target variable
         calculate_matrix = gate_to_product
         temp_target = target
+        # call from QuantumGate and stores Hadamard gate into variable.
         hadamard = Hadamard().matrix
+        # If target and control qubits are next to each other, then no further logic needs to be done and calls base system.
         if(abs(target - control) == 1):
+                # calls from called bool variable to see if the base CNOT matrix needs to be inverted to confirm correct logic structuring.
                 if inverse:
+                    # is_cnot will determine if hadamard gates need to be called to invert what the CNOT currently represents and commits.
+                    # This is implemented due to other controlled gates not needing this implementation.
                     if is_cnot:
                         self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
                         self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
-                    
+                    # Call to _state to commit a dot product on the state to include the given gate of the method.
                     self._state = np.dot(self.__operator_matrix__(calculate_matrix, temp_target, double=True), self._state)
-
+                    # is_cnot will determine if hadamard gates need to be called to invert what the CNOT currently represents and commits.
+                    # This is implemented due to other controlled gates not needing this implementation.
                     if is_cnot:
                         self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
                         self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
+                    # used for inversing all other gates that the target is less than the control to make it inversed in logic.
                     else:
                         self.swap(control, temp_target)
                 else:
+                    # if not inverse, what the controlled gate is will be enacted on the _state using dot product system.
                     self._state = np.dot(self.__operator_matrix__(calculate_matrix, control, double=True), self._state)
                 return
-        # while the difference between the temp target and control is not -1 or 1
+        # while the difference between the temp target and control is not -1 or 1.
         while(abs(temp_target - control) != 1):
-            
-            # if the distance between target and control is already 1
+            # calls from called bool variable to see if the base CNOT matrix needs to be inverted to confirm correct logic structuring.
             if inverse:
-                # swap the temp target closer to the target
+                # is_cnot will determine if hadamard gates need to be called to invert what the CNOT currently represents and commits.
+                # This is implemented due to other controlled gates not needing this implementation.
                 self.swap(temp_target, temp_target+1)
-                # update temp target position
+                # update temp target position.
                 temp_target += 1
             else:
-                # swap the temp target closer to the target
+                # swap the temp target closer to the target.
                 self.swap(temp_target-1, temp_target)
-                # update temp target position
+                # update temp target position.
                 temp_target -= 1
-        # perform controlled_phase operation
+        # calls from called bool variable to see if the base CNOT matrix needs to be inverted to confirm correct logic structuring.
         if inverse:
             # will create inversed controlled_phase of what is inputted through here, determined if the inversed variable is marked true.
-            #call hadamard gates on control and target variables
+            # call hadamard gates on control and target variables.
             if is_cnot:
                 self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
                 self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
-            #perform 
+            # Call to _state to commit a dot product on the state to include the given gate of the method.
             self._state = np.dot(self.__operator_matrix__(calculate_matrix, temp_target, double=True), self._state)
-
+            # is_cnot will determine if hadamard gates need to be called to invert what the CNOT currently represents and commits.
+            # This is implemented due to other controlled gates not needing this implementation.
             if is_cnot:
                 self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
                 self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
+            # used for inversing all other gates that the target is less than the control to make it inversed in logic.
             else:
                 self.swap(control, temp_target)
         else:
+            # if not inverse, what the controlled gate is will be enacted on the _state using dot product system.
             self._state = np.dot(self.__operator_matrix__(calculate_matrix, control, double=True), self._state)
+
         # while the temp target does not equal the original target
         while(temp_target != target):
             if inverse:
@@ -195,8 +169,17 @@ class QuantumCircuit:
                 self.swap(temp_target, temp_target+1)
                 # update temp target position
                 temp_target +=1
+
     def circuit(self):
+        """
+        Returns a numpy array of the current quantum circuit's values.
+        Params:
+            None.
+        Returns:
+            np.array self._circuit
+        """
         return self._circuit
+
     def amplitude(self, round: int = 3):
         """
         Return a vector of all possible amplitudes for the given state.
@@ -407,6 +390,7 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit_1].append('rzz')
         self._circuit[qubit_2].append('rzz')
+        
     """
     Single Qubit Gates
     """
@@ -568,21 +552,3 @@ class QuantumCircuit:
                     [0+0j, 0+0j,custom_matrix[1][0], custom_matrix[1][1]]
                 ])
         self.__controlled_phase_handler__(controlled_custom_matrix, control, target)
-
-
-
-    
-    
-
-"""
-    def matrixInsert(self, qubit_1: int = -1, qubit_2: int = -1, custom_matrix: np.array = []):
-        if((qubit_1 - qubit_2 != 1 and qubit_1 - qubit_2 != -1) or custom_matrix.shape[0] != custom_matrix.shape[1]):
-            return
-        doub = False
-        if (qubit_2 != -1):
-            doub = True
-        self._state = np.dot(self.__operator_matrix__(custom_matrix, qubit_1, double = doub), self._state)
-    def reset(self,qubit: int):
-        reset_matrix = Reset().matrix
-        self._state = np.dot(self.__operator_matrix__(reset_matrix, qubit), self._state)
-"""
