@@ -76,6 +76,7 @@ CR Gate:
 CZ Gate:
     CZ gate is a controlled phase shift roatation gate that applies to 2-qubits.
 """
+
 import numpy as np
 
 class Identity:
@@ -156,7 +157,7 @@ class Hadamard:
     def __init__(self):
         self.matrix = np.array([
                 [1+0j, 1+0j], 
-                [1+0J, -1+0j]
+                [1+0j, -1+0j]
             ]) * (1/np.sqrt(2))
 class CNot:
     """
@@ -314,8 +315,8 @@ class Tdg:
     """
     TDG gate is the inverse of the T Gate that will impose the opposite rotation and shift of the gate.
     Matrix:
-        T = [1, 0] 
-            [0, e^((-i * pi) / 4]
+        TDG = [1, 0] 
+              [0, e^((-i * pi) / 4]
     ...
     Variables:
         self.matrix (numpy.Array): 
@@ -426,17 +427,16 @@ class U:
     Args:
         theta: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
         phi: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
-        lbmda: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
+        lmbda: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
     ----
     Variables:
         self.matrix (numpy.Array): 
             matrix for the U gate.
     """
-    def __init__(self, theta: float = np.pi / 2, phi: float = np.pi / 2, lbmda: float = np.pi / 2):
-        #-1 * np.e(0+1j * lbmda) * np.sin(theta / 2)
+    def __init__(self, theta: float = np.pi / 2, phi: float = np.pi / 2, lmbda: float = np.pi / 2):
         self.matrix = np.array([
-                [np.cos(theta / 2), -1 * np.exp(0+1j * lbmda) * np.sin(theta / 2)], 
-                [np.exp(0+1j * phi) * np.sin(theta / 2), np.exp(0+1j * (lbmda + phi)) * np.cos(theta / 2)]])
+                [np.cos(theta / 2), -1 * np.exp(0+1j * lmbda) * np.sin(theta / 2)], 
+                [np.exp(0+1j * phi) * np.sin(theta / 2), np.exp(0+1j * (lmbda + phi)) * np.cos(theta / 2)]])
 class Rxx:
     """
     RXX gate is a 2-qubit gate that will rotate both of the qubits around the x-axis at the same time.
