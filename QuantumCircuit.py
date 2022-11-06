@@ -9,7 +9,6 @@ import numpy as np
 Purpose:
     To apply various quantum gates to a quantum wire given any amount of qubits. With this, to then return the state at any given moment
     alongside calculations to be examined upon.
-
 Methods:
     __init__:
         Constructor that initilizes the quantum state in a vector given the number of qubits, endian positioning, and prepping of the qubits.
@@ -91,7 +90,7 @@ Methods:
 
 """
 class QuantumCircuit:
-    def __init__(self, qubits: int, little_endian: bool = False, prep: chr = 'z'):
+    def __init__(self, qubits: int, prep: chr, little_endian: bool = False):
         """
         Constructor that initilizes the quantum state in a vector given the number of qubits, endian positioning, and prepping of the qubits.
         Args:
@@ -99,6 +98,8 @@ class QuantumCircuit:
                 The number of qubits that will be within the circuit.
             little_endian:
                 a boolean variable to determine the placement of values, as well as determining the inverse of tensor product.
+            prep:
+
         ------
         Variables:
             _little_endian : 
@@ -154,6 +155,7 @@ class QuantumCircuit:
         # uses np.kron() function to tensor product the queue
         for gate in gate_queue[1:]:
             operator_matrix = np.kron(operator_matrix, gate)
+
         return operator_matrix
     def __controlled_phase_handler__(self, gate_to_product: np.array, control: int, target: int, is_cnot: bool = False):
         """
@@ -192,6 +194,7 @@ class QuantumCircuit:
                     # is_cnot will determine if hadamard gates need to be called to invert what the CNOT currently represents and commits.
                     # This is implemented due to other controlled gates not needing this implementation.
                     if is_cnot:
+                        
                         self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
                         self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
                     # used for inversing all other gates that the target is less than the control to make it inversed in logic.
@@ -248,7 +251,6 @@ class QuantumCircuit:
                 self.swap(temp_target, temp_target+1)
                 # update temp target position
                 temp_target +=1
-
     def circuit(self):
         """
         Returns the dictionary representation of the circuit and the values within it.
@@ -848,7 +850,7 @@ class QuantumCircuit:
         self._state = np.dot(self.__operator_matrix__(sxdg_matrix, qubit), self._state)
         # append gate to self._circuit
         self._circuit[qubit].append('sxdg')
-    def u(self, qubit: int, theta: float = np.pi / 2, phi: float = np.pi / 2, lbmda: float = np.pi / 2):
+    def u(self, qubit: int, theta: float = np.pi / 2, phi: float = np.pi / 2, lmbda: float = np.pi / 2):
         """
         U gate is given three inputs (theta, phi, and lambda) that allow the inputs to manipulate the base matrix to allow for the position of the enacted qubit
         around the bloch sphere representation.
@@ -856,14 +858,14 @@ class QuantumCircuit:
             qubit: int
             theta: float
             phi: float
-            lbmda: float
+            lmbda: float
         Returns:
             None.
         """
         if qubit == None:
             exit(f"Error: QuantumCircuit().u -- Must select a qubit to enact on quantum gate.")
         # get the U matrix
-        u_matrix = U(theta, phi, lbmda).matrix
+        u_matrix = U(theta, phi, lmbda).matrix
         self._state = np.dot(self.__operator_matrix__(u_matrix, qubit), self._state)
         # append gate to self._circuit
         self._circuit[qubit].append('u')
