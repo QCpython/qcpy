@@ -115,15 +115,15 @@ class QuantumCircuit:
         """
         if (qubits < 1):
             exit(f"Error: QuantumCircuit().__init__ -- Quantum Circuit size must be 1 or more qubits. Current number of qubits is: {qubits}")
-        # Determines if tensor calculation of __operator_matrix__ will be reversed or not
+        # Determines if tensor calculation of __operator_matrix__ will be reversed or not.
         self._little_endian = little_endian
         # Gets the number of qubits in play to store for later use.
         self._circuit_size = qubits
-        # Makes tensored vector state of all qubits, and stores it within _state to get a vector of [[1], [0], [0],....2^n]
+        # Makes tensored vector state of all qubits, and stores it within _state to get a vector of [[1], [0], [0],....2^n].
         self._state = Qubit(prep).state
         # represent the circuit in dict
         self._circuit = {i:[] for i in range(qubits)}
-        # increases the current vector size on the number of qubits - 1
+        # increases the current vector size on the number of qubits - 1. 
         for _ in range(qubits-1):
             # _state is converted into the new lengthed vector based on the kronocker product on the prepped qubit state.
             self._state = np.kron(self._state, Qubit(prep).state)
@@ -147,7 +147,7 @@ class QuantumCircuit:
         # if double is true, then CNOT, toffli, or any gate more than one qubit is being asked to be implemented.
         if double:
             gate_queue.pop(qubit+1)
-        # if little_endian variable is true to follow IBM and Qiskit notation. Inverses queue of operation
+        # if little_endian variable is true to follow IBM and Qiskit notation. Inverses queue of operation.
         if (self._little_endian):
             gate_queue = gate_queue[::-1]
         # stores final value to be stored into operator_matrix value
@@ -329,8 +329,6 @@ class QuantumCircuit:
         prob_matrix = np.square(prob_matrix)
         # turn all the complex numbers into real values
         prob_matrix = np.abs(prob_matrix)
-        if (np.sum(prob_matrix) != 1):
-             exit(f"Error: QuantumCircuit().probailities -- probabilities does not have a total value of 100% making it in improper quantum circuit.")
         prob_matrix = np.around(prob_matrix, decimals=round)
         return prob_matrix
     def measure(self):
