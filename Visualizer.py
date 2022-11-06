@@ -11,7 +11,11 @@ Probabilities : the probabilities of each state being measured visualized as a g
 import numpy as np
 from QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
+# ScalerMappable is needed for creating the color bar on the Stave Vector visualization
+# that shows what each qubit's phase angle is
 from matplotlib.cm import ScalarMappable
+# deque is needed for the function that gets the qubit states in order of which the appear
+# on a QSphere
 from collections import deque
 
 class BlochSphere:
