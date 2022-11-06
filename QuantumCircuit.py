@@ -277,7 +277,21 @@ class QuantumCircuit:
         # pad with zeroes if needed
         final_state = final_state.zfill(num_bits) 
         # return the final state
-        return final_state  
+        return final_state
+
+    def reverse(self):
+        """
+        Reverses the quantum state.
+        Params:
+            None.
+        Returns:
+            None.
+        """
+        # reverses the entire state, useful for quantum algorithms.
+        self._state = self._state[::-1]
+    """
+    Multiple qubit quantum gates
+    """
     def toffoli(self, control_1: int, control_2: int, target: int):
         """
         A 3-qubit quantum gate that takes in two control qubits and one target qubit.
@@ -529,6 +543,13 @@ class QuantumCircuit:
     Single Qubit Gates
     """
     def identity(self, qubit: int):
+        """
+        Used to confirm value that a qubit is representing and does nothing to manipulate the value of such qubit.
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().identity -- Must select a qubit to enact on quantum gate.")
         identity_matrix = Identity().matrix
@@ -536,6 +557,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('identity')
     def x(self, qubit: int):
+        """
+        Used to invert the value of what a qubit is representing.
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().x -- Must select a qubit to enact on quantum gate.")
         # get the not matrix
@@ -544,6 +572,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('x')
     def hadamard(self, qubit: int):
+        """
+        Used to put a given qubit into superposition.
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().hadamard -- Must select a qubit to enact on quantum gate.")
         # get the hadamard matrix
@@ -552,6 +587,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('hadamard')
     def y(self, qubit: int):
+        """
+        Changes the state of a qubit by pi around the y-axis of a Bloch Sphere.
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().y -- Must select a qubit to enact on quantum gate.")
         # get the Y matrix
@@ -560,6 +602,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('y')
     def z(self, qubit: int):
+        """
+        Changes the state of a qubit by pi around the z-axis of a Bloch Sphere.
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().z -- Must select a qubit to enact on quantum gate.")
         # get the Z matrix
@@ -568,6 +617,14 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('z')
     def phase(self, qubit: int, theta: float = np.pi / 2):
+        """
+        Commits to a rotation around the z-axis based off of the inputted theta value.
+        Params:
+            qubit: int
+            theta: float
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().phase -- Must select a qubit to enact on quantum gate.")
         # get the Phase matrix
@@ -576,6 +633,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('phase')
     def s(self, qubit: int):
+        """
+        Is a Phase gate where the inputted theta value is given as a constant of theta = pi / 2. 
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().s -- Must select a qubit to enact on quantum gate.")
         # get the Phase matrix
@@ -584,6 +648,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('s')
     def sdg(self, qubit: int):
+        """
+        Is a Phase gate and inverse of the S gate where the inputted theta value is given as a constant of theta = -pi / 2. 
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().sdg -- Must select a qubit to enact on quantum gate.")
         # get the Sdg matrix
@@ -592,6 +663,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('sdg')
     def t(self, qubit: int):
+        """
+        T gate is a special use case gate that in implemented from the P Gate.
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().t -- Must select a qubit to enact on quantum gate.")
         # get the T matrix
@@ -600,6 +678,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('t')
     def tdg(self, qubit: int):
+        """
+        TDG gate is a special use case gate that in implemented from the P Gate and is the inverse of the T gate.
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().tdg -- Must select a qubit to enact on quantum gate.")
         # get the Tdg matrix
@@ -608,6 +693,14 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('tdg')
     def rz(self, qubit: int, theta: float = np.pi / 2):
+        """
+        RZ gate commits a rotation around the z-axis for a qubit.
+        Params:
+            qubit: int
+            theta: float
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().rz -- Must select a qubit to enact on quantum gate.")
         # get the Rz matrix
@@ -616,6 +709,14 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('rz')
     def ry(self, qubit: int, theta: float = np.pi / 2):
+        """
+        RY gate commits a rotation around the y-axis for a qubit.
+        Params:
+            qubit: int
+            theta: float
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().ry -- Must select a qubit to enact on quantum gate.")
         # get the Ry matrix
@@ -624,6 +725,14 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('ry')
     def rx(self, qubit: int, theta: float = np.pi / 2):
+        """
+        RX gate commits a rotation around the x-axis for a qubit.
+        Params:
+            qubit: int
+            theta: float
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().rx -- Must select a qubit to enact on quantum gate.")
         # get the Ry matrix
@@ -632,6 +741,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('rx')
     def sx(self, qubit: int):
+        """
+        SX gate is the square root of the Inverse gate (X, PauliX Gate).
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().sx -- Must select a qubit to enact on quantum gate.")
         # get the Sx matrix
@@ -640,6 +756,13 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('sx')                                         
     def sxdg(self, qubit: int):
+        """
+        SXDG gate is the negative square root of the Inverse gate (X, PauliX Gate) and inverse of the SX gate.
+        Params:
+            qubit: int
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().sxdg -- Must select a qubit to enact on quantum gate.")
         # get the Sxdg matrix
@@ -648,6 +771,17 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit].append('sxdg')
     def u(self, qubit: int, theta: float = np.pi / 2, phi: float = np.pi / 2, lbmda: float = np.pi / 2):
+        """
+        U gate is given three inputs (theta, phi, and lambda) that allow the inputs to manipulate the base matrix to allow for the position of the enacted qubit
+        around the bloch sphere representation.
+        Params:
+            qubit: int
+            theta: float
+            phi: float
+            lbmda: float
+        Returns:
+            None.
+        """
         if qubit == None:
             exit(f"Error: QuantumCircuit().u -- Must select a qubit to enact on quantum gate.")
         # get the U matrix
@@ -655,11 +789,15 @@ class QuantumCircuit:
         self._state = np.dot(self.__operator_matrix__(u_matrix, qubit), self._state)
         # append gate to self._circuit
         self._circuit[qubit].append('u')
-    def reverse(self):
-        # reverses the entire state, useful for quantum algorithms.
-        self._state = self._state[::-1]
-
     def custom(self, qubit: int, custom_matrix: np.array):
+        """
+        Will take in a custom single qubit quantum gate and implement it on a qubit.
+        Params:
+            qubit: int
+            custom_matrix: np.array
+        Returns:
+            None.
+        """
         # if gate is not a single qubit, will exit.
         if (custom_matrix.shape != (2,2)):
             exit(f"Error: QuantumCircuit().insertGate -- can only include a single qubit based quantum gate (2,2) matrix for state manipulation.")
