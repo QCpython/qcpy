@@ -203,13 +203,16 @@ class QuantumCircuit:
         """
         Calculates an array of possible phase angles based off the state. Converts each value using np.angle() function then degree to radian.
         Params:
-            round: int 
+            round: int
+            radian: bool
         Returns:
             np.around(phaseAngles) (numpy array): 
                 Matrix after final calculation from the  phase angle algorithm.
         """
+        # if rounding value is less than 0, exits as this is improper.
         if (round < 0):
             exit(f"Error: QuantumCircuit().phaseAngle -- round placement must be a value greater than 0.")
+        # 
         temp = (np.mod(np.angle(self._state), 2*np.pi) * (180/np.pi))
         if (radian):
             temp *= (np.pi / 180)
@@ -230,7 +233,7 @@ class QuantumCircuit:
         """
         Return a matrix with all the probabilities for each state
         Params:
-            None
+            round: int
         Returns:
             prob_matrix (numpy array): 
                 matrix with all the weighted probabilities of being measured
@@ -245,9 +248,9 @@ class QuantumCircuit:
         prob_matrix = np.square(prob_matrix)
         # turn all the complex numbers into real values
         prob_matrix = np.abs(prob_matrix)
+        if (np.sum(prob_matrix) != 1):
+             exit(f"Error: QuantumCircuit().probailities -- probabilities does not have a total value of 100% making it in improper quantum circuit.")
         prob_matrix = np.around(prob_matrix, decimals=round)
-        #if (np.sum(prob_matrix) != 1):
-             #exit(f"Error: QuantumCircuit().probailities -- probabilities does not have a total value of 100% making it in improper quantum circuit.")
         return prob_matrix
     def measure(self):
         """
@@ -260,18 +263,35 @@ class QuantumCircuit:
         """
         # randomly selects the measured state using self.probabilities()
         prob_matrix = self.probabilities()
-        num_bits = self._circuit_size # number of bits
-        state_list = [format(i, 'b').zfill(num_bits) for i in range(2**num_bits)] # creates a list of bits in strings
-        state_list = list(map(int, state_list)) # turns state_list from list of strings to list of ints
+        # number of bits
+        num_bits = self._circuit_size
+        # creates a list of bits in strings
+        state_list = [format(i, 'b').zfill(num_bits) for i in range(2**num_bits)] 
+        # turns state_list from list of strings to list of ints
+        state_list = list(map(int, state_list)) 
         # numpy.random.choice takes in the list we will select from, size of the returning list,
-        #   and p = weights of each element 
+        #  and p = weights of each element 
         final_state = np.random.choice(state_list, 1, p = prob_matrix)
-        final_state = str(final_state[0]) # take out the bits from the returned list and convert to a string
-        final_state = final_state.zfill(num_bits) # pad with zeroes if needed
-        return final_state  # return the final state
+        # take out the bits from the returned list and convert to a string
+        final_state = str(final_state[0]) 
+        # pad with zeroes if needed
+        final_state = final_state.zfill(num_bits) 
+        # return the final state
+        return final_state  
     def toffoli(self, control_1: int, control_2: int, target: int):
+        """
+        A 3-qubit quantum gate that takes in two control qubits and one target qubit.
+        Params:
+            control_1: int
+            control_2: int
+            target: int
+        Returns:
+            None.
+        """
+        # If circuit is less than 3, means Toffoli gate cannot be allowed.
         if (self._circuit_size < 3):
             exit(f"Error: QuantumCircuit().toffoli -- Quantum Circuit size must be 3 or more qubits. Current number of qubits is: {self._circuit_size}")
+        # Calls of gates here represent the Toffoli matrix using other quantum gates.
         self.hadamard(target)
         self.cnot(control_2, target)
         self.tdg(target)
@@ -292,8 +312,19 @@ class QuantumCircuit:
         self._circuit[control_2].append('toffoli_control')
         self._circuit[target].append('toffoli_target')
     def rccx(self, control_1: int, control_2: int, target: int):
+        """
+        A 3-qubit quantum gate that takes in two control qubits and one target qubit.
+        Params:
+            control_1: int
+            control_2: int
+            target: int
+        Returns:
+            None.
+        """
+        # If circuit is less than 3, means RCCX gate cannot be allowed.
         if (self._circuit_size < 3):
             exit(f"Error: QuantumCircuit().rccx -- Quantum Circuit size must be 3 or more qubits. Current number of qubits is: {self._circuit_size}")
+        # Calls of gates here represent the RCCX matrix using other quantum gates.
         self.u(target, np.pi / 2, 0, np.pi)
         self.u(target, 0,0,np.pi / 4)
         self.cnot(control_2, target)
@@ -307,44 +338,76 @@ class QuantumCircuit:
         self._circuit[control_1].append('rccx_control')
         self._circuit[control_2].append('rccx_control')
         self._circuit[target].append('rccx_target')
-    def rc3x(self, control_1: int, control_2: int, control_3: int, target: int):
+    def rc3x(self, a: int, b: int, c: int, d: int):
+        """
+        A 4-qubit quantum gate that is a simplified Toffoli gate and can be used in placed where the Toffoli gate is uncomputed again.
+        Params:
+            a: int
+            b: int
+            c: int
+            d: int
+        Returns:
+            None.
+        """
+        # If circuit is less than 4, means RC3X gate cannot be allowed.
         if (self._circuit_size < 4):
             exit(f"Error: QuantumCircuit().rc3x -- Quantum Circuit size must be 4 or more qubits. Current number of qubits is: {self._circuit_size}")
-        self.u(target, np.pi / 2, 0 , np.pi)
-        self.u(target, 0,0,np.pi / 4)
-        self.cnot(control_3, target)
-        self.u(target, 0,0,(-1 * np.pi) / 4)
-        self.u(target, np.pi / 2, 0, np.pi)
-        self.cnot(control_1, target)
-        self.u(target, 0,0,np.pi / 4)
-        self.cnot(control_2, target)
-        self.u(target, 0,0, (-1 * np.pi / 4))
-        self.cnot(control_1, target)
-        self.u(target, 0,0, np.pi / 4)
-        self.cnot(control_2, target)
-        self.u(target, 0,0, (-1 * np.pi) / 4)
-        self.u(target, np.pi / 2, 0, np.pi)
-        self.u(target, 0, 0, np.pi / 4)
-        self.cnot(control_3, target)
-        self.u(target, 0, 0, (-1 * np.pi / 4))
-        self.u(target, np.pi / 2, 0, np.pi)
+        # Calls of gates here represent the RC3X matrix using other quantum gates.
+        self.u(d, np.pi / 2, 0 , np.pi)
+        self.u(d, 0,0,np.pi / 4)
+        self.cnot(c, d)
+        self.u(d, 0,0,(-1 * np.pi) / 4)
+        self.u(d, np.pi / 2, 0, np.pi)
+        self.cnot(a, d)
+        self.u(d, 0,0,np.pi / 4)
+        self.cnot(b, d)
+        self.u(d, 0,0, (-1 * np.pi / 4))
+        self.cnot(a, d)
+        self.u(d, 0,0, np.pi / 4)
+        self.cnot(b, d)
+        self.u(d, 0,0, (-1 * np.pi) / 4)
+        self.u(d, np.pi / 2, 0, np.pi)
+        self.u(d, 0, 0, np.pi / 4)
+        self.cnot(c, d)
+        self.u(d, 0, 0, (-1 * np.pi / 4))
+        self.u(d, np.pi / 2, 0, np.pi)
         # append gate to self._circuit
-        self._circuit[control_1].append('rc3x_control')
-        self._circuit[control_2].append('rc3x_control')
-        self._circuit[control_3].append('rc3x_control')
-        self._circuit[target].append('rc3x_target')
+        self._circuit[a].append('rc3x_control')
+        self._circuit[b].append('rc3x_control')
+        self._circuit[c].append('rc3x_control')
+        self._circuit[d].append('rc3x_target')
     def cnot(self, control: int, target: int):
+        """
+        A 2-qubit quantum gate that takes in control and target qubits, and will entangle the qubits if the control qubit is greater than 0.
+        Params:
+            control: int
+            target: int
+        Returns:
+            None.
+        """
+        # If circuit is less than 2, means CNOT gate cannot be allowed.
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().cnot -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
+        # Determines if the little endian or big endian CNOT gate needs to be established for calculations.
         if self._little_endian:
             cnot_matrix = CNot().matrix
         else:
             cnot_matrix = CNot(inverse = True).matrix
+        # Sends to __controlled_phase_handler alongside a boolean confirming the gate is indeed a CNOT gate
         self.__controlled_phase_handler__(cnot_matrix, control, target, is_cnot = True)
         # append gate to self._circuit
         self._circuit[control].append('cnot_control')
         self._circuit[target].append('cnot_target')
     def cr(self, control: int, target:int):
+        """
+        A 2-qubit quantum gate that takes in control and target qubits to perform calculations upon the state.
+        Params:
+            control: int
+            target: int
+        Returns:
+            None.
+        """
+        # If circuit is less than 2, means CR gate cannot be allowed.
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().cr -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         self.__controlled_phase_handler__(Cr().matrix, control, target)
@@ -352,6 +415,15 @@ class QuantumCircuit:
         self._circuit[control].append('cr_control')
         self._circuit[target].append('cr_target')
     def cz(self, control: int, target:int):
+        """
+        A 2-qubit quantum gate that takes in control and target qubits to perform calculations upon the state.
+        Params:
+            control: int
+            target: int
+        Returns:
+            None.
+        """
+        # If circuit is less than 2, means CZ gate cannot be allowed.
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().cz -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         self.__controlled_phase_handler__(Cz().matrix, control, target)
@@ -359,6 +431,15 @@ class QuantumCircuit:
         self._circuit[control].append('cz_control')
         self._circuit[target].append('cz_target')
     def swap(self, qubit_1: int, qubit_2: int):
+        """
+        A 2-qubit quantum gate that takes in two qubits to swap the qubits values they represent.
+        Params:
+            qubit_1: int
+            qubit_2: int
+        Returns:
+            None.
+        """
+        # If circuit is less than 2, means SWAP gate cannot be allowed.
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().swap -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         # get the swap matrix
@@ -366,14 +447,26 @@ class QuantumCircuit:
         # determines if the two values at play are at distance greater than one, if so it will call in private method for larger matrix operations.
         if(qubit_1 - qubit_2 != 1 and qubit_1 - qubit_2 != -1):
             self.__controlled_phase_handler__(swap_matrix, qubit_1, qubit_2)
+        # if qubit_2 is above qubit_1 on the quantum wire, then it will use qubit_2 as the call to __operator_matrix__.
         elif(qubit_1 > qubit_2):
             self._state = np.dot(self.__operator_matrix__(swap_matrix, qubit_2, double=True), self._state)
+        # simply commits a normal SWAP quantum gate functionality.
         else:
             self._state = np.dot(self.__operator_matrix__(swap_matrix, qubit_1, double=True), self._state)
         # append gate to self._circuit
         self._circuit[qubit_1].append('swap')
         self._circuit[qubit_2].append('swap')
     def rxx(self, qubit_1: int, qubit_2: int, theta: float = np.pi / 2):
+        """
+        A 2-qubit quantum gate that takes in two qubits and a representation of theta to initialize in the quantum state.
+        Params:
+            qubit_1: int
+            qubit_2: int
+            theta: float
+        Returns:
+            None.
+        """
+        # If circuit is less than 2, means RXX gate cannot be allowed.
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().rxx -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         rxx_matrix = Rxx(theta).matrix
@@ -382,6 +475,16 @@ class QuantumCircuit:
         self._circuit[qubit_1].append('rxx')
         self._circuit[qubit_2].append('rxx')
     def rzz(self, qubit_1: int, qubit_2: int, theta: float = np.pi / 2):
+        """
+        A 2-qubit quantum gate that takes in two qubits and a representation of theta to initialize in the quantum state.
+        Params:
+            qubit_1: int
+            qubit_2: int
+            theta: float
+        Returns:
+            None.
+        """
+        # If circuit is less than 2, means RZZ gate cannot be allowed.
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().rzz -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         rzz_matrix = Rzz(theta).matrix
@@ -390,6 +493,37 @@ class QuantumCircuit:
         # append gate to self._circuit
         self._circuit[qubit_1].append('rzz')
         self._circuit[qubit_2].append('rzz')
+    def customControlPhase(self, control: int, target: int, custom_matrix: np.array):
+        """
+        Used to insert single qubit based quantum gates to have a control qubit apart of it and committing to the quantum state.
+        Params:
+            control: int
+            target: int
+            custom_matrix: np.array
+        Returns:
+            None.
+        """
+        # custom quantum gate can only call in a single qubit based matrix to manipulate the state.
+        if (custom_matrix.shape != (2,2)):
+            exit(f"Error: QuantumCircuit().customControlPhase -- can only include a single qubit based quantum gate (2,2) matrix for state manipulation.")
+        # Determines if the matrix needs to be representing in little or big endian format.
+        if self._little_endian:
+            # If little endian format is being used.
+            controlled_custom_matrix = np.array([
+                        [1+0j, 0+0j, 0+0j, 0+0j],
+                        [0+0j, custom_matrix[0][0], 0+0j, custom_matrix[0][1]],
+                        [0+0j, 0+0j, 1+0j, 0+0j],
+                        [0+0j, custom_matrix[1][0], 0+0j, custom_matrix[1][1]]
+                    ])
+        else:
+            # If big endian format is in being used.
+            controlled_custom_matrix = np.array([
+                    [1+0j, 0+0j, 0+0j, 0+0j],
+                    [0+0j, 1+0j, 0+0j, 0+0j],
+                    [0+0j, 0+0j, custom_matrix[0][0], custom_matrix[0][1]],
+                    [0+0j, 0+0j,custom_matrix[1][0], custom_matrix[1][1]]
+                ])
+        self.__controlled_phase_handler__(controlled_custom_matrix, control, target)
         
     """
     Single Qubit Gates
@@ -521,7 +655,6 @@ class QuantumCircuit:
         self._state = np.dot(self.__operator_matrix__(u_matrix, qubit), self._state)
         # append gate to self._circuit
         self._circuit[qubit].append('u')
-
     def reverse(self):
         # reverses the entire state, useful for quantum algorithms.
         self._state = self._state[::-1]
@@ -532,23 +665,3 @@ class QuantumCircuit:
             exit(f"Error: QuantumCircuit().insertGate -- can only include a single qubit based quantum gate (2,2) matrix for state manipulation.")
         # calls gate and will operate on state as per usual
         self._state = np.dot(self.__operator_matrix__(custom_matrix, qubit), self._state)
-
-    def customControlPhase(self, control: int, target: int, custom_matrix: np.array):
-        if (custom_matrix.shape != (2,2)):
-            exit(f"Error: QuantumCircuit().customControlPhase -- can only include a single qubit based quantum gate (2,2) matrix for state manipulation.")
-        if self._little_endian:
-            controlled_custom_matrix = np.array([
-                        [1+0j, 0+0j, 0+0j, 0+0j],
-                        [0+0j, custom_matrix[0][0], 0+0j, custom_matrix[0][1]],
-                        [0+0j, 0+0j, 1+0j, 0+0j],
-                        [0+0j, custom_matrix[1][0], 0+0j, custom_matrix[1][1]]
-                    ])
-        else:
-            # issue is occuring here when the gate is being reversed in a poor manner
-            controlled_custom_matrix = np.array([
-                    [1+0j, 0+0j, 0+0j, 0+0j],
-                    [0+0j, 1+0j, 0+0j, 0+0j],
-                    [0+0j, 0+0j, custom_matrix[0][0], custom_matrix[0][1]],
-                    [0+0j, 0+0j,custom_matrix[1][0], custom_matrix[1][1]]
-                ])
-        self.__controlled_phase_handler__(controlled_custom_matrix, control, target)
