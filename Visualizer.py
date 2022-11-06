@@ -41,7 +41,6 @@ class BlochSphere:
         """
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
-        # self._bloch_qubit = #this needs to be figured out still
         
     def makeSphere(self, path: str = "BlochSphere.png", save: bool = True, show: bool = False):
         """
@@ -51,6 +50,7 @@ class BlochSphere:
             save (bool): pass True for the graph to be saved
             show (bool): pass True for the sphere to be shown instead of saved
         """
+        # creates a sphere using a wireframe surface
         plt.clf()
         plt.close()
         ax = plt.axes(projection="3d")
@@ -83,9 +83,8 @@ class BlochSphere:
             final = np.append(final, placement)
         z = final[1::2].flatten()
         y = final[::2].flatten()
-        print(y)
-        print(z)
-            
+         
+        # saves Bloch Sphere as a file and/or shows it as a figure
         plt.axis('off')
         if save:
             plt.savefig(path)
@@ -124,6 +123,8 @@ class QSphere:
                 an array of the phase angle for every state
             _dict :
                 a dict of the probabilities mapped to the state list
+            _lat_vals :
+                a list of lists of the qubit states in order as the appear upon the latitudes of a QSphere
         """
         self._num_qubits =  int(np.log2(len(circuit.probabilities())))
         self._state_list = [format(i, 'b').zfill(self._num_qubits) for i in range(2**self._num_qubits)]
@@ -132,8 +133,8 @@ class QSphere:
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
         self._dict = {self._state_list[i]: self._probabilities[i] for i in range(len(self._state_list))}
-        
-            
+        self._lat_vals = self.__latitude_finder__()
+                
     def __hamming_distance__(self, l1 ,l2):
         """
         Returns the hamming distance between 2 states
@@ -175,18 +176,20 @@ class QSphere:
         """ 
         Returns an array of x, y, z line coords for all the states
         """
+        # make lists for coordinates, phi vals, and theta vals
         coords = []
-        # make lists for the phi and theta vals
-        lat_vals = self.__latitude_finder__()
         phi = []
         theta = []
         
-        for i in range(len(lat_vals)): #gets theta vals
-            temp_arr = (np.linspace(2*(np.pi)/len(lat_vals[i]), 2*(np.pi), len(lat_vals[i])))
+        # gets theta vals
+        for i in range(len(self._lat_vals)): 
+            temp_arr = (np.linspace(2*(np.pi)/len(self._lat_vals[i]), 2*(np.pi), len(self._lat_vals[i])))
             theta.append(temp_arr)
         
-        phi = np.linspace(0, np.pi, self._num_qubits + 1) #gets phi vals
+        # gets phi vals
+        phi = np.linspace(0, np.pi, self._num_qubits + 1) 
             
+        # gets x, y, z coordinate values for lines from center of the QSphere to the surface    
         for i in range(len(phi)):
             for j in range(len(theta[i])):
                 x1 = 1 * np.sin(phi[i]) * np.cos(theta[i][j])
@@ -205,6 +208,8 @@ class QSphere:
             save (bool): pass True for the graph to be saved
             show (bool): pass True for the sphere to be shown instead of saved
         """
+        
+        # creates a sphere using a wireframe surface
         plt.clf()
         plt.close()
         ax = plt.axes(projection="3d")
@@ -218,22 +223,24 @@ class QSphere:
         ax.scatter(0,0,0)
         
         # coords will be in the order of states from the __latitude_finder__ function
-        # so we will need a list of that order of states as well, we can use our dict to
-        # look up each states probability in any order now b/c we do not want to plot
-        # a qubit if it has a probability of 0
+        # and not in order of self._state_list, we can use our dict to look up each states
+        # probability in any order now b/c we do not want to plot a qubit if it has a probability of 0
         coords = self.__getCoords__()
-        ham_states = self.__latitude_finder__()
-        ham_states = [item for sublist in ham_states for item in sublist]  
-                    
+        # turns self._lat_vals into a single list instead of a list of lists
+        ham_states = [item for sublist in self._lat_vals for item in sublist]  
+        
+        # function to plot lines from center of the sphere to the surface
+        # and qubit states in ket notation             
         for i, j in zip(coords, ham_states):
             cur_prob = self._dict[j]
-            if cur_prob > 0:
-                # print(j, i, cur_prob)
+            # only plot states that have a probability greater than 0
+            if cur_prob > 0: 
                 x, y, z = i[0], i[1], i[2]
                 ax.plot3D(x, y, z, color="blue")
                 ax.scatter(x[1], y[1], z[1], s=5, color="blue")
                 ax.text(x[1], y[1], z[1], f"|{j}>") 
-            
+        
+        # saves QSphere as a file and/or shows it as a figure
         plt.axis('off')
         if save:
             plt.savefig(path)
@@ -286,6 +293,7 @@ class StateVector:
             show (bool): pass True for the graph to be shown instead of saved
             darkmode (bool): pass True for darkmode
         """
+        # sets up darkmode or lightmode
         if darkmode:
             _text = 'white'
             _accent = '#39c0ba'
@@ -294,24 +302,31 @@ class StateVector:
             _text = 'black'
             _accent = 'black'
             _background = 'white'
-            
+        
+        # clears any previous plots    
         plt.clf()
         plt.close()
+        # sets up bar graph and colors that map to a qubits phase angle
         fig, ax = plt.subplots(figsize=(self._num_qubits + 3, self._num_qubits + 3))
         colors = plt.get_cmap('hsv')
         norm = plt.Normalize(0, np.pi*2)
         ax.bar(self._state_list, self._amplitutes, color=colors(norm(self._phase_angles)))
+        # sets up tick labels
         plt.setp(ax.get_xticklabels(), rotation=75, ha='right', color=_text)
         plt.setp(ax.get_yticklabels(), color=_text)
+        # cleans outline of bargraph so it's open to the top and right
         ax.spines['bottom'].set_color(_text)
         ax.spines['top'].set_color(_background) 
         ax.spines['right'].set_color(_background)
         ax.spines['left'].set_color(_text)
+        # sets up tick parameters
         ax.tick_params(axis='x', colors=_text)
         ax.tick_params(axis='y', colors=_text)
         ax.set_ylim(0, np.amax(self._amplitutes))
+        # sets backgorund color
         ax.set_facecolor(_background)
         fig.patch.set_facecolor(_background)
+        # sets x and y labels and title
         plt.xlabel('Computational basis states', color=_accent)
         plt.ylabel('Amplitutde', labelpad=5, color=_accent)
         plt.title('State Vector', pad=10, color=_accent)
@@ -324,6 +339,7 @@ class StateVector:
         cbar.set_ticklabels(["2π", "3π / 2", "π", "π / 2", "0"], color=_text)
         plt.tight_layout()
         
+        # saves State Vector as a file and/or shows it as a figure
         if save:
             plt.savefig(path)
         if show:
@@ -365,6 +381,7 @@ class Probabilities:
             show (bool): pass True for the graph to be shown
             darkmode (bool): pass True for darkmode
         """
+        # sets up darkmode or lightmode
         if darkmode:
             _text = 'white'
             _accent = '#39c0ba'
@@ -374,27 +391,36 @@ class Probabilities:
             _accent = 'black'
             _background = 'white'
         
+        # clears any previous plots
         plt.clf()
         plt.close()
+        # sets up bar graph
         fig, ax = plt.subplots(figsize=(self._num_qubits + 3, self._num_qubits + 3))
         ax.bar(self._state_list, self._percents, color='#39c0ba')
+        # sets range of ticks on y-axis
         plt.yticks(np.arange(0, 110, 10))
+        # sets up tick labels
         plt.setp(ax.get_xticklabels(), rotation=75, ha='right', color=_text)
         plt.setp(ax.get_yticklabels(), color=_text)
+        # cleans outline of bargraph so its open to the top and right
         ax.spines['bottom'].set_color(_text)
         ax.spines['top'].set_color(_background) 
         ax.spines['right'].set_color(_background)
         ax.spines['left'].set_color(_text)
+        # sets up tick parameters
         ax.tick_params(axis='x', colors=_text)
         ax.tick_params(axis='y', colors=_text)
+        ax.set_ylim(0, 100)
+        # sets backgorund color
         ax.set_facecolor(_background)
         fig.patch.set_facecolor(_background)
-        ax.set_ylim(0, 100)
+        # sets x and y labels and title
         plt.xlabel('Computational basis states', color=_accent)
         plt.ylabel('Probability (%)', labelpad=5, color=_accent)
         plt.title('Probabilities', pad=10, color=_accent)
         plt.tight_layout()
         
+        # saves Probabilties as a file and/or shows it as a figure
         if save:
             plt.savefig(path)
         if show:
