@@ -139,46 +139,70 @@ class QSphere:
         self._dict = {self._state_list[i]: self._probabilities[i] for i in range(len(self._state_list))}
         self._lat_vals = self.__latitude_finder__()
                 
-    def __hamming_distance__(self, l1 ,l2):
+    def __hamming_distance__(self, l1: str, l2: str):
         """
-        Returns the hamming distance between 2 states
+        Determines if the count of the number of 1 values match up between two strings.
+
+        Args:
+            l1: string
+            l2: string
+        Returns:
+            Boolean representation if the count of ones in l1 and l2 are equal to each other.
         """
         return l1.count("1") == l2.count("1")
     
     def __latitude_finder__(self):
         """
-        Returns a list of the latitudes needed to compute the coordinates for a sphere
+        Creates a 2D array of placed values on each latitude ring, alongside the amount of rotations around the specific lognitude that need to shifted for proper placement.
+        Args:
+            None
+        Returns:
+            2D array of needed values and an abstract view of the rotation around each longitude placement, given the length of each row within the 2D array.
         """
-        ph = [[]]
-        for i in range(self._num_qubits - 1):
-            ph.append([])
-        ph.append([])
-
-        queue = deque(self._state_list)
-        ph[0].append(queue.popleft())
-        ph[-1].append(queue.pop())
-        temp = "0" * (self._num_qubits - 1) + "1"
-        
-        for i in range(1, len(temp)):
-
-            ph[i].append(temp)
-            queue.remove(temp)
-            list_temp = list(temp)
+        # Main holder of values of latitude placement values
+        latitude_values = [[]]
+        # will create a 2d array of empty arrays based on the number of qubits - 1, for the starting empty array.
+        for _ in range(self._num_qubits - 1):
+            latitude_values.append([])
+        latitude_values.append([])
+        # queue of the given state list from the class object to iterate through each value and then pop them once they are placed in the 2D array
+        queue_of_state = deque(self._state_list)
+        # base popping of values of 00...0, and 11...1
+        latitude_values[0].append(queue_of_state.popleft())
+        latitude_values[-1].append(queue_of_state.pop())
+        # string value for 0...01 based off of how many qubits there are.
+        bit_representation = "0" * (self._num_qubits - 1) + "1"
+        # within the range of 1 and the length of the string representing 0...01 and then adding it to
+        # each row, while having each index of the string's value to replace a 0 with a one.
+        for i in range(1, len(bit_representation)):
+            # Add value to main latitude 2d array
+            latitude_values[i].append(bit_representation)
+            # Get rid of where the string value is located in the queue.
+            queue_of_state.remove(bit_representation)
+            # creates new string with an extra one in it from the previous iteration.
+            list_temp = list(bit_representation)
             list_temp[i - 1] = "1"
-            temp = "".join(list_temp)
-
-        while queue:
-            temp = queue.popleft()
-            for i in range(1, len(ph) - 1):
-                if (self.__hamming_distance__(temp, ph[i][0])):
-                    ph[i].append(temp)
+            bit_representation = "".join(list_temp)
+        # While the queue is not empty, find where each bit representation finds a matching hamming distance with the starting values
+        # and store it in the specfic row of the 2D array.
+        while queue_of_state:
+            # pops the value on the left side of the queue.
+            bit_representation = queue_of_state.popleft()
+            # goes through the 2d array rows and determines which starting value has the same hamming distance as the bit_representation.
+            for i in range(1, len(latitude_values) - 1):
+                if (self.__hamming_distance__(bit_representation, latitude_values[i][0])):
+                    latitude_values[i].append(bit_representation)
         
-        return ph
+        return latitude_values
         
         
     def __getCoords__(self):
-        """ 
-        Returns an array of x, y, z line coords for all the states
+        """
+        Creates a 2d array of coordinates for the QSphere based off rotation around the latitude, longitude and what values on each segment in proper notation.
+        Args:
+            None
+        Returns:
+            A 2D array for coordinates on the QSphere.
         """
         # make lists for coordinates, phi vals, and theta vals
         coords = []
