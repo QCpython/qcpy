@@ -90,7 +90,7 @@ Methods:
 
 """
 class QuantumCircuit:
-    def __init__(self, qubits: int, prep: chr, little_endian: bool = False):
+    def __init__(self, qubits: int, little_endian: bool = False, prep: chr = 'z'):
         """
         Constructor that initilizes the quantum state in a vector given the number of qubits, endian positioning, and prepping of the qubits.
         Args:
