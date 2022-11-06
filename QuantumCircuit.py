@@ -6,15 +6,94 @@ from QuantumGate import *
 import numpy as np
 
 """
-Purpose: 
+Purpose:
+    To apply various quantum gates to a quantum wire given any amount of qubits. With this, to then return the state at any given moment
+    alongside calculations to be examined upon.
 
-Methods
+Methods:
+    __init__:
+        Constructor that initilizes the quantum state in a vector given the number of qubits, endian positioning, and prepping of the qubits.
+    __operator_matrix__:
+        Return a matrix from the tensor product calculation algorithm from any inplaced quantum gate.
+    __controlled_phase_handler__:
+        Calls a control and target qubits represented as integers and will then correctly create a system of mathematic implementations of 
+        any given controlled quantum gate.
+    circuit:
+        Returns the dictionary representation of the circuit and the values within it.
+    amplitude:
+        Return a vector of all possible amplitudes for the given state.
+    phaseAngle:
+        Calculates an array of possible phase angles based off the state. Converts each value using np.angle() function then degree to radian.
+    state:
+        Return a numpy array of the current quantum circuit.
+    probabilities:
+        Return a matrix with all the probabilities for each state.
+    measure:
+        Collapes the quantum circuit into classical bits.
+    reverse:
+        Reverses the quantum state.
+    toffoli:
+        A 3-qubit quantum gate that takes in two control qubits and one target qubit.
+    rccx:
+        A 3-qubit quantum gate that takes in two control qubits and one target qubit.
+    rc3x:
+        A 4-qubit quantum gate that is a simplified Toffoli gate and can be used in placed where the Toffoli gate is uncomputed again.
+    cnot:
+        A 2-qubit quantum gate that takes in control and target qubits, and will entangle the qubits if the control qubit is greater than 0.
+    cr:
+        A 2-qubit quantum gate that takes in control and target qubits to perform calculations upon the state.
+    cz:
+        A 2-qubit quantum gate that takes in control and target qubits to perform calculations upon the state.
+    swap:
+        A 2-qubit quantum gate that takes in two qubits to swap the qubits values they represent.
+    rxx:
+        A 2-qubit quantum gate that takes in two qubits and a representation of theta to initialize in the quantum state.
+    rzz:
+        A 2-qubit quantum gate that takes in two qubits and a representation of theta to initialize in the quantum state.
+    customControlPhase:
+        Used to insert single qubit based quantum gates to have a control qubit apart of it and committing to the quantum state.
+    identity:
+        Used to confirm value that a qubit is representing and does nothing to manipulate the value of such qubit.
+    x:
+        Used to invert the value of what a qubit is representing.
+    hadamard:
+        Used to put a given qubit into superposition.
+    y:
+        Changes the state of a qubit by pi around the y-axis of a Bloch Sphere.
+    z:
+        Changes the state of a qubit by pi around the z-axis of a Bloch Sphere.
+    phase:
+        Commits to a rotation around the z-axis based off of the inputted theta value.
+    s:
+        Is a Phase gate where the inputted theta value is given as a constant of theta = pi / 2. 
+    sdg:
+        Is a Phase gate and inverse of the S gate where the inputted theta value is given as a constant of theta = -pi / 2. 
+    t:
+        T gate is a special use case gate that in implemented from the P Gate.
+    tdg:
+        TDG gate is a special use case gate that in implemented from the P Gate and is the inverse of the T gate.
+    rz:
+        RZ gate commits a rotation around the z-axis for a qubit.
+    ry:
+        RY gate commits a rotation around the y-axis for a qubit.
+    rx:
+        RX gate commits a rotation around the x-axis for a qubit.
+    sx:
+        SX gate is the square root of the Inverse gate (X, PauliX Gate).
+    sxdg:
+        SXDG gate is the negative square root of the Inverse gate (X, PauliX Gate) and inverse of the SX gate.
+    u:
+        U gate is given three inputs (theta, phi, and lambda) that allow the inputs to manipulate the base matrix to allow for the position of the enacted qubit
+        around the bloch sphere representation.
+    custom:
+        Will take in a custom single qubit quantum gate and implement it on a qubit.
 --------
 
 """
 class QuantumCircuit:
     def __init__(self, qubits: int, little_endian: bool = False, prep: chr = 'z'):
         """
+        Constructor that initilizes the quantum state in a vector given the number of qubits, endian positioning, and prepping of the qubits.
         Args:
             qubits: 
                 The number of qubits that will be within the circuit.
@@ -172,7 +251,7 @@ class QuantumCircuit:
 
     def circuit(self):
         """
-        Returns a numpy array of the current quantum circuit's values.
+        Returns the dictionary representation of the circuit and the values within it.
         Params:
             None.
         Returns:
@@ -219,7 +298,7 @@ class QuantumCircuit:
         return temp
     def state(self, round: int = 3):
         """
-        Return a vector of all possible phase angles for the given state.
+        Return a numpy array of the current quantum circuit.
         Params:
             round: int 
         Returns:
@@ -278,7 +357,6 @@ class QuantumCircuit:
         final_state = final_state.zfill(num_bits) 
         # return the final state
         return final_state
-
     def reverse(self):
         """
         Reverses the quantum state.
