@@ -100,7 +100,7 @@ PauliY.matrix = [1+0j, 0+0j],
 
 > ## *class* QC.QuantumGate.Hadamard()
 
-*Maps the basis states |0> to |+> and |1> to |->), creating a superposition state if given a computation basis state.*
+*Maps the basis states |0> to |+> and |1> to |->, creating a superposition state if given a computation basis state.*
 
 ### Parameters:
 
