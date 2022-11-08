@@ -12,7 +12,7 @@ None.
 
 """
 class Qubit:
-    def __init__(self, initial_state: chr):
+    def __init__(self, initial_state: chr = 'z'):
         """
         Args:
             initial_state:

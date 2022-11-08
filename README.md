@@ -14,7 +14,7 @@ QCpy is an open source python library and collaborative project for flexible sim
 
 # Qubits
 
-> ## *class* QC.Qubit.Qubit(*initial_state=’z’*)
+> ## *class* QC.Qubit.`Qubit`(*initial_state=’z’*)
 
 *Object representation of a qubit.*
 
@@ -30,7 +30,7 @@ QCpy is an open source python library and collaborative project for flexible sim
 
 # Quantum Gates
 
-> ## *class* QC.QuantumGate.Identity()
+> ## *class* QC.QuantumGate.`Identity`()
 
 *Gate that does not modify the quantum state.*
 
@@ -47,7 +47,7 @@ Identity.matrix = [1+0j, 0+0j],
 	                [0+0j, 1+0j]
 ```
 
-> ## *class* QC.QuantumGate.PauliX()
+> ## *class* QC.QuantumGate.`PauliX`()
 
 *Quantum equivalent of the NOT gate in classical computing with respect to the standard basis |0>, |1>.*
 
@@ -64,7 +64,7 @@ PauliX.matrix = [0+0j, 1+0j],
 	              [1+0j, 0+0j]
 ```
 
-> ## *class* QC.QuantumGate.PauliY()
+> ## *class* QC.QuantumGate.`PauliY`()
 
 *Rotation around y-axis of the bloch sphere by π radiains, mapping |0> to i|1> and |1> to -i|0>.*
 
@@ -81,7 +81,7 @@ PauliY.matrix = [0+0j, 0-1j],
                 [0+1j, 0+0j]
 ```
 
-> ## *class* QC.QuantumGate.PauliZ()
+> ## *class* QC.QuantumGate.`PauliZ`()
 
 *Rotation around z-axis of the bloch sphere by π radiains, mapping |1> to -|1>; known as the phase-flip.*
 
@@ -98,7 +98,7 @@ PauliY.matrix = [1+0j, 0+0j],
                 [0+0j, -1+0j]
 ```
 
-> ## *class* QC.QuantumGate.Hadamard()
+> ## *class* QC.QuantumGate.`Hadamard`()
 
 *Maps the basis states |0> to |+> and |1> to |->, creating a superposition state if given a computation basis state.*
 
@@ -115,7 +115,7 @@ Hadamard.matrix = ([1,  1]
                    [1, -1]) * (1/sqrt(2))
 ```
 
-> ## *class* QC.QuantumGate.CNot(*inverse=False*)
+> ## *class* QC.QuantumGate.`CNot`(*inverse=False*)
 
 *Controlled gate acts on two or more qubits, performing the NOT operation of the target qubit only if the control qubits are |1>, can act as a quantum regiester and is used to entangle and disentangle Bell states.*
 
@@ -140,7 +140,7 @@ CNot.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
               [0+0j, 1+0j, 0+0j, 0+0j] 
 ```
 
-> ## *class* QC.QuantumGate.Swap()
+> ## *class* QC.QuantumGate.`Swap`()
 
 *Swaps two qubits, with respect to the basis |00>, |01>, |10>, and |11>.*
 
@@ -159,7 +159,7 @@ Swap.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
               [0+0j, 0+0j, 0+0j, 1+0j]
 ```
 
-> ## *class* QC.QuantumGate.Toffoli()
+> ## *class* QC.QuantumGate.`Toffoli`()
 
 *Universal reversible logic gate, known as the “controlled-controlled-NOT” gate; if the two control bits are set to 1, it will invert the target.*
 
@@ -182,13 +182,13 @@ Toffoli.matrix = [1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
                  [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j]
 ```
 
-> ## *class* QC.QuantumGate.Phase(*theta=numpy.pi/2*)
+> ## *class* QC.QuantumGate.`Phase`(*theta=numpy.pi/2*)
 
 *Applies a rotation of theta around the z-axis.*
 
 ### Parameters:
 
-`theta (float)`default: `numpy.pi/2` -  angle of rotation around z-axis.
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around z-axis.
 
 ### Attributes:
 
@@ -199,7 +199,7 @@ Phase.matrix = [1+0j, 0+0j],
 			         [0+0j, numpy.exp(0+1j * theta)]
 ```
 
-> ## *class* QC.QuantumGate.S()
+> ## *class* QC.QuantumGate.`S`()
 
 *Equivalent to a pi/2 rotation around the z-axis.*
 
@@ -216,7 +216,7 @@ S.matrix = [1+0j, 0+0j],
            [0+0j, 0+1j]
 ```
 
-> ## *class* QC.QuantumGate.Sdg()
+> ## *class* QC.QuantumGate.`Sdg`()
 
 *Inverse of S gate; a -pi/2 rotation around the z-axis.*
 
@@ -233,7 +233,7 @@ Sdg.matrix = [1+0j, 0+0j],
              [0+0j, 0-1j]
 ```
 
-> ## *class* QC.QuantumGate.T()
+> ## *class* QC.QuantumGate.`T`()
 
 *Square of S gate; where T = S^2.*
 
@@ -250,7 +250,7 @@ T.matrix = [1+0j, 0+0j],
            [0+0j, numpy.exp((0+1j * numpy.pi) / 4)]
 ```
 
-> ## *class* QC.QuantumGate.Tdg()
+> ## *class* QC.QuantumGate.`Tdg`()
 
 *Inverse of T gate.*
 
@@ -267,13 +267,13 @@ Tdg.matrix = [1+0j, 0+0j],
              [0+0j, numpy.exp((0-1j * numpy.pi) / 4)]
 ```
 
-> ## *class* QC.QuantumGate.Rz(*theta=numpy.pi/2*)
+> ## *class* QC.QuantumGate.`Rz`(*theta=numpy.pi/2*)
 
 *Rotation of qubit around the z-axis.*
 
 ### Parameters:
 
-`theta (float)`default: `numpy.pi/2` -  angle of rotation around z-axis.
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around z-axis.
 
 ### Attributes:
 
@@ -284,13 +284,13 @@ Rz.matrix = [numpy.exp((0-1j * (theta / 2))), 0+0j],
             [0+0j, numpy.exp(0+1j * (theta / 2))]
 ```
 
-> ## *class* QC.QuantumGate.Rx(*theta=numpy.pi/2*)
+> ## *class* QC.QuantumGate.`Rx`(*theta=numpy.pi/2*)
 
 *Rotation of qubit around the x-axis.*
 
 ### Parameters:
 
-`theta (float)`default: `numpy.pi/2` -  angle of rotation around x-axis.
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around x-axis.
 
 ### Attributes:
 
@@ -301,7 +301,7 @@ Rx.matrix = [numpy.cos(theta / 2), 0-1j * numpy.sin(theta / 2)],
             [0-1j * numpy.sin(theta / 2), numpy.cos(theta / 2)]
 ```
 
-> ## *class* QC.QuantumGate.Ry(*theta=numpy.pi/2*)
+> ## *class* QC.QuantumGate.`Ry`(*theta=numpy.pi/2*)
 
 *Rotation of qubit around the y-axis.*
 
@@ -318,7 +318,7 @@ Ry.matrix = [numpy.cos(theta / 2), -1 * numpy.sin(theta / 2)],
             [numpy.sin(theta / 2), numpy.cos(theta / 2)]
 ```
 
-> ## *class* QC.QuantumGate.Sx()
+> ## *class* QC.QuantumGate.`Sx`()
 
 *Rotation around the x-axis by 90 degrees in the counter-clockwise direction. Also known as the “square-root X gate” due to the fact that applying the SX gate twice results in an X gate.*
 
@@ -335,7 +335,7 @@ Sx.matrix = [1+1j, 1-1j],
             [1-1j, 1+1j]]) * (1 / 2)
 ```
 
-> ## *class* QC.QuantumGate.Sxdg()
+> ## *class* QC.QuantumGate.`Sxdg`()
 
 *Inverse of the Sx gate.*
 
@@ -352,17 +352,17 @@ Sxdg.matrix = [1-1j, 1+1j],
               [1+1j, 1-1j]]) * (1 / 2)
 ```
 
-> ## *class* QC.QuantumGate.U(*theta=numpy.pi/2, phi=numpy.pi/2, lmbda=numpy.pi/2*)
+> ## *class* QC.QuantumGate.`U`(*theta=numpy.pi/2, phi=numpy.pi/2, lmbda=numpy.pi/2*)
 
 *Rotation of qubit with respect to theta, phi, and lambda, in Euler angles.*
 
 ### Parameters:
 
-`theta (float)`default: `numpy.pi/2` -  angle of rotation around Euler angle theta.
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around Euler angle theta.
 
-`phi (float)`default: `numpy.pi/2` -  angle of rotation around Euler angle phi.
+`phi (float)` default: `numpy.pi/2` -  angle of rotation around Euler angle phi.
 
-`lmbda (float)`default: `numpy.pi/2` -  angle of rotation around Eulear angle lambda.
+`lmbda (float)` default: `numpy.pi/2` -  angle of rotation around Eulear angle lambda.
 
 ### Attributes:
 
@@ -373,13 +373,13 @@ U.matrix = [numpy.cos(theta / 2), -1 * numpy.exp(0+1j * lmbda) * numpy.sin(theta
            [numpy.exp(0+1j * phi) * numpy.sin(theta / 2), numpy.exp(0+1j * (lmbda + phi)) * numpy.cos(theta / 2)]]
 ```
 
-> ## *class* QC.QuantumGate.Rxx(*theta=numpy.pi/2*)
+> ## *class* QC.QuantumGate.`Rxx`(*theta=numpy.pi/2*)
 
 *Rotation about XX, maximally entangling at theta = pi/2.*
 
 ### Parameters:
 
-`theta (float)`default: `numpy.pi/2` -  angle of rotation around XX.
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around XX.
 
 ### Attributes:
 
@@ -392,13 +392,13 @@ Rxx.matrix = [numpy.cos(theta / 2), 0+0j, 0+0j, 0-1j * numpy.sin(theta / 2)],
              [0-1j * numpy.sin(theta / 2), 0+0j, 0+0j, numpy.cos(theta / 2)]
 ```
 
-> ## *class* QC.QuantumGate.Rzz(*theta=numpy.pi/2*)
+> ## *class* QC.QuantumGate.`Rzz`(*theta=numpy.pi/2*)
 
 *Rotation about ZZ, maximally entangling at theta = pi/2.*
 
 ### Parameters:
 
-`theta (float)`default: `numpy.pi/2` -  angle of rotation around ZZ.
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around ZZ.
 
 ### Attributes:
 
@@ -411,13 +411,13 @@ Rzz.matrix = [numpy.exp(0-1j * (theta / 2)), 0+0j, 0+0j, 0+0j],
              [0+0j, 0+0j, 0+0j, numpy.exp(0-1j * (theta / 2))]
 ```
 
-> ## *class* QC.QuantumGate.Cr(*theta=numpy.pi/2*)
+> ## *class* QC.QuantumGate.`Cr`(*theta=numpy.pi/2*)
 
 *Controlled phase shift rotation in theta radians; generalization of Cz gate.*
 
 ### Parameters:
 
-`theta (float)`default: `numpy.pi/2` -  angle of rotation in theta radians.
+`theta (float)` default: `numpy.pi/2` -  angle of rotation in theta radians.
 
 ### Attributes:
 
@@ -430,13 +430,13 @@ Cz.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
             [0+0j, 0+0j, 0+0j, numpy.exp(theta * 0+1j)]
 ```
 
-> ## *class* QC.QuantumGate.Cz(*theta=numpy.pi/2*)
+> ## *class* QC.QuantumGate.`Cz`(*theta=numpy.pi/2*)
 
 *Controlled phase shift rotation in theta radians.*
 
 ### Parameters:
 
-`theta (float)`default: `numpy.pi/2` -  angle of rotation in theta radians.
+`theta (float)` default: `numpy.pi/2` -  angle of rotation in theta radians.
 
 ### Attributes:
 
@@ -449,3 +449,112 @@ Cz.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
             [0+0j, 0+0j, 0+0j, -1+0j]
 ```
 ---
+# Quantum Circuit
+> ## *class* QC.QuantumCircuit.`QuantumCircuit`(*qubits*, *little_endian=False*, *prep='z'*)
+
+*Quantum circuit that represents the state of a quantum system and performs operations on select qubits.*
+
+### Parameters:
+
+`qubits (int)` - number of qubits in the circuit.
+
+`little_endian (bool)` default: `False` - order of qubits and tensor products.
+
+`prep (char)` options: [`z`, `y`, `x`] - initial direction of the qubits' phase angle.
+
+### Attributes:
+
+`None`
+
+> ## QuantumCircuit.`circuit`()
+
+*Dictionary representation of the circuit*
+
+### Parameters:
+
+`None`
+
+### Returns:
+
+`circuit (dict[int, list[str]])` - key: qubit; value: name of gate.
+
+### Example:
+
+```python
+from QCpy.QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+qc.cnot(0, 1)
+qc.hadamard(0)
+
+print(qc.circuit())
+
+# {0: ['hadamard', 'cnot_control', 'hadamard'], 
+#  1: ['cnot_target']}
+```
+
+> ## QuantumCircuit.`amplitude`(*round=3*)
+
+*Returns vector of all possible amplitudes for the quantum circuit*
+
+### Parameters:
+
+`round (int)` - rounding the amplitude to the nearest `round`
+
+### Returns:
+
+`amplitude (numpy.ndarray[float16])` - amplitude of the quantum circuit.
+
+### Example:
+
+```python
+from QCpy.QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+qc.cnot(0, 1)
+qc.hadamard(0)
+
+print(qc.amplitude())
+
+# [[0.5]
+# [0.5]
+# [0.5]
+# [0.5]]
+```
+
+> ## QuantumCircuit.`phaseAngle`(*round=2*, *radian=True*)
+
+*Calculates possible phase angles for the quantum circuit*
+
+### Parameters:
+
+`round (int)` - rounding the amplitude to the nearest `round`
+
+`radian (bool)` - whether or not the values are in radians or degrees.
+
+### Returns:
+
+`phase_angle (numpy.ndarray)` - array of qubit's phase angle.
+
+### Example:
+
+```python
+from QCpy.QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+qc.cnot(0, 1)
+qc.hadamard(0)
+
+print(qc.phaseAngle())
+
+# [[0.         ]
+# [0.         ]
+# [0.        ]
+# [3.14159265]]
+```
