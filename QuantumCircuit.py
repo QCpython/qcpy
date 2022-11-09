@@ -791,8 +791,8 @@ class QuantumCircuit:
         if qubit == None:
             exit(f"Error: QuantumCircuit().rx -- Must select a qubit to enact on quantum gate.")
         # get the Ry matrix
-        ry_matrix = Ry(theta).matrix
-        self._state = np.dot(self.__operator_matrix__(ry_matrix, qubit), self._state)
+        rx_matrix = Rx(theta).matrix
+        self._state = np.dot(self.__operator_matrix__(rx_matrix, qubit), self._state)
         # append gate to self._circuit
         self._circuit[qubit].append('rx')
     def sx(self, qubit: int):

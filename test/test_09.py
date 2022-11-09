@@ -9,11 +9,8 @@ def inc(x):
     return qc.state()
 
 def test_09a():
-    print(inc(3))
     assert (inc(3) == np.array([ 0.5+0j, 0+0j, 0.5+0j, 0+0j, 0.5+0j, 0+0j, 0+0j, 0.5+0j ]).reshape(8, 1)).all(), "test_09a Failed"
 def test_09b():
     assert (inc(4) == np.array([ 0.5+0j, 0+0j, 0+0j, 0+0j, 0.5+0j, 0+0j, 0+0j, 0+0j, 0.5+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0.5+0j, 0+0j, 0+0j ]).reshape(16, 1)).all(), "test_09b Failed"
 def test_09c():
     assert (inc(5) == np.array([ 0.5+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0.5+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0.5+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0.5+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j ]).reshape(32, 1)).all(), "test_09c Failed"
-
-test_09a()
