@@ -1,8 +1,8 @@
 """
 QuantumCircuit.py
 """
-from .Qubit import Qubit
-from .QuantumGate import *
+from Qubit import Qubit
+from QuantumGate import *
 import numpy as np
 
 """
@@ -157,16 +157,14 @@ class QuantumCircuit:
             operator_matrix = np.kron(operator_matrix, gate)
 
         return operator_matrix
-    def __controlled_phase_handler__(self, gate_to_product: np.array, control: int, target: int, is_cnot: bool = False):
+    def __controlled_phase_handler__(self, gate_to_product: np.array, control: int, target: int):
         """
         Calls a control and target qubits represented as integers and will then correctly create a system of mathematic implementations of 
         any given controlled quantum gate. 
-        Boolean is_cnot determines if further action is needed to invert the structure of the CNOT gate and no other gate.
         Params:
             gate_to_product: np.array
             control: integer
             target: integer
-            is_cnot: boolean
         Returns:
             None.
         """
@@ -183,32 +181,25 @@ class QuantumCircuit:
         # If target and control qubits are next to each other, then no further logic needs to be done and calls base system.
         if(abs(target - control) == 1):
                 # calls from called bool variable to see if the base CNOT matrix needs to be inverted to confirm correct logic structuring.
-                if inverse:
-                    # is_cnot will determine if hadamard gates need to be called to invert what the CNOT currently represents and commits.
-                    # This is implemented due to other controlled gates not needing this implementation.
-                    if is_cnot:
-                        self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
-                        self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
-                    # Call to _state to commit a dot product on the state to include the given gate of the method.
-                    self._state = np.dot(self.__operator_matrix__(calculate_matrix, temp_target, double=True), self._state)
-                    # is_cnot will determine if hadamard gates need to be called to invert what the CNOT currently represents and commits.
-                    # This is implemented due to other controlled gates not needing this implementation.
-                    if is_cnot:
-                        
-                        self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
-                        self._state = np.dot(self.__operator_matrix__(hadamard, temp_target - 1), self._state)
-                    # used for inversing all other gates that the target is less than the control to make it inversed in logic.
-                    else:
-                        self.swap(control, temp_target)
-                else:
-                    # if not inverse, what the controlled gate is will be enacted on the _state using dot product system.
-                    self._state = np.dot(self.__operator_matrix__(calculate_matrix, control, double=True), self._state)
-                return
+            if inverse:
+                # This is implemented due to other controlled gates not needing this implementation.
+                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
+                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
+                # Call to _state to commit a dot product on the state to include the given gate of the method.
+                self._state = np.dot(self.__operator_matrix__(calculate_matrix, temp_target, double=True), self._state)
+                # This is implemented due to other controlled gates not needing this implementation.
+                    
+                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
+                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
+                # used for inversing all other gates that the target is less than the control to make it inversed in logic.
+            else:
+                # if not inverse, what the controlled gate is will be enacted on the _state using dot product system.
+                self._state = np.dot(self.__operator_matrix__(calculate_matrix, control, double=True), self._state)
+            return
         # while the difference between the temp target and control is not -1 or 1.
         while(abs(temp_target - control) != 1):
             # calls from called bool variable to see if the base CNOT matrix needs to be inverted to confirm correct logic structuring.
             if inverse:
-                # is_cnot will determine if hadamard gates need to be called to invert what the CNOT currently represents and commits.
                 # This is implemented due to other controlled gates not needing this implementation.
                 self.swap(temp_target, temp_target+1)
                 # update temp target position.
@@ -222,19 +213,14 @@ class QuantumCircuit:
         if inverse:
             # will create inversed controlled_phase of what is inputted through here, determined if the inversed variable is marked true.
             # call hadamard gates on control and target variables.
-            if is_cnot:
-                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
-                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
+            self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
+            self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
             # Call to _state to commit a dot product on the state to include the given gate of the method.
             self._state = np.dot(self.__operator_matrix__(calculate_matrix, temp_target, double=True), self._state)
-            # is_cnot will determine if hadamard gates need to be called to invert what the CNOT currently represents and commits.
             # This is implemented due to other controlled gates not needing this implementation.
-            if is_cnot:
-                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
-                self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
+            self._state = np.dot(self.__operator_matrix__(hadamard, temp_target), self._state)
+            self._state = np.dot(self.__operator_matrix__(hadamard, temp_target + 1), self._state)
             # used for inversing all other gates that the target is less than the control to make it inversed in logic.
-            else:
-                self.swap(control, temp_target)
         else:
             # if not inverse, what the controlled gate is will be enacted on the _state using dot product system.
             self._state = np.dot(self.__operator_matrix__(calculate_matrix, control, double=True), self._state)
@@ -384,21 +370,14 @@ class QuantumCircuit:
         if (self._circuit_size < 3):
             exit(f"Error: QuantumCircuit().toffoli -- Quantum Circuit size must be 3 or more qubits. Current number of qubits is: {self._circuit_size}")
         # Calls of gates here represent the Toffoli matrix using other quantum gates.
-        self.hadamard(target)
-        self.cnot(control_2, target)
-        self.tdg(target)
-        self.cnot(control_1, target)
-        self.t(target)
-        self.cnot(control_2, target)
-        self.tdg(target)
-        self.cnot(control_1, target)
-        self.t(control_2)
-        self.t(target)
+        self.customControlPhase(control_2,target, Sx().matrix)
+        self.cnot(control_1,control_2)
+        self.customControlPhase(control_2,target, Sx().matrix)
         self.cnot(control_1, control_2)
-        self.hadamard(target)
-        self.t(control_1)
-        self.tdg(control_2)
-        self.cnot(control_1, control_2)
+        self.customControlPhase(control_1, target, Sx().matrix)
+        self.x(control_1)
+        self.x(control_2)
+        self.x(target)
         # append gate to self._circuit
         self._circuit[control_1].append('toffoli_control')
         self._circuit[control_2].append('toffoli_control')
@@ -486,7 +465,7 @@ class QuantumCircuit:
         else:
             cnot_matrix = CNot(inverse = True).matrix
         # Sends to __controlled_phase_handler alongside a boolean confirming the gate is indeed a CNOT gate
-        self.__controlled_phase_handler__(cnot_matrix, control, target, is_cnot = True)
+        self.__controlled_phase_handler__(cnot_matrix, control, target)
         # append gate to self._circuit
         self._circuit[control].append('cnot_control')
         self._circuit[target].append('cnot_target')
@@ -607,6 +586,7 @@ class QuantumCircuit:
                         [0+0j, 0+0j, 1+0j, 0+0j],
                         [0+0j, custom_matrix[1][0], 0+0j, custom_matrix[1][1]]
                     ])
+            
         else:
             # If big endian format is in being used.
             controlled_custom_matrix = np.array([
