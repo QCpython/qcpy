@@ -372,12 +372,9 @@ class QuantumCircuit:
         # Calls of gates here represent the Toffoli matrix using other quantum gates.
         self.customControlPhase(control_2,target, Sx().matrix)
         self.cnot(control_1,control_2)
-        self.customControlPhase(control_2,target, Sx().matrix)
+        self.customControlPhase(control_2,target, Sxdg().matrix)
         self.cnot(control_1, control_2)
         self.customControlPhase(control_1, target, Sx().matrix)
-        self.x(control_1)
-        self.x(control_2)
-        self.x(target)
         # append gate to self._circuit
         self._circuit[control_1].append('toffoli_control')
         self._circuit[control_2].append('toffoli_control')
