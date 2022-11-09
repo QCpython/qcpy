@@ -228,13 +228,15 @@ class QSphere:
         
         return coords
     
-    def makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False):
+    def makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False, linecolor="blue", textcolor="black"):
         """
             Creates a sphere of the circuit's probabilties
         Args:
             path (str): name of the image to be saved
             save (bool): pass True for the graph to be saved
             show (bool): pass True for the sphere to be shown instead of saved
+            linecolor (str): the color of the lines representing the qubit states (e.g: "blue", "#ff6fff")
+            textcolor (str): the color of the text which shows each qubit state in ket notation (e.g: "black", "#3cbfb9")
         """
         
         # creates a sphere using a wireframe surface
@@ -248,7 +250,7 @@ class QSphere:
         y = r * np.outer(np.sin(u), np.sin(v))
         z = r * np.outer(np.ones(np.size(u)), np.cos(v))
         ax.plot_wireframe(x, y, z, rstride = 10, cstride = 10, linewidth=1, color="gray")
-        ax.scatter(0,0,0)
+        ax.scatter(0,0,0, s=5, color=f"{linecolor}")
         
         # coords will be in the order of states from the __latitude_finder__ function
         # and not in order of self._state_list, we can use our dict to look up each states
@@ -264,9 +266,9 @@ class QSphere:
             # only plot states that have a probability greater than 0
             if cur_prob > 0: 
                 x, y, z = i[0], i[1], i[2]
-                ax.plot3D(x, y, z, color="blue")
-                ax.scatter(x[1], y[1], z[1], s=5, color="blue")
-                ax.text(x[1], y[1], z[1], f"|{j}>") 
+                ax.plot3D(x, y, z, color=f"{linecolor}")
+                ax.scatter(x[1], y[1], z[1], s=5, color=f"{linecolor}")
+                ax.text(x[1], y[1], z[1], f"|{j}>", color=f"{textcolor}") 
         
         # saves QSphere as a file and/or shows it as a figure
         plt.axis('off')
