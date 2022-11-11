@@ -555,6 +555,8 @@ class QuantumCircuit:
         # If circuit is less than 2, means RZZ gate cannot be allowed.
         if (self._circuit_size < 2):
             exit(f"Error: QuantumCircuit().rzz -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
+        if (qubit_2 < qubit_1):
+            qubit_2, qubit_1 = qubit_1, qubit_2
         rzz_matrix = Rzz(theta).matrix
         # determines if the two values at play are at distance greater than one, if so it will call in private method for larger matrix operations.
         self.__controlled_phase_handler__(rzz_matrix, qubit_1, qubit_2)
