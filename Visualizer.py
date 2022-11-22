@@ -9,7 +9,7 @@ Statevector : the amplitudes of the quantum circuit visualized as a graph
 Probabilities : the probabilities of each state being measured visualized as a graph
 """
 import numpy as np
-from .QuantumCircuit import QuantumCircuit
+from QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
 # ScalerMappable is needed for creating the color bar on the State Vector visualization
 # that shows what each qubit's phase angle is
@@ -125,8 +125,10 @@ class QSphere:
                 an array of the amplitude for every state
             _phase_angles :
                 an array of the phase angle for every state
-            _dict :
-                a dict of the probabilities mapped to the state list
+            _prob_dict :
+                a dictionary of the probabilities mapped to the state list
+            _phase_dict :
+                a dictionary of the phase angles mapped to the state list
             _lat_vals :
                 a list of lists of the qubit states in order as the appear upon the latitudes of a QSphere
         """
@@ -136,7 +138,8 @@ class QSphere:
         self._percents = [i * 100 for i in self._probabilities]
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
-        self._dict = {self._state_list[i]: self._probabilities[i] for i in range(len(self._state_list))}
+        self._prob_dict = {self._state_list[i]: self._probabilities[i] for i in range(len(self._state_list))}
+        self._phase_dict = {self._state_list[i]: self._phase_angles[i] for i in range(len(self._state_list))}
         self._lat_vals = self.__latitude_finder__()
                 
     def __hamming_distance__(self, l1: str, l2: str):
@@ -228,14 +231,13 @@ class QSphere:
         
         return coords
     
-    def makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False, linecolor="blue", textcolor="black"):
+    def makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False, textcolor="black"):
         """
             Creates a sphere of the circuit's probabilties
         Args:
             path (str): name of the image to be saved
             save (bool): pass True for the graph to be saved
             show (bool): pass True for the sphere to be shown instead of saved
-            linecolor (str): the color of the lines representing the qubit states (e.g: "blue", "#ff6fff")
             textcolor (str): the color of the text which shows each qubit state in ket notation (e.g: "black", "#3cbfb9")
         """
         
@@ -249,8 +251,8 @@ class QSphere:
         x = r * np.outer(np.cos(u), np.sin(v))
         y = r * np.outer(np.sin(u), np.sin(v))
         z = r * np.outer(np.ones(np.size(u)), np.cos(v))
-        ax.plot_wireframe(x, y, z, rstride = 10, cstride = 10, linewidth=1, color="gray")
-        ax.scatter(0,0,0, s=5, color=f"{linecolor}")
+        ax.plot_wireframe(x, y, z, rstride = 10, cstride = 10, linewidth=1, color="lightgray")
+        ax.scatter(0,0,0, s=5, color="black")
         
         # coords will be in the order of states from the __latitude_finder__ function
         # and not in order of self._state_list, we can use our dict to look up each states
@@ -259,16 +261,22 @@ class QSphere:
         # turns self._lat_vals into a single list instead of a list of lists
         ham_states = [item for sublist in self._lat_vals for item in sublist]  
         
+        # sets up colors that will map to each states phase angle
+        colors = plt.get_cmap('hsv')
+        norm = plt.Normalize(0, np.pi*2)
+        
         # function to plot lines from center of the sphere to the surface
-        # and qubit states in ket notation             
+        # and qubit states in ket notation, line colors will be basedupon the states
+        # phase angle             
         for i, j in zip(coords, ham_states):
-            cur_prob = self._dict[j]
+            cur_prob = self._prob_dict[j]
+            cur_phase = self._phase_dict[j] 
             # only plot states that have a probability greater than 0
             if cur_prob > 0: 
                 x, y, z = i[0], i[1], i[2]
-                ax.plot3D(x, y, z, color=f"{linecolor}")
-                ax.scatter(x[1], y[1], z[1], s=5, color=f"{linecolor}")
-                ax.text(x[1], y[1], z[1], f"|{j}>", color=f"{textcolor}") 
+                ax.plot3D(x, y, z, color=colors(norm(cur_phase)))
+                ax.scatter(x[1], y[1], z[1], s=5, color=colors(norm(cur_phase)))
+                ax.text(x[1], y[1], z[1], f"|{j}>", color=f"{textcolor}")
         
         # saves QSphere as a file and/or shows it as a figure
         plt.axis('off')
