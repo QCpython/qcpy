@@ -1,8 +1,8 @@
 """
 QuantumCircuit.py
 """
-from Qubit import Qubit
-from QuantumGate import *
+from .Qubit import Qubit
+from .QuantumGate import *
 import numpy as np
 
 """

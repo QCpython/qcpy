@@ -9,7 +9,7 @@ Statevector : the amplitudes of the quantum circuit visualized as a graph
 Probabilities : the probabilities of each state being measured visualized as a graph
 """
 import numpy as np
-from QuantumCircuit import QuantumCircuit
+from .QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
 # ScalerMappable is needed for creating the color bar on the State Vector visualization
 # that shows what each qubit's phase angle is
