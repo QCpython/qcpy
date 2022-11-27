@@ -244,7 +244,8 @@ class QSphere:
         # creates a sphere using a wireframe surface
         plt.clf()
         plt.close()
-        ax = plt.axes(projection="3d")
+        fig = plt.figure()
+        ax = fig.add_subplot(projection="3d")
         u = np.linspace(0,2*np.pi, 100)
         v = np.linspace(0, np.pi, 100)
         r = 1
@@ -276,7 +277,16 @@ class QSphere:
                 x, y, z = i[0], i[1], i[2]
                 ax.plot3D(x, y, z, color=colors(norm(cur_phase)))
                 ax.scatter(x[1], y[1], z[1], s=5, color=colors(norm(cur_phase)))
-                ax.text(x[1], y[1], z[1], f"|{j}>", color=f"{textcolor}")
+                ax.text(x[1] * 1.15, y[1] * 1.15, z[1] * 1.15, f"|{j}>", color=f"{textcolor}")
+        
+        # code for colorbar on rightside
+        cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm), shrink=.55)
+        cbar.set_label("Phase Angle", rotation=270, labelpad=15, color="black")
+        cbar.set_ticks([2*np.pi, (3*np.pi)/2, np.pi, np.pi/2, 0])
+        cbar.ax.yaxis.set_tick_params(color="black")
+        cbar.outline.set_edgecolor("black")
+        cbar.set_ticklabels(["2π", "3π / 2", "π", "π / 2", "0"], color="black")
+        plt.tight_layout()
         
         # saves QSphere as a file and/or shows it as a figure
         plt.axis('off')
