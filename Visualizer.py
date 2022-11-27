@@ -241,19 +241,35 @@ class QSphere:
             textcolor (str): the color of the text which shows each qubit state in ket notation (e.g: "black", "#3cbfb9")
         """
         
-        # creates a sphere using a wireframe surface
+        # creates a sphere
         plt.clf()
         plt.close()
         fig = plt.figure()
-        ax = fig.add_subplot(projection="3d")
+        ax = fig.add_subplot(111, projection="3d")     
         u = np.linspace(0,2*np.pi, 100)
         v = np.linspace(0, np.pi, 100)
         r = 1
         x = r * np.outer(np.cos(u), np.sin(v))
         y = r * np.outer(np.sin(u), np.sin(v))
         z = r * np.outer(np.ones(np.size(u)), np.cos(v))
-        ax.plot_wireframe(x, y, z, rstride = 10, cstride = 10, linewidth=1, color="lightgray")
+        # wireframe sets up lines around the sphere
+        ax.plot_wireframe(x, y, z, rstride = 20, cstride = 20, linewidth=.5, color="lightgray")
+        # surface helps give the sphere a translucent look 
+        ax.plot_surface(x, y, z,  color="linen", alpha=.1)
         ax.scatter(0,0,0, s=5, color="black")
+        # plots accent lines around the sphere
+        theta = np.linspace(0, 2 * np.pi, 100)
+        zs = np.zeros(100)
+        xs = r * np.sin(theta)
+        ys = r * np.cos(theta)
+        ax.plot(xs, ys, zs, color='black', alpha=0.25) # line around equator
+        ax.plot(zs, xs, ys, color='black', alpha=0.25) # line around north & south poles
+        # accent lines from north to south, along x-axis, and along y-axis
+        zeros = np.zeros(100)
+        line = np.linspace(-1,1,100)
+        ax.plot(line, zeros, zeros, color='black', alpha=0.25)
+        ax.plot(zeros, line, zeros, color='black', alpha=0.25)
+        ax.plot(zeros, zeros, line, color='black', alpha=0.25)
         
         # coords will be in the order of states from the __latitude_finder__ function
         # and not in order of self._state_list, we can use our dict to look up each states
@@ -261,7 +277,6 @@ class QSphere:
         coords = self.__getCoords__()
         # turns self._lat_vals into a single list instead of a list of lists
         ham_states = [item for sublist in self._lat_vals for item in sublist]  
-        
         # sets up colors that will map to each states phase angle
         colors = plt.get_cmap('hsv')
         norm = plt.Normalize(0, np.pi*2)
