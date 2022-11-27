@@ -87,9 +87,9 @@ class BlochSphere:
             final = np.append(final, placement)
         z = final[1::2].flatten()
         y = final[::2].flatten()
-         
+        
+        plt.axis('off') 
         # saves Bloch Sphere as a file and/or shows it as a figure
-        plt.axis('off')
         if save:
             plt.savefig(path)
         if show:
@@ -231,15 +231,24 @@ class QSphere:
         
         return coords
     
-    def makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False, textcolor="black"):
+    def makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False, darkmode: bool = True):
         """
             Creates a sphere of the circuit's probabilties
         Args:
             path (str): name of the image to be saved
             save (bool): pass True for the graph to be saved
             show (bool): pass True for the sphere to be shown instead of saved
-            textcolor (str): the color of the text which shows each qubit state in ket notation (e.g: "black", "#3cbfb9")
+            darkmode (bool): pass True for darkmode, false for lightmode
         """
+        # sets up darkmode or lightmode
+        if darkmode:
+            _text = 'white'
+            _accent = '#39c0ba'
+            _background = '#2e3037'
+        else:
+            _text = 'black'
+            _accent = 'black'
+            _background = 'white'
         
         # creates a sphere
         plt.clf()
@@ -264,7 +273,7 @@ class QSphere:
         ys = r * np.cos(theta)
         ax.plot(xs, ys, zs, color='black', alpha=0.25) # line around equator
         ax.plot(zs, xs, ys, color='black', alpha=0.25) # line around north & south poles
-        # accent lines from north to south, along x-axis, and along y-axis
+        # accent lines along x, y, and z axes
         zeros = np.zeros(100)
         line = np.linspace(-1,1,100)
         ax.plot(line, zeros, zeros, color='black', alpha=0.25)
@@ -292,19 +301,22 @@ class QSphere:
                 x, y, z = i[0], i[1], i[2]
                 ax.plot3D(x, y, z, color=colors(norm(cur_phase)))
                 ax.scatter(x[1], y[1], z[1], s=5, color=colors(norm(cur_phase)))
-                ax.text(x[1] * 1.15, y[1] * 1.15, z[1] * 1.15, f"|{j}>", color=f"{textcolor}")
-        
+                ax.text(x[1] * 1.15, y[1] * 1.15, z[1] * 1.15, f"|{j}>", color=_text)
+                
+        # sets backgorund color
+        ax.set_facecolor(_background)
+        fig.patch.set_facecolor(_background)
         # code for colorbar on rightside
         cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm), shrink=.55)
-        cbar.set_label("Phase Angle", rotation=270, labelpad=15, color="black")
+        cbar.set_label("Phase Angle", rotation=270, labelpad=15, color=_accent)
         cbar.set_ticks([2*np.pi, (3*np.pi)/2, np.pi, np.pi/2, 0])
-        cbar.ax.yaxis.set_tick_params(color="black")
-        cbar.outline.set_edgecolor("black")
-        cbar.set_ticklabels(["2π", "3π / 2", "π", "π / 2", "0"], color="black")
+        cbar.ax.yaxis.set_tick_params(color=_text)
+        cbar.outline.set_edgecolor(_text)
+        cbar.set_ticklabels(["2π", "3π / 2", "π", "π / 2", "0"], color=_text)
         plt.tight_layout()
         
+        plt.axis('off') # removes 3d grid around sphere
         # saves QSphere as a file and/or shows it as a figure
-        plt.axis('off')
         if save:
             plt.savefig(path)
         if show:
@@ -354,7 +366,7 @@ class StateVector:
             path (str): name of the image to be saved
             save (bool): pass True for the graph to be saved
             show (bool): pass True for the graph to be shown instead of saved
-            darkmode (bool): pass True for darkmode
+            darkmode (bool): pass True for darkmode and false for lightmode
         """
         # sets up darkmode or lightmode
         if darkmode:
@@ -442,7 +454,7 @@ class Probabilities:
             path (str): name of the image to be saved
             save (bool): pass True for the graph to be saved 
             show (bool): pass True for the graph to be shown
-            darkmode (bool): pass True for darkmode
+            darkmode (bool): pass True for darkmode and false for lightmode
         """
         # sets up darkmode or lightmode
         if darkmode:
