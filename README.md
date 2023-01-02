@@ -44,7 +44,7 @@ QCpy is an open source python library and collaborative project for flexible sim
 
 ```python
 Identity.matrix = [1+0j, 0+0j], 
-	                [0+0j, 1+0j]
+	          [0+0j, 1+0j]
 ```
 
 > ## *class* QC.QuantumGate.`PauliX`()
@@ -61,7 +61,7 @@ Identity.matrix = [1+0j, 0+0j],
 
 ```python
 PauliX.matrix = [0+0j, 1+0j], 
-	              [1+0j, 0+0j]
+	        [1+0j, 0+0j]
 ```
 
 > ## *class* QC.QuantumGate.`PauliY`()
@@ -196,7 +196,7 @@ Toffoli.matrix = [1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
 
 ```python
 Phase.matrix = [1+0j, 0+0j],
-			         [0+0j, numpy.exp(0+1j * theta)]
+	       [0+0j, numpy.exp(0+1j * theta)]
 ```
 
 > ## *class* QC.QuantumGate.`S`()
@@ -553,8 +553,164 @@ qc.hadamard(0)
 
 print(qc.phaseAngle())
 
-# [[0.         ]
+# [[0.        ]
 # [0.         ]
-# [0.        ]
+# [0.         ]
 # [3.14159265]]
+```
+
+> ## QuantumCircuit.`state`(*round=3*)
+
+*Returns state of the quantum circuit.*
+
+### Parameters:
+
+`round (int)` - rounding the state to the nearest `round`
+
+### Returns:
+
+`_state (numpy.ndarray)` - array of quantum circuit's state.
+
+### Example:
+
+```python
+from QCpy.QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+qc.cnot(0, 1)
+
+print(qc.state())
+
+# [[0.707+0.j]
+# [0.   +0.j]
+# [0.   +0.j]
+# [0.707+0.j]]
+```
+
+> ## QuantumCircuit.`probabilities`(*round=3*)
+
+*Returns probabilitiy of the qubits within the quantum circuit.*
+
+### Parameters:
+
+`round (int)` - rounding the probabilities to the nearest `round`
+
+### Returns:
+
+`prob_matrix (numpy.ndarray)` - array of quantum circuit's probabilities.
+
+### Example:
+
+```python
+from QCpy.QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+qc.cnot(0, 1)
+
+print(qc.probabilities())
+
+# [0.5 0.  0.  0.5]
+```
+
+> ## QuantumCircuit.`measure`()
+
+*Collapses the state based on the quantum circuit's probabilities.*
+
+### Parameters:
+
+`None`
+
+### Returns:
+
+`final_state (numpy.ndarray)` - array of quantum circuit's measurement.
+
+### Example:
+
+```python
+from QCpy.QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+qc.cnot(0, 1)
+
+print(qc.measure())
+
+# ~Results may vary~
+# 00
+```
+
+> ## QuantumCircuit.`reverse`()
+
+*Reverses the quantum circuit's values.*
+
+### Parameters:
+
+`None`
+
+### Returns:
+
+`None`
+
+### Example:
+
+```python
+qc = QuantumCircuit(qubits = 2)
+
+qc.hadamard(0)
+
+print(qc.state())
+
+qc.reverse()
+
+print(qc.state())
+
+# [[0.707+0.j]
+# [0.   +0.j]
+# [0.707+0.j]
+# [0.   +0.j]]
+ 
+# [[0.   +0.j]
+# [0.707+0.j]
+# [0.   +0.j]
+# [0.707+0.j]]
+```
+> ## QuantumCircuit.`toffoli`(*control_1*, *control_2*, *target*)
+
+*A 3-qubit quantum gate that takes in two control qubits and one target qubit.*
+
+### Parameters:
+
+`control_1 (int)` - first control qubit.
+`control_2 (int)` - second control qubit.
+`target (int)` - target control qubit.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+qc = QuantumCircuit(qubits = 3)
+
+qc.hadamard(0)
+
+qc.hadamard(1)
+
+qc.toffoli(0,1,2)
+
+print(qc.state())
+
+# [[0.5+0.j]
+# [0. +0.j]
+# [0.5+0.j]
+# [0. +0.j]
+# [0.5+0.j]
+# [0. +0.j]
+# [0. +0.j]
+# [0.5+0.j]]
 ```
