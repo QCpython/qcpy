@@ -1525,13 +1525,15 @@ print(qc.state())
 # [0. +0.j ]]
 ```
 
-> ## QuantumCircuit.`u`(*qubit*, *custom_matrix*)
+> ## QuantumCircuit.`custom`(*qubit*, *custom_matrix*)
 
 *Will take in a custom single qubit quantum gate and implement it on a qubit.*
 
 ### Parameters:
 
 `qubit (int)` - the qubit to have the U gate be applied to the quantum wire.
+
+`custom_matrix (np.array)` -  matrix to be applied to the quantum circuit.
 
 ### Returns:
 `None`
@@ -1541,14 +1543,16 @@ print(qc.state())
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
 
+from QCpy.QuantumGate import PauliX
+
 qc = QuantumCircuit(2)
 
-qc.u(0)
+qc.custom(0, PauliX().matrix)
 
 print(qc.state())
 
-# [[0.5-0.5j]
-# [0. +0.j ]
-# [0.5+0.5j]
-# [0. +0.j ]]
+# [[0.+0.j]
+# [0.+0.j]
+# [1.+0.j]
+# [0.+0.j]]
 ```
