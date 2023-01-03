@@ -609,6 +609,7 @@ from QCpy.QuantumCircuit import QuantumCircuit
 qc = QuantumCircuit(2)
 
 qc.hadamard(0)
+
 qc.cnot(0, 1)
 
 print(qc.probabilities())
@@ -660,7 +661,8 @@ print(qc.measure())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 2)
+
+qc = QuantumCircuit(2)
 
 qc.hadamard(0)
 
@@ -700,7 +702,8 @@ print(qc.state())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 3)
+
+qc = QuantumCircuit(3)
 
 qc.hadamard(0)
 
@@ -740,7 +743,7 @@ print(qc.state())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 3)
+qc = QuantumCircuit(3)
 
 qc.hadamard(0)
 
@@ -782,7 +785,7 @@ print(qc.state())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 4)
+qc = QuantumCircuit(4)
 
 qc.hadamard(0)
 
@@ -829,7 +832,7 @@ print(qc.state())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 2)
+qc = QuantumCircuit(2)
 
 qc.hadamard(0)
 
@@ -861,7 +864,7 @@ print(qc.state())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 2)
+qc = QuantumCircuit(2)
 
 qc.hadamard(0)
 
@@ -894,7 +897,7 @@ print(qc.state())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 2)
+qc = QuantumCircuit(2)
 
 qc.hadamard(0)
 
@@ -926,7 +929,7 @@ print(qc.state())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 2)
+qc = QuantumCircuit(2)
 
 qc.hadamard(0)
 
@@ -959,7 +962,7 @@ print(qc.state())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 2)
+qc = QuantumCircuit(2)
 
 qc.hadamard(0)
 
@@ -993,7 +996,7 @@ print(qc.state())
 
 ```python
 from QCpy.QuantumCircuit import QuantumCircuit
-qc = QuantumCircuit(qubits = 2)
+qc = QuantumCircuit(2)
 
 qc.hadamard(0)
 
@@ -1005,4 +1008,519 @@ print(qc.state())
 # [0. -0.5j]
 # [0.5+0.j ]
 # [0. -0.5j]]
+```
+
+> ## QuantumCircuit.`customControlPhase`(*control*, *target*, *custom_matrix*)
+
+*Used to insert single qubit based quantum gates to have a control qubit apart of it and committing to the quantum state.*
+
+### Parameters:
+
+`control (int)` - control qubit for given matrix.
+
+`target (int)` - target qubit for given matrix.
+
+`custom_matrix (np.array)` -  matrix to be applied to the quantum circuit.
+
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+from QuantumGate import PauliX
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+
+qc.customControlPhase(0,1, PauliX().matrix)
+
+print(qc.state())
+
+# [[0.707+0.j]
+# [0.   +0.j]
+# [0.   +0.j]
+# [0.707+0.j]]
+```
+
+> ## QuantumCircuit.`identity`(*qubit*)
+
+*Used to confirm value that a qubit is representing and does nothing to manipulate the value of such qubit.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the identity gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.identity(0)
+
+print(qc.state())
+
+# [[1.+0.j]
+# [0.+0.j]
+# [0.+0.j]
+# [0.+0.j]]
+```
+
+> ## QuantumCircuit.`x`(*qubit*)
+
+*Used to invert the value of what a qubit is representing.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Pauli-X gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.x(0)
+
+print(qc.state())
+
+# [[0.+0.j]
+# [0.+0.j]
+# [1.+0.j]
+# [0.+0.j]]
+```
+
+
+> ## QuantumCircuit.`hadmard`(*qubit*)
+
+*Used to put a given qubit into superposition.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Hadamard gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+
+print(qc.state())
+
+# [[0.707+0.j]
+# [0.   +0.j]
+# [0.707+0.j]
+# [0.   +0.j]]
+```
+
+> ## QuantumCircuit.`y`(*qubit*)
+
+*Changes the state of a qubit by pi around the y-axis of a Bloch Sphere.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Pauli-Y gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.y(0)
+
+print(qc.state())
+
+# [[0.+0.j]
+# [0.+0.j]
+# [0.+1.j]
+# [0.+0.j]]
+```
+
+
+> ## QuantumCircuit.`z`(*qubit*)
+
+*Changes the state of a qubit by pi around the z-axis of a Bloch Sphere.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Pauli-Z gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+
+qc.z(0)
+
+print(qc.state())
+
+# [[ 0.707+0.j]
+# [ 0.   +0.j]
+# [-0.707+0.j]
+# [ 0.   +0.j]]
+```
+
+> ## QuantumCircuit.`phase`(*qubit*, *theta=numpy.pi/2*)
+
+*Commits to a rotation around the z-axis based off of the inputted theta value.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Phase gate be applied to the quantum wire.
+
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around z-axis.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+
+qc.phase(0)
+
+print(qc.state())
+
+# [[0.707+0.j   ]
+# [0.   +0.j   ]
+# [0.   +0.707j]
+# [0.   +0.j   ]]
+```
+
+> ## QuantumCircuit.`s`(*qubit*)
+
+*Is a Phase gate where the inputted theta value is given as a constant of theta = pi / 2.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Pauli-Z gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+
+qc.s(0)
+
+print(qc.state())
+
+# [[0.707+0.j   ]
+# [0.   +0.j   ]
+# [0.   +0.707j]
+# [0.   +0.j   ]]
+```
+
+> ## QuantumCircuit.`sdg`(*qubit*)
+
+*Is a Phase gate and inverse of the S gate where the inputted theta value is given as a constant of theta = -pi / 2.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Sdg gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+
+qc.sdg(0)
+
+print(qc.state())
+
+# [[0.707+0.j   ]
+# [0.   +0.j   ]
+# [0.   -0.707j]
+# [0.   +0.j   ]]
+```
+
+> ## QuantumCircuit.`t`(*qubit*)
+
+*T gate is a special use case gate that in implemented from the P Gate.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the T gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+
+qc.t(0)
+
+print(qc.state())
+
+# [[0.707+0.j ]
+# [0.   +0.j ]
+# [0.5  +0.5j]
+# [0.   +0.j ]]
+```
+
+> ## QuantumCircuit.`tdg`(*qubit*)
+
+*Tdg gate is a special use case gate that in implemented from the P Gate and is the inverse of the T gate.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Tdg gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+
+qc.tdg(0)
+
+print(qc.state())
+
+# [[0.707+0.j ]
+# [0.   +0.j ]
+# [0.5  -0.5j]
+# [0.   +0.j ]]
+```
+
+> ## QuantumCircuit.`rz`(*qubit*, *theta=numpy.pi/2*)
+
+*RZ gate commits a rotation around the z-axis for a qubit.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Rz gate be applied to the quantum wire.
+
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around z-axis.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.hadamard(0)
+
+qc.rz(0)
+
+print(qc.state())
+
+# [[0.5-0.5j]
+# [0. +0.j ]
+# [0.5+0.5j]
+# [0. +0.j ]]
+```
+
+> ## QuantumCircuit.`ry`(*qubit*, *theta=numpy.pi/2*)
+
+*RY gate commits a rotation around the y-axis for a qubit.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Ry gate be applied to the quantum wire.
+
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around y-axis.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.ry(0)
+
+print(qc.state())
+
+# [[0.707+0.j]
+# [0.   +0.j]
+# [0.707+0.j]
+# [0.   +0.j]]
+```
+
+> ## QuantumCircuit.`rx`(*qubit*, *theta=numpy.pi/2*)
+
+*RX gate commits a rotation around the x-axis for a qubit.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Ry gate be applied to the quantum wire.
+
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around x-axis.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.rx(0)
+
+print(qc.state())
+
+# [[0.707+0.j   ]
+# [0.   +0.j   ]
+# [0.   -0.707j]
+# [0.   +0.j   ]]
+```
+
+> ## QuantumCircuit.`sx`(*qubit*)
+
+*SX gate is the square root of the Inverse gate (X, PauliX Gate).*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the Sx gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.sx(0)
+
+print(qc.state())
+
+# [[0.5+0.5j]
+# [0. +0.j ]
+# [0.5-0.5j]
+# [0. +0.j ]]
+```
+
+> ## QuantumCircuit.`sxdg`(*qubit*)
+
+*SXDG gate is the negative square root of the Inverse gate (X, PauliX Gate) and inverse of the SX gate.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the SXdg gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.sxdg(0)
+
+print(qc.state())
+
+# [[0.5-0.5j]
+# [0. +0.j ]
+# [0.5+0.5j]
+# [0. +0.j ]]
+```
+
+> ## QuantumCircuit.`u`(*qubit*, *theta=numpy.pi/2*, *phi=numpy.pi/2*, *lmbda=numpy.pi/2*)
+
+*U gate is given three inputs (theta, phi, and lambda) that allow the inputs to manipulate the base matrix to allow for the position of the enacted qubit around the bloch sphere representation.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the U gate be applied to the quantum wire.
+
+`theta (float)` default: `numpy.pi/2` - angle representation to rotate the qubit's representation.
+
+`phi (float)` default: `numpy.pi/2` -  angle representation to rotate the qubit's representation.
+
+`lmbda (float)` default: `numpy.pi/2` -  angle representation to rotate the qubit's representation.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.u(0)
+
+print(qc.state())
+
+# [[0.5-0.5j]
+# [0. +0.j ]
+# [0.5+0.5j]
+# [0. +0.j ]]
 ```
