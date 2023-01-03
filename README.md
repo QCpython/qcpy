@@ -717,3 +717,217 @@ print(qc.state())
 # [0. +0.j]
 # [0.5+0.j]]
 ```
+
+> ## QuantumCircuit.`rccx`(*control_1*, *control_2*, *target*)
+
+*A 3-qubit quantum gate that takes in two control qubits and one target qubit.*
+
+### Parameters:
+
+`control_1 (int)` - first control qubit.
+
+`control_2 (int)` - second control qubit.
+
+`target (int)` - target qubit.
+
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+qc = QuantumCircuit(qubits = 3)
+
+qc.hadamard(0)
+
+qc.hadamard(1)
+
+qc.rccx(0,1,2)
+
+print(qc.state())
+
+# [[ 0.5-0.j ]
+# [ 0. +0.j ]
+# [ 0.5-0.j ]
+# [ 0. +0.j ]
+# [ 0.5-0.j ]
+# [ 0. +0.j ]
+# [-0. +0.j ]
+# [ 0. +0.5j]]
+```
+
+> ## QuantumCircuit.`rc3x`(*a*, *b*, *c*, *d*)
+
+*A 4-qubit quantum gate that takes in 4 unique qubits.*
+
+### Parameters:
+
+`a (int)` - first input qubit.
+
+`b (int)` - second input qubit.
+
+`c (int)` - third input qubit.
+
+`d (int)` - fourth input qubit.
+
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+qc = QuantumCircuit(qubits = 4)
+
+qc.hadamard(0)
+
+qc.hadamard(1)
+
+qc.hadamard(2)
+
+qc.rc3x(0,1,2)
+
+print(qc.state())
+
+# [[ 0.354-0.j   ]
+# [ 0.   +0.j   ]
+# [ 0.354-0.j   ]
+# [ 0.   +0.j   ]
+# [ 0.354-0.j   ]
+# [ 0.   +0.j   ]
+# [ 0.354-0.j   ]
+# [ 0.   +0.j   ]
+# [ 0.354-0.j   ]
+# [ 0.   +0.j   ]
+# [ 0.354-0.j   ]
+# [ 0.   +0.j   ]
+# [ 0.   +0.354j]
+# [-0.   +0.j   ]
+# [ 0.   -0.j   ]
+# [-0.354+0.j   ]]
+```
+> ## QuantumCircuit.`cnot`(*control*, *target*)
+
+*A 2-qubit quantum gate that takes in a control qubit and one target qubit.*
+
+### Parameters:
+
+`control (int)` - control qubit.
+
+`target (int)` - target qubit.
+
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+qc = QuantumCircuit(qubits = 2)
+
+qc.hadamard(0)
+
+qc.cnot(0,1)
+
+print(qc.state())
+
+# [[0.707+0.j]
+# [0.   +0.j]
+# [0.   +0.j]
+# [0.707+0.j]]
+```
+
+> ## QuantumCircuit.`cr`(*control*, *target*)
+
+*A 2-qubit quantum gate that takes in a control qubit and one target qubit.*
+
+### Parameters:
+
+`control (int)` - control qubit.
+
+`target (int)` - target qubit.
+
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+qc = QuantumCircuit(qubits = 2)
+
+qc.hadamard(0)
+
+qc.cr(0,1)
+
+print(qc.state())
+
+# [[0.707+0.j]
+# [0.   +0.j]
+# [0.707+0.j]
+# [0.   +0.j]]
+```
+
+
+> ## QuantumCircuit.`cz`(*control*, *target*)
+
+*A 2-qubit quantum gate that takes in a control qubit and one target qubit.*
+
+### Parameters:
+
+`control (int)` - control qubit.
+
+`target (int)` - target qubit.
+
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+qc = QuantumCircuit(qubits = 2)
+
+qc.hadamard(0)
+
+qc.cz(0,1)
+
+print(qc.state())
+
+# [[0.707+0.j]
+# [0.   +0.j]
+# [0.707+0.j]
+# [0.   +0.j]]
+```
+
+> ## QuantumCircuit.`swap`(*qubit_1*, *qubit_2*)
+
+*A 2-qubit quantum gate that takes in 2 qubits to swap there properties.*
+
+### Parameters:
+
+`qubit_1 (int)` - first qubit to swap.
+
+`qubit_2 (int)` - second qubit to swap.
+
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+qc = QuantumCircuit(qubits = 2)
+
+qc.hadamard(0)
+
+qc.swap(0,1)
+
+print(qc.state())
+
+# [[0.707+0.j]
+# [0.707+0.j]
+# [0.   +0.j]
+# [0.   +0.j]]
+```
