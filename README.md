@@ -686,8 +686,11 @@ print(qc.state())
 ### Parameters:
 
 `control_1 (int)` - first control qubit.
+
 `control_2 (int)` - second control qubit.
-`target (int)` - target control qubit.
+
+`target (int)` - target qubit.
+
 
 ### Returns:
 `None`
