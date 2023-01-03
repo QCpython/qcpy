@@ -659,6 +659,7 @@ print(qc.measure())
 ### Example:
 
 ```python
+from QCpy.QuantumCircuit import QuantumCircuit
 qc = QuantumCircuit(qubits = 2)
 
 qc.hadamard(0)
@@ -698,6 +699,7 @@ print(qc.state())
 ### Example:
 
 ```python
+from QCpy.QuantumCircuit import QuantumCircuit
 qc = QuantumCircuit(qubits = 3)
 
 qc.hadamard(0)
@@ -737,6 +739,7 @@ print(qc.state())
 ### Example:
 
 ```python
+from QCpy.QuantumCircuit import QuantumCircuit
 qc = QuantumCircuit(qubits = 3)
 
 qc.hadamard(0)
@@ -778,6 +781,7 @@ print(qc.state())
 ### Example:
 
 ```python
+from QCpy.QuantumCircuit import QuantumCircuit
 qc = QuantumCircuit(qubits = 4)
 
 qc.hadamard(0)
@@ -824,6 +828,7 @@ print(qc.state())
 ### Example:
 
 ```python
+from QCpy.QuantumCircuit import QuantumCircuit
 qc = QuantumCircuit(qubits = 2)
 
 qc.hadamard(0)
@@ -855,6 +860,7 @@ print(qc.state())
 ### Example:
 
 ```python
+from QCpy.QuantumCircuit import QuantumCircuit
 qc = QuantumCircuit(qubits = 2)
 
 qc.hadamard(0)
@@ -887,6 +893,7 @@ print(qc.state())
 ### Example:
 
 ```python
+from QCpy.QuantumCircuit import QuantumCircuit
 qc = QuantumCircuit(qubits = 2)
 
 qc.hadamard(0)
@@ -918,6 +925,7 @@ print(qc.state())
 ### Example:
 
 ```python
+from QCpy.QuantumCircuit import QuantumCircuit
 qc = QuantumCircuit(qubits = 2)
 
 qc.hadamard(0)
@@ -930,4 +938,71 @@ print(qc.state())
 # [0.707+0.j]
 # [0.   +0.j]
 # [0.   +0.j]]
+```
+
+> ## QuantumCircuit.`rxx`(*qubit_1*, *qubit_2*, *theta=numpy.pi/2*)
+
+*A 2-qubit quantum gate that takes in two qubits and a representation of theta to initialize in the quantum state.*
+
+### Parameters:
+
+`qubit_1 (int)` - first qubit input.
+
+`qubit_2 (int)` - second qubit input.
+
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around z-axis.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QCpy.QuantumCircuit import QuantumCircuit
+qc = QuantumCircuit(qubits = 2)
+
+qc.hadamard(0)
+
+qc.rxx(0,1)
+
+print(qc.state())
+
+# [[0.5+0.j ]
+# [0. -0.5j]
+# [0.5+0.j ]
+# [0. -0.5j]]
+```
+
+> ## QuantumCircuit.`rzz`(*qubit_1*, *qubit_2*, *theta=numpy.pi/2*)
+
+*A 2-qubit quantum gate that takes in two qubits and a representation of theta to initialize in the quantum state.*
+
+### Parameters:
+
+`qubit_1 (int)` - first qubit input.
+
+`qubit_2 (int)` - second qubit input.
+
+`theta (float)` default: `numpy.pi/2` -  angle of rotation around z-axis.
+
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QCpy.QuantumCircuit import QuantumCircuit
+qc = QuantumCircuit(qubits = 2)
+
+qc.hadamard(0)
+
+qc.rxx(0,1)
+
+print(qc.state())
+
+# [[0.5+0.j ]
+# [0. -0.5j]
+# [0.5+0.j ]
+# [0. -0.5j]]
 ```
