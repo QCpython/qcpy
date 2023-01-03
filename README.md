@@ -1029,9 +1029,9 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
-from QuantumGate import PauliX
+from QCpy.QuantumGate import PauliX
 
 qc = QuantumCircuit(2)
 
@@ -1061,7 +1061,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1089,7 +1089,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1118,7 +1118,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1146,7 +1146,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1175,7 +1175,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1207,7 +1207,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1237,7 +1237,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1267,7 +1267,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1297,7 +1297,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1327,7 +1327,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1359,7 +1359,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1391,7 +1391,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1421,7 +1421,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1449,7 +1449,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1477,7 +1477,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
@@ -1511,7 +1511,35 @@ print(qc.state())
 ### Example:
 
 ```python
-from QuantumCircuit import QuantumCircuit
+from QCpy.QuantumCircuit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.u(0)
+
+print(qc.state())
+
+# [[0.5-0.5j]
+# [0. +0.j ]
+# [0.5+0.5j]
+# [0. +0.j ]]
+```
+
+> ## QuantumCircuit.`u`(*qubit*, *custom_matrix*)
+
+*Will take in a custom single qubit quantum gate and implement it on a qubit.*
+
+### Parameters:
+
+`qubit (int)` - the qubit to have the U gate be applied to the quantum wire.
+
+### Returns:
+`None`
+
+### Example:
+
+```python
+from QCpy.QuantumCircuit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 
