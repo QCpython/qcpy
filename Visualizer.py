@@ -324,7 +324,7 @@ class QSphere:
     
 class StateVector:
     """
-    Visualizes the quantum circuit's quantum amplitutes using a bar graph and a sphere
+    Visualizes the quantum circuit's quantum amplitutes using a bar graph
    
     Methods
     --------
@@ -422,7 +422,7 @@ class StateVector:
                      
 class Probabilities:
     """
-    Visualizes the quantum circuit using a bar graph
+    Visualizes the quantum circuit's qubits probability of being measured using a bar graph
    
     Methods
     --------
