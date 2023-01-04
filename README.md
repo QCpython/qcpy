@@ -1593,6 +1593,19 @@ print(qc.state())
 
 ### Example:
 
+```python
+from QuantumCircuit import *
+from Visualizer import *
+
+qc = QuantumCircuit(3)
+
+qc.hadamard(0)
+qc.hadamard(1)
+qc.hadamard(2)
+
+sphere_test = QSphere(qc)
+sphere_test.makeSphere(save=False, show=True)
+```
 > ## *class* QC.Visualizer.StateVector(*circuit*)
 
 *Visualizes the quantum circuit's quantum amplitutes using a bar graph*
