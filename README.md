@@ -1556,3 +1556,103 @@ print(qc.state())
 # [1.+0.j]
 # [0.+0.j]]
 ```
+
+# Visualizer
+
+*A collection of classes to visualize the quantum circuit*
+
+> ## *class* QC.Visualizer.QSphere(*circuit*)
+
+*Visualizes the quantum circuit as a q-sphere*
+
+### Parameters:
+
+`circuit` - the quantum circuit
+
+### Attributes:
+
+`None`
+
+> ## QSphere.`makeSphere`(*path="qsphere.png"*, *save=True*, *show=True*, *darkmode=True*)
+
+*Returns a Q-Sphere that plots a global visualization of the quantum states in a 3D global view*
+
+### Parameters:
+
+`path (str)` - name of the image to be saved
+
+`save (bool)` - pass True for the graph to be saved
+
+`show (bool)` - pass True for the sphere to be shown instead of saved
+
+`darkmode (bool)` - pass True for darkmode, false for lightmode
+
+### Returns:
+
+`None`
+
+### Example:
+
+> ## *class* QC.Visualizer.StateVector(*circuit*)
+
+*Visualizes the quantum circuit's quantum amplitutes using a bar graph*
+
+### Parameters:
+
+`circuit` - the quantum circuit
+
+### Attributes:
+
+`None`
+
+> ## StateVector.`makeGraph`(*path="statevector.png"*, *save=True*, *show=True*, *darkmode=True*)
+
+*Returns a graph that plots all the amplitudes of the qubits being measured*
+
+### Parameters:
+
+`path (str)` - name of the image to be saved
+
+`save (bool)` - pass True for the graph to be saved
+
+`show (bool)` - pass True for the graph to be shown instead of saved
+
+`darkmode (bool)` - pass True for darkmode and false for lightmode
+
+### Returns:
+
+`None`
+
+### Example:
+
+> ## *class* QC.Visualizer.Probabilities(*circuit*)
+
+*Visualizes the quantum circuit's qubits probability of being measured using a bar graph*
+
+### Parameters:
+
+`circuit` - the quantum circuit
+
+### Attributes:
+
+`None`
+
+> ## Probabilities.`makeGraph`(*path="probabilities.png"*, *save=True*, *show=True*, *darkmode=True*)
+
+*Returns a graph that plots all the probabilities of the qubits being measured*
+
+### Parameters:
+
+`path (str)` - name of the image to be saved
+
+`save (bool)` - pass True for the graph to be saved
+
+`show (bool)` - pass True for the graph to be shown instead of saved
+
+`darkmode (bool)` - pass True for darkmode and false for lightmode
+
+### Returns:
+
+`None`
+
+### Example:
