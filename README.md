@@ -1603,8 +1603,8 @@ qc.hadamard(0)
 qc.hadamard(1)
 qc.hadamard(2)
 
-sphere_test = QSphere(qc)
-sphere_test.makeSphere(save=False, show=True)
+sphere_ex = QSphere(qc)
+sphere_ex.makeSphere(save=False, show=True)
 ```
 > ## *class* QC.Visualizer.StateVector(*circuit*)
 
@@ -1638,6 +1638,20 @@ sphere_test.makeSphere(save=False, show=True)
 
 ### Example:
 
+```python
+from QuantumCircuit import *
+from Visualizer import *
+
+qc = QuantumCircuit(3)
+
+qc.hadamard(0)
+qc.hadamard(1)
+qc.hadamard(2)
+
+stateVector_ex = StateVector(qc)
+stateVector_ex.makeGraph(save=False, show=True)
+```
+
 > ## *class* QC.Visualizer.Probabilities(*circuit*)
 
 *Visualizes the quantum circuit's qubits probability of being measured using a bar graph*
@@ -1669,3 +1683,17 @@ sphere_test.makeSphere(save=False, show=True)
 `None`
 
 ### Example:
+
+```python
+from QuantumCircuit import *
+from Visualizer import *
+
+qc = QuantumCircuit(3)
+
+qc.hadamard(0)
+qc.hadamard(1)
+qc.hadamard(2)
+
+probabilities_ex = Probabilities(qc)
+probabilities_ex.makeGraph(save=False, show=True)
+```
