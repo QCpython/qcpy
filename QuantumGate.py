@@ -185,7 +185,7 @@ class CNot:
                     [0+0j, 0+0j, 0+0j, 1+0j],
                     [0+0j, 0+0j, 1+0j, 0+0j],
                     [0+0j, 1+0j, 0+0j, 0+0j]
-                ], F)
+                ], 'F')
         else:
             self.matrix = np.array([
                     [1+0j, 0+0j, 0+0j, 0+0j],
