@@ -1,5 +1,5 @@
-from QuantumCircuit import *
-from Visualizer import *
+from QCpy import QuantumCircuit
+from QCpy.Visualizer import QSphere
 
 # creates a circuitfor 3 qubits
 qc = QuantumCircuit(3)
