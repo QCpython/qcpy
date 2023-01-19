@@ -1,5 +1,5 @@
-from QuantumCircuit import QuantumCircuit
-from QuantumGate import U
+from QCpy import QuantumCircuit
+from QCpy.QuantumGate import U
 
 # Create Quantum Circuit class object of 3 qubits and represent the placement of values in little_endian format.
 qc = QuantumCircuit(qubits = 2, little_endian = True)

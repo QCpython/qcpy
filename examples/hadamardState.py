@@ -1,4 +1,4 @@
-from QuantumCircuit import QuantumCircuit
+from QCpy import QuantumCircuit
 
 number_of_qubits = 3
 # Create Quantum Circuit class object of 2 qubits and represent the placement of values in little_endian format.
