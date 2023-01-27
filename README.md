@@ -94,7 +94,7 @@ PauliY.matrix = [0+0j, 0-1j],
 `matrix (np.ndarray)` - matrix representation of Pauli-Z gate.
 
 ```python
-PauliY.matrix = [1+0j, 0+0j], 
+PauliZ.matrix = [1+0j, 0+0j], 
                 [0+0j, -1+0j]
 ```
 
