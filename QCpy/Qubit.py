@@ -11,6 +11,8 @@ Methods
 None.
 
 """
+
+
 class Qubit:
     def __init__(self, initial_state: chr = 'z'):
         """
@@ -27,14 +29,17 @@ class Qubit:
         self._INITIAL_STATE = initial_state
         self.state = None
         # Sets qubit to the z-axis and will face "upwards" or [1,0,...n^2 - 1].
-        if(self._INITIAL_STATE == 'z'):
+        if (self._INITIAL_STATE == 'z'):
             self.state = np.array([[1+0j], [0+0j]], 'F')
             # Sets the qubit to the y-axis.
-        elif(self._INITIAL_STATE == 'y'):
-            self.state = np.array([[0+0j + 1+0j], [(1+0j + 0+0j) * 0+1j]], 'F') / np.sqrt(2)
+        elif (self._INITIAL_STATE == 'y'):
+            self.state = np.array(
+                [[0+0j + 1+0j], [(1+0j + 0+0j) * 0+1j]], 'F') / np.sqrt(2)
             # Sets the qubit to the y-axis.
-        elif(self._INITIAL_STATE == 'x'):
-            self.state = np.array([[0+0j + 1+0j], [1+0j + 0+0j]], 'F') / np.sqrt(2)     
-            # Calls error as no other plane of existence for calculations exists.    
+        elif (self._INITIAL_STATE == 'x'):
+            self.state = np.array(
+                [[0+0j + 1+0j], [1+0j + 0+0j]], 'F') / np.sqrt(2)
+            # Calls error as no other plane of existence for calculations exists.
         else:
-            exit(f"Error: Qubit.__init__() -- Qubit must be initialized in a 0 or 1 state \n Qubit was initialized in state: {initial_state}.")
+            exit(
+                f"Error: Qubit.__init__() -- Qubit must be initialized in a 0 or 1 state \n Qubit was initialized in state: {initial_state}.")
