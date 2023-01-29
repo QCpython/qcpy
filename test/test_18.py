@@ -1,4 +1,4 @@
-from QuantumCircuit import QuantumCircuit
+from QCpy import QuantumCircuit
 import numpy as np
 
 def inc(x):
