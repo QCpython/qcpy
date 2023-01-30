@@ -1,7 +1,6 @@
 import numpy as np
 from ..QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
-from matplotlib.cm import ScalarMappable
 
 class Probabilities:
     """
