@@ -4,6 +4,12 @@
 
 QCpy is an open source python library and collaborative project for flexible simulations and visualizations of quantum circuits. Designed by college students with students in mind, this library contains a powerful set of tools to teach computer scientists about the emerging discipline of quantum computing (QC).
 
+You can download the package using pip:
+
+```txt
+pip install QCpython
+```
+
 ## Recommended Resources on Quantum Computing:
 
 - [Microsoft’s Linear Algebra for Quantum Computing](https://learn.microsoft.com/en-us/azure/quantum/overview-algebra-for-quantum-computing)
