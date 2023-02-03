@@ -32,11 +32,12 @@ class BlochSphere:
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
         
-    def makeSphere(self, path: str = "BlochSphere.png", save: bool = True, show: bool = False, darkmode: bool = True):
+    def makeSphere(self, show_bit: int = 0, path: str = "BlochSphere.png", save: bool = True, show: bool = False, darkmode: bool = True):
         """
             Creates a sphere of the circuit's probabilties
         Args:
             path (str): name of the image to be saved
+            show_bit (int): the bit to be visualized, initialized as the 0th bit
             save (bool): pass True for the graph to be saved
             show (bool): pass True for the sphere to be shown instead of saved
             darkmode (bool): pass True for darkmode, false for lightmode
@@ -98,35 +99,16 @@ class BlochSphere:
         ax.text(0, 0, -2, "-z", color="gray")
         ax.text(.1, 0, -1.5, "|1>", color="gray")
         
-        ### For testing purposes only now
-        zero = np.array([[
-            1+0j,
-            0+0j
-        ]])
-
-        one = np.array([[
-            0+0j,
-            1+0j
-        ]])
-        
-        final = np.array([])
-        
-        for i in range(len(self._phase_angles)):
-            theta = self._amplitutes[i]
-            phi = self._phase_angles[i]
-            placement = np.cos(theta / 2) * zero + (np.exp(0+1j * phi) * np.sin(theta / 2) * one)
-            final = np.append(final, placement)
-        z = final[1::2].flatten()
-        y = final[::2].flatten()
-        z = z[0]
-        y = y[0]
+        #gets theta and phi values, theta is converted to radians
+        theta = np.arcsin(self._amplitutes[show_bit]) * 2
+        phi = self._phase_angles[show_bit]
 
         # gets x, y, z cartesian coords
-        x1 = 1 * np.sin(phi) * np.cos(theta)
-        y1 = 1 * np.sin(phi) * np.sin(theta)
-        z1 = 1 * np.cos(phi)
+        x = 1 * np.sin(theta) * np.cos(phi)
+        y = 1 * np.sin(theta) * np.sin(phi)
+        z = 1 * np.cos(theta)
         # plots a line from center to surface
-        xs, ys, zs = [0, x1], [0, y1], [0, z1]
+        xs, ys, zs = [0, x], [0, y], [0, z]
         ax.plot3D(xs, ys, zs, color=_accent)
         ax.scatter(xs[1], ys[1], zs[1], s=5, color=_accent)
         ax.text(xs[1] * 1.15, ys[1] * 1.15, zs[1] * 1.15, "|ψ⟩", color=_text)
