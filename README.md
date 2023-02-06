@@ -1612,6 +1612,57 @@ qc.hadamard(2)
 sphere_ex = QSphere(qc)
 sphere_ex.makeSphere(save=False, show=True)
 ```
+
+
+> ## *class* QC.Visualizer.BlochSphere(*circuit*)
+
+*Visualizes the quantum state of a single qubit as a sphere*
+
+### Parameters:
+
+`circuit` - the quantum circuit
+
+### Attributes:
+
+`None`
+
+> ## BlochSphere.`makeSphere`(*show_bit=0*, *path="qsphere.png"*, *save=True*, *show=True*, *darkmode=True*)
+
+*Returns a Bloch Sphere that plots the quantum state of a single qubit in a 3D global view*
+
+### Parameters:
+
+`show_bit (int)` - the qubit on the circuit to be visualized, initialized as the 0th bit
+
+`path (str)` - name of the image to be saved
+
+`save (bool)` - pass True for the graph to be saved
+
+`show (bool)` - pass True for the sphere to be shown instead of saved
+
+`darkmode (bool)` - pass True for darkmode, false for lightmode
+
+### Returns:
+
+`None`
+
+### Example:
+
+```python
+from QCpy import QuantumCircuit
+from QCpy.Visualizer import *
+
+qc = QuantumCircuit(3)
+
+qc.hadamard(0)
+qc.hadamard(1)
+qc.hadamard(2)
+
+sphere_ex = BlochSphere(qc)
+sphere_ex.makeSphere(show_bit=1, save=False, show=True)
+```
+
+
 > ## *class* QC.Visualizer.StateVector(*circuit*)
 
 *Visualizes the quantum circuit's quantum amplitutes using a bar graph*
