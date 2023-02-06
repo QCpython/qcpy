@@ -1613,7 +1613,6 @@ sphere_ex = QSphere(qc)
 sphere_ex.makeSphere(save=False, show=True)
 ```
 
-
 > ## *class* QC.Visualizer.BlochSphere(*circuit*)
 
 *Visualizes the quantum state of a single qubit as a sphere*
@@ -1661,7 +1660,6 @@ qc.hadamard(2)
 sphere_ex = BlochSphere(qc)
 sphere_ex.makeSphere(show_bit=1, save=False, show=True)
 ```
-
 
 > ## *class* QC.Visualizer.StateVector(*circuit*)
 
