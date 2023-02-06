@@ -372,7 +372,7 @@ class QuantumCircuit:
             statevector = np.arcsin(statevector) * 2
         return np.round(statevector,decimals=round)
 
-    def phaseAngle(self, round: int = 2, radian: bool = True):
+    def phaseAngle(self, show_bit = -1, round: int = 3, radian: bool = True):
         """
         Calculates an array of possible phase angles based off the state. Converts each value using np.angle() function then degree to radian.
         Params:
@@ -385,11 +385,31 @@ class QuantumCircuit:
         # if rounding value is less than 0, exits as this is improper.
         if (round < 0):
             exit(f"Error: QuantumCircuit().phaseAngle -- round placement must be a value greater than 0.")
-        #
-        temp = (np.mod(np.angle(self._state), 2 * np.pi) * (180 / np.pi))
+
+        if (type(show_bit) == int and show_bit < 0):
+
+            phaseangle = (np.mod(np.angle(self._state), 2 * np.pi) * (180 / np.pi))
+
+        elif (type(show_bit) == str or type(show_bit) == int):
+
+            phaseangle = show_bit
+
+            if (type(show_bit) == str):
+
+                phaseangle = int(show_bit, 2)
+
+            if (2**self._circuit_size <= phaseangle):
+
+                exit(f"Error: QuantumCircuit().phaseAngle -- Called bit to find phase angle is not within range of possible values.")
+
+            phaseangle = np.mod(np.angle(self._state[phaseangle]), 2 * np.pi) * (180 / np.pi)
+        else:
+            exit(f"Error: QuantumCircuit().phaseAngle -- show_bit given wrong type of value, binary string or integers in range are only allowed.")
+
         if (radian):
-            temp *= (np.pi / 180)
-        return temp
+            phaseangle *= (np.pi / 180)
+            
+        return np.around(phaseangle, decimals = round)
 
     def state(self, round: int = 3):
         """
