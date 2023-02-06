@@ -343,27 +343,10 @@ class QuantumCircuit:
         if (round < 0):
             exit(
                 f"Error: QuantumCircuit().amplitude -- round placement must be a value greater than 0.")
-        # initial array for return
-        # Due to dealing with negative values
         if (type(show_bit) == int and show_bit < 0):
-            # for loop will go through this statement 2^n times for _state
-            # length
-            statevector = []
-            current_bit = 0
-            while (current_bit < 2**self._circuit_size):
-                # calculates sqrt(x^2 + y^2 for amplitude), x = real value, y =
-                # imaginary value
-                amplitude_of_bit = np.sqrt(
-                    np.power(
-                        self._state[current_bit].real,
-                        2) +
-                    np.power(
-                        self._state[current_bit].imag,
-                        2))
-                if (radian):
-                    amplitude_of_bit = np.arcsin(amplitude_of_bit) * 2
-                statevector.append(amplitude_of_bit)
-                current_bit += 1
+            # for loop will go through this statement 2^n times for _state length
+            # converts state to: (x^2 + y^2) where x is real values and y is imaginary values
+            statevector = np.sqrt(np.power(self._state.real,2) + np.power(self._state.imag,2))
 
         # converts unsigned bit representation into a integer if string.
         # handles error for being out of bounds of 2^(num_of_qubits)
@@ -375,7 +358,6 @@ class QuantumCircuit:
 
             if (2**self._circuit_size <= statevector):
                 exit(f"Error: QuantumCircuit().amplitude -- Called bit to find amplitude is not within range of possible values.")
-
             statevector = np.sqrt(
                 np.power(
                     self._state[statevector].real,
@@ -383,18 +365,12 @@ class QuantumCircuit:
                 np.power(
                     self._state[statevector].imag,
                     2))
-            if (radian):
-                statevector = np.arcsin(statevector) * 2
-        # wrong value for
+        # wrong value inputted for finding the show_bit
         else:
             exit(f"Error: QuantumCircuit().amplitude -- show_bit given wrong type of value, binary string or integer are only allowed.")
-        return np.round(
-            statevector,
-            decimals=round) if isinstance(
-            statevector,
-            float) else np.around(
-            statevector,
-            decimals=round)
+        if (radian):
+            statevector = np.arcsin(statevector) * 2
+        return np.round(statevector,decimals=round)
 
     def phaseAngle(self, round: int = 2, radian: bool = True):
         """
