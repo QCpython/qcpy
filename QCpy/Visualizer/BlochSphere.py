@@ -32,12 +32,12 @@ class BlochSphere:
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
         
-    def makeSphere(self, show_bit: int = 0, path: str = "BlochSphere.png", save: bool = True, show: bool = False, darkmode: bool = True):
+    def makeSphere(self, path: str = "BlochSphere.png", show_bit: int = 0, save: bool = True, show: bool = False, darkmode: bool = True):
         """
-            Creates a sphere of the circuit's probabilties
+            Creates a bloch sphere that visualizes a qubit's state in a 3D view
         Args:
             path (str): name of the image to be saved
-            show_bit (int): the bit to be visualized, initialized as the 0th bit
+            show_bit (int): the qubit on the circuit to be visualized, initialized as the 0th bit
             save (bool): pass True for the graph to be saved
             show (bool): pass True for the sphere to be shown instead of saved
             darkmode (bool): pass True for darkmode, false for lightmode
@@ -113,6 +113,7 @@ class BlochSphere:
         ax.scatter(xs[1], ys[1], zs[1], s=5, color=_accent)
         ax.text(xs[1] * 1.15, ys[1] * 1.15, zs[1] * 1.15, "|ψ⟩", color=_text)
         
+        plt.tight_layout()
         plt.axis('off') # removes 3d grid around sphere
         # saves Bloch Sphere as a file and/or shows it as a figure
         if save:
