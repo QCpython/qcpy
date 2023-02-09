@@ -146,7 +146,7 @@ class QSphere:
     
     def makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False, darkmode: bool = True):
         """
-            Creates a sphere of the circuit's probabilties
+            Creates a sphere that visualizes the qubits phase angles if their probability of being measured is greater than 0
         Args:
             path (str): name of the image to be saved
             save (bool): pass True for the graph to be saved
