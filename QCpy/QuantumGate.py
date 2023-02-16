@@ -97,6 +97,7 @@ class Identity:
             [1+0j, 0+0j],
             [0+0j, 1+0j]
         ], 'F')
+        self.symbol = 'I'
 
 
 class PauliX:
@@ -116,7 +117,7 @@ class PauliX:
             [0+0j, 1+0j],
             [1+0j, 0+0j]
         ], 'F')
-
+        self.symbol = 'X'
 
 class PauliY:
     """
@@ -135,7 +136,7 @@ class PauliY:
             [0+0j, 0-1j],
             [0+1j, 0+0j]
         ], 'F')
-
+        self.symbol = 'Y'
 
 class PauliZ:
     """
@@ -154,6 +155,7 @@ class PauliZ:
             [1+0j, 0+0j],
             [0+0j, -1+0j]
         ], 'F')
+        self.symbol = 'Z'
 
 
 class Hadamard:
@@ -173,6 +175,7 @@ class Hadamard:
             [1+0j, 1+0j],
             [1+0j, -1+0j]
         ], 'F') * (1/np.sqrt(2))
+        self.symbol = 'H'
 
 
 class CNot:
@@ -267,6 +270,7 @@ class Toffoli:
             [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j],
             [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j]
         ], 'F')
+        self.symbol = 'toffoli'
 
 
 class Phase:
@@ -289,6 +293,7 @@ class Phase:
             [1+0j, 0+0j],
             [0+0j, np.exp(0+1j * theta)]
         ], 'F')
+        self.symbol = 'P'
 
 
 class S:
@@ -308,6 +313,7 @@ class S:
             [1+0j, 0+0j],
             [0+0j, 0+1j]
         ], 'F')
+        self.symbol = 'S'
 
 
 class Sdg:
@@ -327,7 +333,7 @@ class Sdg:
             [1+0j, 0+0j],
             [0+0j, 0-1j]
         ], 'F')
-
+        self.symbol = 'S†'
 
 class T:
     """
@@ -346,6 +352,7 @@ class T:
             [1+0j, 0+0j],
             [0+0j, np.exp((0+1j * np.pi) / 4)]
         ], 'F')
+        self.symbol = 'T'
 
 
 class Tdg:
@@ -365,6 +372,7 @@ class Tdg:
             [1+0j, 0+0j],
             [0+0j, np.exp((0-1j * np.pi) / 4)]
         ], 'F')
+        self.symbol = 'T†'
 
 
 class Rz:  # theta is equal to the rotation through angle phi around the z-axis
@@ -388,7 +396,7 @@ class Rz:  # theta is equal to the rotation through angle phi around the z-axis
             [np.exp((0-1j * (theta / 2))), 0+0j],
             [0+0j, np.exp(0+1j * (theta / 2))]
         ], 'F')
-
+        self.symbol = 'Rz'
 
 class Rx:  # theta is equal to the rotation through angle phi around the x-axis
     """
@@ -411,7 +419,7 @@ class Rx:  # theta is equal to the rotation through angle phi around the x-axis
             [np.cos(theta / 2), 0-1j * np.sin(theta / 2)],
             [0-1j * np.sin(theta / 2), np.cos(theta / 2)]
         ], 'F')
-
+        self.symbol = 'Rx'
 
 class Ry:  # theta is equal to the rotation through angle phi around the y-axis
     """
@@ -433,6 +441,7 @@ class Ry:  # theta is equal to the rotation through angle phi around the y-axis
             [np.cos(theta / 2), -1 * np.sin(theta / 2)],
             [np.sin(theta / 2), np.cos(theta / 2)]
         ], 'F')
+        self.symbol = 'Ry'
 
 
 class Sx:
@@ -451,7 +460,7 @@ class Sx:
         self.matrix = np.array([
             [1+1j, 1-1j],
             [1-1j, 1+1j]], 'F') * (1 / 2)
-
+        self.symbol = 'Sx'
 
 class Sxdg:
     """
@@ -469,7 +478,7 @@ class Sxdg:
         self.matrix = np.array([
             [1-1j, 1+1j],
             [1+1j, 1-1j]], 'F') * (1 / 2)
-
+        self.symbol = 'Sx†'
 
 class U:
     """
@@ -493,6 +502,7 @@ class U:
         self.matrix = np.array([
             [np.cos(theta / 2), -1 * np.exp(0+1j * lmbda) * np.sin(theta / 2)],
             [np.exp(0+1j * phi) * np.sin(theta / 2), np.exp(0+1j * (lmbda + phi)) * np.cos(theta / 2)]], 'F')
+        self.symbol = 'U'
 
 
 class Rxx:
