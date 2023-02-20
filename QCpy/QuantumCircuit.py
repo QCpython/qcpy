@@ -427,8 +427,10 @@ class QuantumCircuit:
                 f"Error: QuantumCircuit().state -- round placement must be a value greater than 0.")
         return np.around(self._state, decimals=round)
     
-    def circuit_queue(self):
+    def circuitQueue(self):
         return self._circuit
+    def circuitSize(self):
+        return self._circuit_size
 
     def probabilities(self, round: int = 3):
         """
