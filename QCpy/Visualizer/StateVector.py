@@ -3,6 +3,7 @@ from ..QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
 # ScalerMappable is needed for creating the color bar on the State Vector visualization
 from matplotlib.cm import ScalarMappable
+from matplotlib.colors import rgb2hex
 
 class StateVector:
     """
@@ -65,9 +66,10 @@ class StateVector:
         plt.close()
         # sets up bar graph and colors that map to a qubits phase angle
         fig, ax = plt.subplots(figsize=(self._num_qubits + 3, self._num_qubits + 3))
-        colors = plt.get_cmap('hsv')
-        norm = plt.Normalize(0, np.pi*2)
-        ax.bar(self._state_list, self._amplitutes, color=colors(norm(self._phase_angles)))
+        colors = plt.get_cmap('hsv') # color map
+        norm = plt.Normalize(0, np.pi*2) # need phase angle values to be normalized from 0 to 2pi
+        hex_arr = [rgb2hex(i) for i in colors(norm(self._phase_angles))] # array of hexvals corresponding to qubit's phase angles
+        ax.bar(self._state_list, self._amplitutes, color=hex_arr)
         # sets up tick labels
         plt.setp(ax.get_xticklabels(), rotation=75, ha='right', color=_text)
         plt.setp(ax.get_yticklabels(), color=_text)
