@@ -213,6 +213,7 @@ class CNot:
                 [0+0j, 0+0j, 0+0j, 1+0j],
                 [0+0j, 0+0j, 1+0j, 0+0j]
             ], 'F')
+        self.symbol = 'Cnot'
 
 
 class Swap:
@@ -237,6 +238,7 @@ class Swap:
             [0+0j, 1+0j, 0+0j, 0+0j],
             [0+0j, 0+0j, 0+0j, 1+0j]
         ], 'F')
+        self.symbol = 'Swap'
 
 
 class Toffoli:
@@ -270,7 +272,7 @@ class Toffoli:
             [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j],
             [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j]
         ], 'F')
-        self.symbol = 'toffoli'
+        self.symbol = 'Toffoli'
 
 
 class Phase:
@@ -529,6 +531,7 @@ class Rxx:
             [0+0j, 0-1j * np.sin(theta / 2), np.cos(theta / 2), 0+0j],
             [0-1j * np.sin(theta / 2), 0+0j, 0+0j, np.cos(theta / 2)]
         ], 'F')
+        self.symbol = 'Rxx'
 
 
 class Rzz:
@@ -555,6 +558,7 @@ class Rzz:
             [0+0j, 0+0j, np.exp(0+1j * (theta / 2)), 0+0j],
             [0+0j, 0+0j, 0+0j, np.exp(0-1j * (theta / 2))]
         ], 'F')
+        self.symbol = 'Rzz'
 
 
 class Cr:
@@ -581,6 +585,7 @@ class Cr:
             [0+0j, 0+0j, 1+0j, 0+0j],
             [0+0j, 0+0j, 0+0j, np.exp(theta * 0+1j)]
         ], 'F')
+        self.symbol = 'Cr'
 
 
 class Cz:
@@ -604,3 +609,4 @@ class Cz:
             [0+0j, 0+0j, 1+0j, 0+0j],
             [0+0j, 0+0j, 0+0j, -1+0j]
         ], 'F')
+        self.symbol = 'Cz'
