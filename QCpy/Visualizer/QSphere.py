@@ -1,6 +1,7 @@
 import numpy as np
 from ..QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
+from .tools.Sphere import Sphere
 # ScalerMappable is needed for creating the color bar on the State Vector visualization
 # that shows what each qubit's phase angle is
 from matplotlib.cm import ScalarMappable
@@ -8,10 +9,11 @@ from matplotlib.cm import ScalarMappable
 # on a QSphere
 from collections import deque
 
+
 class QSphere:
     """
     Visualizes the quantum circuit as a q-sphere
-   
+
     Methods
     --------
     makeSphere() :
@@ -19,14 +21,14 @@ class QSphere:
         in a 3D global view
     """
 
-    def __init__(self, circuit = None):
+    def __init__(self, circuit=None):
         """
         Args:
-            circuit: 
+            circuit:
                 the quantum circuit
         ------
         Variables:
-            _num_qubits : 
+            _num_qubits :
                 the number of qubits on the circuit
             _state_list :
                 all the states of the qubits on the circuit
@@ -45,16 +47,21 @@ class QSphere:
             _lat_vals :
                 a list of lists of the qubit states in order as the appear upon the latitudes of a QSphere
         """
-        self._num_qubits =  int(np.log2(len(circuit.probabilities())))
-        self._state_list = [format(i, 'b').zfill(self._num_qubits) for i in range(2**self._num_qubits)]
+        self._num_qubits = int(np.log2(len(circuit.probabilities())))
+        self._state_list = [
+            format(
+                i,
+                'b').zfill(
+                self._num_qubits) for i in range(
+                2**self._num_qubits)]
         self._probabilities = circuit.probabilities()
         self._percents = [i * 100 for i in self._probabilities]
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
-        self._prob_dict = {self._state_list[i]: self._probabilities[i] for i in range(len(self._state_list))}
-        self._phase_dict = {self._state_list[i]: self._phase_angles[i] for i in range(len(self._state_list))}
+        self._prob_dict = {self._state_list[i]: self._probabilities[i] for i in range(
+            len(self._state_list))}
         self._lat_vals = self.__latitude_finder__()
-                
+
     def __hamming_distance__(self, l1: str, l2: str):
         """
         Determines if the count of the number of 1 values match up between two strings.
@@ -66,7 +73,7 @@ class QSphere:
             Boolean representation if the count of ones in l1 and l2 are equal to each other.
         """
         return l1.count("1") == l2.count("1")
-    
+
     def __latitude_finder__(self):
         """
         Creates a 2D array of placed values on each latitude ring, alongside the amount of rotations around the specific lognitude that need to shifted for proper placement.
@@ -77,11 +84,14 @@ class QSphere:
         """
         # Main holder of values of latitude placement values
         latitude_values = [[]]
-        # will create a 2d array of empty arrays based on the number of qubits - 1, for the starting empty array.
+        # will create a 2d array of empty arrays based on the number of qubits
+        # - 1, for the starting empty array.
         for _ in range(self._num_qubits - 1):
             latitude_values.append([])
         latitude_values.append([])
-        # queue of the given state list from the class object to iterate through each value and then pop them once they are placed in the 2D array
+        # queue of the given state list from the class object to iterate
+        # through each value and then pop them once they are placed in the 2D
+        # array
         queue_of_state = deque(self._state_list)
         # base popping of values of 00...0, and 11...1
         latitude_values[0].append(queue_of_state.popleft())
@@ -89,13 +99,15 @@ class QSphere:
         # string value for 0...01 based off of how many qubits there are.
         bit_representation = "0" * (self._num_qubits - 1) + "1"
         # within the range of 1 and the length of the string representing 0...01 and then adding it to
-        # each row, while having each index of the string's value to replace a 0 with a one.
+        # each row, while having each index of the string's value to replace a
+        # 0 with a one.
         for i in range(1, len(bit_representation)):
             # Add value to main latitude 2d array
             latitude_values[i].append(bit_representation)
             # Get rid of where the string value is located in the queue.
             queue_of_state.remove(bit_representation)
-            # creates new string with an extra one in it from the previous iteration.
+            # creates new string with an extra one in it from the previous
+            # iteration.
             list_temp = list(bit_representation)
             list_temp[i - 1] = "1"
             bit_representation = "".join(list_temp)
@@ -104,14 +116,15 @@ class QSphere:
         while queue_of_state:
             # pops the value on the left side of the queue.
             bit_representation = queue_of_state.popleft()
-            # goes through the 2d array rows and determines which starting value has the same hamming distance as the bit_representation.
+            # goes through the 2d array rows and determines which starting
+            # value has the same hamming distance as the bit_representation.
             for i in range(1, len(latitude_values) - 1):
-                if (self.__hamming_distance__(bit_representation, latitude_values[i][0])):
+                if (self.__hamming_distance__(
+                        bit_representation, latitude_values[i][0])):
                     latitude_values[i].append(bit_representation)
-        
+
         return latitude_values
-        
-        
+
     def __getCoords__(self):
         """
         Creates a 2d array of coordinates for the QSphere based off rotation around the latitude, longitude and what values on each segment in proper notation.
@@ -124,16 +137,20 @@ class QSphere:
         coords = []
         phi = []
         theta = []
-        
+
         # gets theta vals
-        for i in range(len(self._lat_vals)): 
-            temp_arr = (np.linspace(2*(np.pi)/len(self._lat_vals[i]), 2*(np.pi), len(self._lat_vals[i])))
+        for i in range(len(self._lat_vals)):
+            temp_arr = (np.linspace(2 *
+                                    (np.pi) /
+                                    len(self._lat_vals[i]), 2 *
+                                    (np.pi), len(self._lat_vals[i])))
             theta.append(temp_arr)
-        
+
         # gets phi vals
-        phi = np.linspace(0, np.pi, self._num_qubits + 1) 
-            
-        # gets x, y, z coordinate values for lines from center of the QSphere to the surface    
+        phi = np.linspace(0, np.pi, self._num_qubits + 1)
+
+        # gets x, y, z coordinate values for lines from center of the QSphere
+        # to the surface
         for i in range(len(phi)):
             for j in range(len(theta[i])):
                 x1 = 1 * np.sin(phi[i]) * np.cos(theta[i][j])
@@ -141,10 +158,15 @@ class QSphere:
                 z1 = 1 * np.cos(phi[i])
                 x, y, z = [0, x1], [0, y1], [0, z1]
                 coords.append([x, y, z])
-        
+
         return coords
-    
-    def makeSphere(self, path: str = "qsphere.png", save: bool = True, show: bool = False, darkmode: bool = True):
+
+    def makeSphere(
+            self,
+            path: str = "qsphere.png",
+            save: bool = False,
+            show: bool = True,
+            darkmode: bool = True):
         """
             Creates a sphere that visualizes the qubits phase angles if their probability of being measured is greater than 0
         Args:
@@ -153,7 +175,7 @@ class QSphere:
             show (bool): pass True for the sphere to be shown instead of saved
             darkmode (bool): pass True for darkmode, false for lightmode
         """
-        # sets up darkmode or lightmode
+
         if darkmode:
             _text = 'white'
             _accent = '#39c0ba'
@@ -162,73 +184,47 @@ class QSphere:
             _text = 'black'
             _accent = 'black'
             _background = 'white'
-        
-        # creates a sphere
-        plt.clf()
-        plt.close()
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection="3d")     
-        u = np.linspace(0,2*np.pi, 100)
-        v = np.linspace(0, np.pi, 100)
-        r = 1
-        x = r * np.outer(np.cos(u), np.sin(v))
-        y = r * np.outer(np.sin(u), np.sin(v))
-        z = r * np.outer(np.ones(np.size(u)), np.cos(v))
-        # wireframe sets up lines around the sphere
-        ax.plot_wireframe(x, y, z, rstride = 20, cstride = 20, linewidth=.5, color="lightgray")
-        # surface helps give the sphere a translucent look 
-        ax.plot_surface(x, y, z,  color="linen", alpha=.1)
-        ax.scatter(0,0,0, s=5, color="black")
-        # plots accent lines around the sphere
-        theta = np.linspace(0, 2 * np.pi, 100)
-        zs = np.zeros(100)
-        xs = r * np.sin(theta)
-        ys = r * np.cos(theta)
-        ax.plot(xs, ys, zs, color='black', alpha=0.25) # line around equator
-        ax.plot(zs, xs, ys, color='black', alpha=0.25) # line around north & south poles
-        # accent lines along x, y, and z axes
-        zeros = np.zeros(100)
-        line = np.linspace(-1,1,100)
-        ax.plot(line, zeros, zeros, color='black', alpha=0.25)
-        ax.plot(zeros, line, zeros, color='black', alpha=0.25)
-        ax.plot(zeros, zeros, line, color='black', alpha=0.25)
-        
+        ax = Sphere(_background)
         # coords will be in the order of states from the __latitude_finder__ function
         # and not in order of self._state_list, we can use our dict to look up each states
-        # probability in any order now b/c we do not want to plot a qubit if it has a probability of 0
+        # probability in any order now b/c we do not want to plot a qubit if it
+        # has a probability of 0
         coords = self.__getCoords__()
         # turns self._lat_vals into a single list instead of a list of lists
-        ham_states = [item for sublist in self._lat_vals for item in sublist]  
+        ham_states = [item for sublist in self._lat_vals for item in sublist]
         # sets up colors that will map to each states phase angle
         colors = plt.get_cmap('hsv')
-        norm = plt.Normalize(0, np.pi*2)
-        
+        norm = plt.Normalize(0, np.pi * 2)
+
         # function to plot lines from center of the sphere to the surface
         # and qubit states in ket notation, line colors will be basedupon the states
-        # phase angle             
+        # phase angle
         for i, j in zip(coords, ham_states):
             cur_prob = self._prob_dict[j]
-            cur_phase = self._phase_dict[j] 
+            cur_phase = self._phase_dict[j]
             # only plot states that have a probability greater than 0
-            if cur_prob > 0: 
+            if cur_prob > 0:
                 x, y, z = i[0], i[1], i[2]
                 ax.plot3D(x, y, z, color=colors(norm(cur_phase)))
-                ax.scatter(x[1], y[1], z[1], s=5, color=colors(norm(cur_phase)))
-                ax.text(x[1] * 1.15, y[1] * 1.15, z[1] * 1.15, f"|{j}>", color=_text)
-                
-        # sets backgorund color
-        ax.set_facecolor(_background)
-        fig.patch.set_facecolor(_background)
+                ax.scatter(
+                    x[1], y[1], z[1], s=5, color=colors(
+                        norm(cur_phase)))
+                ax.text(
+                    x[1] * 1.15,
+                    y[1] * 1.15,
+                    z[1] * 1.15,
+                    f"|{j}>",
+                    color=_text)
         # code for colorbar on rightside
         cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm), shrink=.55)
         cbar.set_label("Phase Angle", rotation=270, labelpad=15, color=_accent)
-        cbar.set_ticks([2*np.pi, (3*np.pi)/2, np.pi, np.pi/2, 0])
+        cbar.set_ticks([2 * np.pi, (3 * np.pi) / 2, np.pi, np.pi / 2, 0])
         cbar.ax.yaxis.set_tick_params(color=_text)
         cbar.outline.set_edgecolor(_text)
         cbar.set_ticklabels(["2π", "3π / 2", "π", "π / 2", "0"], color=_text)
         plt.tight_layout()
-        
-        plt.axis('off') # removes 3d grid around sphere
+
+        plt.axis('off')  # removes 3d grid around sphere
         # saves QSphere as a file and/or shows it as a figure
         if save:
             plt.savefig(path)

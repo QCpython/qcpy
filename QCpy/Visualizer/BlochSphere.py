@@ -1,27 +1,27 @@
 import numpy as np
 from ..QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
-
+from .tools.Sphere import Sphere
 
 
 class BlochSphere:
     """
     Visualizes the quantum state of a single qubit as a sphere
-    
+
     Methods
     --------
     makeSphere():
-        returns a Bloch Sphere that plots the quantum state of a single qubit in a 
+        returns a Bloch Sphere that plots the quantum state of a single qubit in a
         3D global view
     """
-    
-    def __init__(self, circuit = None, blochQubit = None):
+
+    def __init__(self, circuit=None, blochQubit=None):
         """
         Args:
-            circuit: 
+            circuit:
                 the quantum circuit
             blochQubit:
-                the qubit that will be visualized 
+                the qubit that will be visualized
         ------
         Variables:
             _amplitudes :
@@ -29,10 +29,19 @@ class BlochSphere:
             _phase_angles :
                 an array of the phase angle for every state
         """
+        if (circuit.circuitSize() > 1):
+            exit(
+                f"Error: BlochSphere() -- BlochSphere only calculates 1 qubit circuits.")
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
-        
-    def makeSphere(self, path: str = "BlochSphere.png", show_bit: int = 0, save: bool = True, show: bool = False, darkmode: bool = True):
+
+    def makeSphere(
+            self,
+            path: str = "BlochSphere.png",
+            show_bit: int = 0,
+            save: bool = False,
+            show: bool = True,
+            darkmode: bool = True):
         """
             Creates a bloch sphere that visualizes a qubit's state in a 3D view
         Args:
@@ -51,57 +60,27 @@ class BlochSphere:
             _text = 'black'
             _accent = 'black'
             _background = 'white'
-        
+
         # creates a sphere
-        plt.clf()
-        plt.close()
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection="3d")     
-        u = np.linspace(0,2*np.pi, 100)
-        v = np.linspace(0, np.pi, 100)
-        r = 1
-        x = r * np.outer(np.cos(u), np.sin(v))
-        y = r * np.outer(np.sin(u), np.sin(v))
-        z = r * np.outer(np.ones(np.size(u)), np.cos(v))
-        # wireframe sets up lines around the sphere
-        ax.plot_wireframe(x, y, z, rstride = 20, cstride = 20, linewidth=.5, color="lightgray")
-        # surface helps give the sphere a translucent look 
-        ax.plot_surface(x, y, z,  color="linen", alpha=.1)
-        ax.scatter(0,0,0, s=5, color="black")
-        # plots accent lines around the sphere
-        theta = np.linspace(0, 2 * np.pi, 100)
-        zs = np.zeros(100)
-        xs = r * np.sin(theta)
-        ys = r * np.cos(theta)
-        ax.plot(xs, ys, zs, color='black', alpha=0.25) # line around equator
-        ax.plot(zs, xs, ys, color='black', alpha=0.25) # line around north & south poles
-        # accent lines along x, y, and z axes
-        zeros = np.zeros(100)
-        line = np.linspace(-1,1,100)
-        ax.plot(line, zeros, zeros, color='black', alpha=0.25)
-        ax.plot(zeros, line, zeros, color='black', alpha=0.25)
-        ax.plot(zeros, zeros, line, color='black', alpha=0.25)
-        # sets backgorund color
-        ax.set_facecolor(_background)
-        fig.patch.set_facecolor(_background)
+        ax = Sphere(_background)
         # x-axis arrow
         ax.quiver(1, 0, 0, .75, 0, 0, color="lightgray")
         ax.text(2, 0, 0, "+x", color="gray")
         # y-axis arrow
-        ax.quiver(0, 1, 0, 0, .75, 0, color="lightgray") 
+        ax.quiver(0, 1, 0, 0, .75, 0, color="lightgray")
         ax.text(0, 2, 0, "+y", color="gray")
         # +z and |0> arrow
-        ax.quiver(0, 0, 1, 0, 0, .75, color="lightgray") 
+        ax.quiver(0, 0, 1, 0, 0, .75, color="lightgray")
         ax.text(0, 0, 2, "+z", color="gray")
         ax.text(.1, 0, 1.5, "|0>", color="gray")
         # -z and |1> arrow
-        ax.quiver(0, 0, -1, 0, 0, -.75, color="lightgray") 
+        ax.quiver(0, 0, -1, 0, 0, -.75, color="lightgray")
         ax.text(0, 0, -2, "-z", color="gray")
         ax.text(.1, 0, -1.5, "|1>", color="gray")
-        
-        #gets theta and phi values, theta is converted to radians
-        theta = np.arcsin(self._amplitutes[show_bit]) * 2
-        phi = self._phase_angles[show_bit]
+
+        # gets theta and phi values, theta is converted to radians
+        theta = np.arcsin(self._amplitutes[1]) * 2
+        phi = self._phase_angles[1]
 
         # gets x, y, z cartesian coords
         x = 1 * np.sin(theta) * np.cos(phi)
@@ -112,9 +91,9 @@ class BlochSphere:
         ax.plot3D(xs, ys, zs, color=_accent)
         ax.scatter(xs[1], ys[1], zs[1], s=5, color=_accent)
         ax.text(xs[1] * 1.15, ys[1] * 1.15, zs[1] * 1.15, "|ψ⟩", color=_text)
-        
+
         plt.tight_layout()
-        plt.axis('off') # removes 3d grid around sphere
+        plt.axis('off')  # removes 3d grid around sphere
         # saves Bloch Sphere as a file and/or shows it as a figure
         if save:
             plt.savefig(path)

@@ -1,14 +1,17 @@
 import numpy as np
 from ..QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
-# ScalerMappable is needed for creating the color bar on the State Vector visualization
+# ScalerMappable is needed for creating the color bar on the State Vector
+# visualization
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import rgb2hex
+from .tools.Graph import Graph
+
 
 class StateVector:
     """
     Visualizes the quantum circuit's quantum amplitutes using a bar graph
-   
+
     Methods
     --------
     makeGraph() :
@@ -22,7 +25,7 @@ class StateVector:
                 the quantum circuit
         ------
         Variables:
-            _num_qubits : 
+            _num_qubits :
                 the number of qubits on the circuit
             _state_list :
                 all the states of the qubits on the circuit
@@ -35,14 +38,24 @@ class StateVector:
             _phase_angles :
                 an array of the phase angle for every state
         """
-        self._num_qubits =  int(np.log2(len(circuit.probabilities())))
-        self._state_list = [format(i, 'b').zfill(self._num_qubits) for i in range(2**self._num_qubits)]
+        self._num_qubits = circuit.circuitSize()
+        self._state_list = [
+            format(
+                i,
+                'b').zfill(
+                self._num_qubits) for i in range(
+                2**self._num_qubits)]
         self._probabilities = circuit.probabilities()
         self._percents = [i * 100 for i in circuit.probabilities()]
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
-        
-    def makeGraph(self, path: str = "statevector.png", save: bool = True, show: bool = False, darkmode: bool = True):
+
+    def makeGraph(
+            self,
+            path: str = "statevector.png",
+            save: bool = True,
+            show: bool = False,
+            darkmode: bool = True):
         """
             Creates a graph of the circuit's amplitudes and phase angles
         Args:
@@ -60,47 +73,32 @@ class StateVector:
             _text = 'black'
             _accent = 'black'
             _background = 'white'
-        
-        # clears any previous plots    
-        plt.clf()
-        plt.close()
-        # sets up bar graph and colors that map to a qubits phase angle
-        fig, ax = plt.subplots(figsize=(self._num_qubits + 3, self._num_qubits + 3))
-        colors = plt.get_cmap('hsv') # color map
-        norm = plt.Normalize(0, np.pi*2) # need phase angle values to be normalized from 0 to 2pi
-        hex_arr = [rgb2hex(i) for i in colors(norm(self._phase_angles))] # array of hexvals corresponding to qubit's phase angles
-        ax.bar(self._state_list, self._amplitutes, color=hex_arr)
-        # sets up tick labels
-        plt.setp(ax.get_xticklabels(), rotation=75, ha='right', color=_text)
-        plt.setp(ax.get_yticklabels(), color=_text)
-        # cleans outline of bargraph so it's open to the top and right
-        ax.spines['bottom'].set_color(_text)
-        ax.spines['top'].set_color(_background) 
-        ax.spines['right'].set_color(_background)
-        ax.spines['left'].set_color(_text)
-        # sets up tick parameters
-        ax.tick_params(axis='x', colors=_text)
-        ax.tick_params(axis='y', colors=_text)
+
+        # clears any previous plots
+        ax = Graph(_text, _background, self._num_qubits)
+
         ax.set_ylim(0, np.amax(self._amplitutes))
-        # sets backgorund color
-        ax.set_facecolor(_background)
-        fig.patch.set_facecolor(_background)
+        colors = plt.get_cmap('hsv')  # color map
+        # need phase angle values to be normalized from 0 to 2pi
+        norm = plt.Normalize(0, np.pi * 2)
+        # array of hexvals corresponding to qubit's phase angles
+        hex_arr = [rgb2hex(i) for i in colors(norm(self._phase_angles))]
+        ax.bar(self._state_list, self._amplitutes, color=hex_arr)
         # sets x and y labels and title
         plt.xlabel('Computational basis states', color=_accent)
         plt.ylabel('Amplitutde', labelpad=5, color=_accent)
         plt.title('State Vector', pad=10, color=_accent)
-        # code for colorbar on rightside 
+        # code for colorbar on rightside
         cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm))
         cbar.set_label("Phase Angle", rotation=270, labelpad=10, color=_accent)
-        cbar.set_ticks([2*np.pi, (3*np.pi)/2, np.pi, np.pi/2, 0])
+        cbar.set_ticks([2 * np.pi, (3 * np.pi) / 2, np.pi, np.pi / 2, 0])
         cbar.ax.yaxis.set_tick_params(color=_text)
         cbar.outline.set_edgecolor(_text)
         cbar.set_ticklabels(["2π", "3π / 2", "π", "π / 2", "0"], color=_text)
         plt.tight_layout()
-        
+
         # saves State Vector as a file and/or shows it as a figure
         if save:
             plt.savefig(path)
         if show:
             plt.show()
-                     
