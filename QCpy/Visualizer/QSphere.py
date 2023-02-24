@@ -60,6 +60,8 @@ class QSphere:
         self._phase_angles = circuit.phaseAngle().flatten()
         self._prob_dict = {self._state_list[i]: self._probabilities[i] for i in range(
             len(self._state_list))}
+        self._phase_dict = {self._state_list[i]: self._phase_angles[i] for i in range(
+            len(self._state_list))}
         self._lat_vals = self.__latitude_finder__()
 
     def __hamming_distance__(self, l1: str, l2: str):
