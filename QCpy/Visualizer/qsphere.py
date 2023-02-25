@@ -1,7 +1,7 @@
 import numpy as np
 from ..QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
-from .tools.Sphere import Sphere
+from .tools.sphere import Sphere
 # ScalerMappable is needed for creating the color bar on the State Vector visualization
 # that shows what each qubit's phase angle is
 from matplotlib.cm import ScalarMappable

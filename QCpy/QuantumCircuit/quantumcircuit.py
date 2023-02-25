@@ -1,8 +1,9 @@
 """
 QuantumCircuit.py
 """
-from .Qubit import Qubit
-from .QuantumGate import *
+from ..qubit import Qubit
+from ..QuantumGate import *
+from .tools import amplitude, phaseAngle, probabilities, measure
 import numpy as np
 
 """
@@ -335,83 +336,27 @@ class QuantumCircuit:
         """
         Return a vector of all possible amplitudes for the given state.
         Params:
-            show_bit: string of binary values or integer
+            show_bit: string or int
             round: int
             radian: bool
         Returns:
             np.around(statevector) (numpy array):
                 Matrix after final calculation from the sqrt(x^2 + y^2) algorithm for finding the amplitude.
         """
-        if (round < 0):
-            exit(
-                f"Error: QuantumCircuit().amplitude -- round placement must be a value greater than 0.")
-        if (type(show_bit) == int and show_bit < 0):
-            # for loop will go through this statement 2^n times for _state length
-            # converts state to: (x^2 + y^2) where x is real values and y is imaginary values
-            statevector = np.sqrt(np.power(self._state.real,2) + np.power(self._state.imag,2))
-
-        # converts unsigned bit representation into a integer if string.
-        # handles error for being out of bounds of 2^(num_of_qubits)
-        # converts string bit to an integer to find the value for
-        elif (type(show_bit) == str or type(show_bit) == int):
-            statevector = show_bit
-            if (type(show_bit) == str):
-                statevector = int(show_bit, 2)
-
-            if (2**self._circuit_size <= statevector):
-                exit(f"Error: QuantumCircuit().amplitude -- Called bit to find amplitude is not within range of possible values.")
-            statevector = np.sqrt(
-                np.power(
-                    self._state[statevector].real,
-                    2) +
-                np.power(
-                    self._state[statevector].imag,
-                    2))
-        # wrong value inputted for finding the show_bit
-        else:
-            exit(f"Error: QuantumCircuit().amplitude -- show_bit given wrong type of value, binary string or integer are only allowed.")
-        if (radian):
-            statevector = np.arcsin(statevector) * 2
-        return np.round(statevector,decimals=round)
+        return amplitude(self._state, self._circuit_size, show_bit, round, radian)
 
     def phaseAngle(self, show_bit = -1, round: int = 3, radian: bool = True):
         """
         Calculates an array of possible phase angles based off the state. Converts each value using np.angle() function then degree to radian.
         Params:
+            show_bit: string or int
             round: int
             radian: bool
         Returns:
             np.around(phaseAngles) (numpy array):
-                Matrix after final calculation from the  phase angle algorithm.
+                Matrix after final calculation from the phase angle algorithm.
         """
-        # if rounding value is less than 0, exits as this is improper.
-        if (round < 0):
-            exit(f"Error: QuantumCircuit().phaseAngle -- round placement must be a value greater than 0.")
-
-        if (type(show_bit) == int and show_bit < 0):
-
-            phaseangle = (np.mod(np.angle(self._state), 2 * np.pi) * (180 / np.pi))
-
-        elif (type(show_bit) == str or type(show_bit) == int):
-
-            phaseangle = show_bit
-
-            if (type(show_bit) == str):
-
-                phaseangle = int(show_bit, 2)
-
-            if (2**self._circuit_size <= phaseangle):
-
-                exit(f"Error: QuantumCircuit().phaseAngle -- Called bit to find phase angle is not within range of possible values.")
-
-            phaseangle = np.mod(np.angle(self._state[phaseangle]), 2 * np.pi) * (180 / np.pi)
-        else:
-            exit(f"Error: QuantumCircuit().phaseAngle -- show_bit given wrong type of value, binary string or integers in range are only allowed.")
-
-        if (radian):
-            phaseangle *= (np.pi / 180)
-            
-        return np.around(phaseangle, decimals = round)
+        return phaseAngle(self._state, self._circuit_size, show_bit, round, radian)
 
     def state(self, round: int = 3):
         """
@@ -429,6 +374,7 @@ class QuantumCircuit:
     
     def circuitQueue(self):
         return self._circuit
+    
     def circuitSize(self):
         return self._circuit_size
 
@@ -441,19 +387,7 @@ class QuantumCircuit:
             prob_matrix (numpy array):
                 matrix with all the weighted probabilities of being measured
         """
-        if (round < 0):
-            exit(f"Error: QuantumCircuit().probailities -- round placement must be a value greater than 0.")
-        # get the probabilties for the "winner" of the measurement at any
-        # single point on the circuit
-        prob_matrix = self._state
-        # collapse the circuit into 1D
-        prob_matrix = prob_matrix.flatten()
-        # square the values to get the probabilities of each qubit state
-        prob_matrix = np.square(prob_matrix)
-        # turn all the complex numbers into real values
-        prob_matrix = np.abs(prob_matrix)
-        prob_matrix = np.around(prob_matrix, decimals=round)
-        return prob_matrix
+        return probabilities(self._state, round)
 
     def measure(self):
         """
@@ -465,23 +399,7 @@ class QuantumCircuit:
                 the winning state displayed in classical bits notation
         """
         # randomly selects the measured state using self.probabilities()
-        prob_matrix = self.probabilities()
-        # number of bits
-        num_bits = self._circuit_size
-        # creates a list of bits in strings
-        state_list = [format(i, 'b').zfill(num_bits)
-                      for i in range(2**num_bits)]
-        # turns state_list from list of strings to list of ints
-        state_list = list(map(int, state_list))
-        # numpy.random.choice takes in the list we will select from, size of the returning list,
-        #  and p = weights of each element
-        final_state = np.random.choice(state_list, 1, p=prob_matrix)
-        # take out the bits from the returned list and convert to a string
-        final_state = str(final_state[0])
-        # pad with zeroes if needed
-        final_state = final_state.zfill(num_bits)
-        # return the final state
-        return final_state
+        return measure(self._state, self._circuit_size, self.probabilities())
 
     def reverse(self):
         """

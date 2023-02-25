@@ -1,7 +1,7 @@
 import numpy as np
 from ..QuantumCircuit import QuantumCircuit
 import matplotlib.pyplot as plt
-from .tools.Graph import Graph
+from .tools.graph import Graph
 
 
 class Probabilities:

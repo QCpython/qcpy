@@ -1,0 +1,5 @@
+numpy
+matplotlib
+six
+pyparsing
+pytest

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # visualization
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import rgb2hex
-from .tools.Graph import Graph
+from .tools.graph import Graph
 
 
 class StateVector:
