@@ -9,7 +9,7 @@ Statevector : the amplitudes of the quantum circuit visualized as a graph
 Probabilities : the probabilities of each state being measured visualized as a graph
 """
 
-from .QSphere import QSphere
-from .StateVector import StateVector
-from .BlochSphere import BlochSphere
-from .Probabilities import Probabilities
+from .qsphere import QSphere
+from .statevector import StateVector
+from .blochsphere import BlochSphere
+from .probabilities import Probabilities

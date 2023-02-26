@@ -1,7 +1,7 @@
 import numpy as np
-from ..QuantumCircuit import QuantumCircuit
+from ..Core import QuantumCircuit
 import matplotlib.pyplot as plt
-from .tools.Sphere import Sphere
+from .tools.sphere import Sphere
 
 
 class BlochSphere:

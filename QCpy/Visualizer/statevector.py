@@ -1,11 +1,11 @@
 import numpy as np
-from ..QuantumCircuit import QuantumCircuit
+from ..Core import QuantumCircuit
 import matplotlib.pyplot as plt
 # ScalerMappable is needed for creating the color bar on the State Vector
 # visualization
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import rgb2hex
-from .tools.Graph import Graph
+from .tools.graph import Graph
 
 
 class StateVector:
