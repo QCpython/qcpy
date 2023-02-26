@@ -1,5 +1,5 @@
 import numpy as np
-from ..QuantumCircuit import QuantumCircuit
+from ..Core import QuantumCircuit
 import matplotlib.pyplot as plt
 # ScalerMappable is needed for creating the color bar on the State Vector
 # visualization

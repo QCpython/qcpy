@@ -1,4 +1,4 @@
-from .QuantumCircuit import QuantumCircuit
+from .Core import QuantumCircuit
 from .Visualizer import *
 from .qubit import Qubit
 from .QuantumGate import *
