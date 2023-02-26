@@ -378,16 +378,18 @@ class QuantumCircuit:
     def circuitSize(self):
         return self._circuit_size
 
-    def probabilities(self, round: int = 3):
+    def probabilities(self, show_percent: bool = False, show_bit: int = -1, round: int = 3):
         """
         Return a matrix with all the probabilities for each state
         Params:
+            show_percent: bool
+            show_bit: string or int
             round: int
         Returns:
             prob_matrix (numpy array):
                 matrix with all the weighted probabilities of being measured
         """
-        return probabilities(self._state, round)
+        return probabilities(self._state, self._circuit_size, show_percent, show_bit, round)
 
     def measure(self):
         """

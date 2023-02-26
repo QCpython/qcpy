@@ -9,12 +9,11 @@ def measure(state, circuit_size, probabilities):
             the winning state displayed in classical bits notation
     """
     # randomly selects the measured state using self.probabilities()
-    prob_matrix = probabilities
     # number of bits
     # creates a list of bits in strings
     # numpy.random.choice takes in the list we will select from, size of the returning list,
     #  and p = weights of each element
-    final_state = random.choice(arange(len(state), dtype=int), 1, p=prob_matrix)
+    final_state = random.choice(arange(len(state), dtype=int), 1, p=probabilities)
     # take out the bits from the returned list and convert to a string
     final_state =str(bin(final_state[0]))[2:]
     # pad with zeroes if needed
