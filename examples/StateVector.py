@@ -1,6 +1,6 @@
 from QCpy import QuantumCircuit
 from QCpy.Visualizer import StateVector
-
+import numpy as np
 circuit = QuantumCircuit(5, little_endian = True)
 circuit.hadamard(0)
 circuit.hadamard(1)
