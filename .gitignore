@@ -1,5 +1,7 @@
+*__pycache__*
+
+# Editor config
 .vscode/*
-__pycache__/*
 .idea/*
 
 # Environments
