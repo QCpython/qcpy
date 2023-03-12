@@ -20,7 +20,7 @@ pip install QCpython
 
 # Qubits
 
-> ## *class* QC.Qubit.`Qubit`(*initial_state=’z’*)
+> ## *class* QCpy.`Qubit`(*initial_state=’z’*)
 
 *Object representation of a qubit.*
 
@@ -456,7 +456,7 @@ Cz.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
 ```
 ---
 # Quantum Circuit
-> ## *class* QC.QuantumCircuit.`QuantumCircuit`(*qubits*, *little_endian=False*, *prep='z'*)
+> ## *class* QCpy.`QuantumCircuit`(*qubits*, *little_endian=False*, *prep='z'*)
 
 *Quantum circuit that represents the state of a quantum system and performs operations on select qubits.*
 
@@ -593,6 +593,40 @@ print(qc.state())
 # [0.   +0.j]
 # [0.   +0.j]
 # [0.707+0.j]]
+```
+
+> ## QuantumCircuit.`circuitQueue()`
+
+*Returns queue of gates on quantum circuit.*
+
+### Parameters:
+
+`None`
+
+### Returns:
+`queue (list)` - list of gates queued on quantum circuit.
+
+### Example:
+
+```python
+from QCpy import QuantumCircuit
+
+qc = QuantumCircuit(4)
+
+qc.x(0)
+qc.x(1)
+qc.x(2)
+qc.rc3x(0, 1, 2, 3)
+
+print(qc.circuitQueue())
+
+# [('X', 0), ('X', 1), ('X', 2), ('U', 3), ('U', 3), ('cnot', 2, # 3), ('U', 3), ('U', 3), ('swap', 2, 3), ('swap', 1, 2), 
+# ('swap', 1, 2), ('swap', 2, 3), ('cnot', 0, 3), ('U', 3),
+# ('swap', 2, 3), ('swap', 2, 3), ('cnot', 1, 3), ('U', 3), 
+# ('swap', 2, 3), ('swap', 1, 2), ('swap', 1, 2), ('swap', 2, 
+# 3), ('cnot', 0, 3), ('U', 3), ('swap', 2, 3), ('swap', 2, 3),
+#  ('cnot', 1, 3), ('U', 3), ('U', 3), ('U', 3), ('cnot', 2, 3),
+#  ('U', 3), ('U', 3), ('rc3x', 0, 1, 2, 3)]
 ```
 
 > ## QuantumCircuit.`probabilities`(*round=3*)
@@ -1567,7 +1601,7 @@ print(qc.state())
 
 *A collection of classes to visualize the quantum circuit*
 
-> ## *class* QC.Visualizer.QSphere(*circuit*)
+> ## *class* QCpy.Visualizer.QSphere(*circuit*)
 
 *Visualizes the quantum circuit as a q-sphere*
 
@@ -1661,7 +1695,7 @@ sphere_ex = BlochSphere(qc)
 sphere_ex.makeSphere(show_bit=1, save=False, show=True)
 ```
 
-> ## *class* QC.Visualizer.StateVector(*circuit*)
+> ## *class* QCpy.Visualizer.StateVector(*circuit*)
 
 *Visualizes the quantum circuit's quantum amplitutes using a bar graph*
 
@@ -1707,7 +1741,7 @@ stateVector_ex = StateVector(qc)
 stateVector_ex.makeGraph(save=False, show=True)
 ```
 
-> ## *class* QC.Visualizer.Probabilities(*circuit*)
+> ## *class* QCpy.Visualizer.Probabilities(*circuit*)
 
 *Visualizes the quantum circuit's qubits probability of being measured using a bar graph*
 
