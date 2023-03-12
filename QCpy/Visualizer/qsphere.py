@@ -49,19 +49,21 @@ class QSphere:
         """
         self._num_qubits = int(np.log2(len(circuit.probabilities())))
         self._state_list = [
-            format(
-                i,
-                'b').zfill(
-                self._num_qubits) for i in range(
-                2**self._num_qubits)]
+            format(i, 'b').zfill(self._num_qubits)
+            for i in range(2**self._num_qubits)
+        ]
         self._probabilities = circuit.probabilities()
         self._percents = [i * 100 for i in self._probabilities]
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
-        self._prob_dict = {self._state_list[i]: self._probabilities[i] for i in range(
-            len(self._state_list))}
-        self._phase_dict = {self._state_list[i]: self._phase_angles[i] for i in range(
-            len(self._state_list))}
+        self._prob_dict = {
+            self._state_list[i]: self._probabilities[i]
+            for i in range(len(self._state_list))
+        }
+        self._phase_dict = {
+            self._state_list[i]: self._phase_angles[i]
+            for i in range(len(self._state_list))
+        }
         self._lat_vals = self.__latitude_finder__()
 
     def __hamming_distance__(self, l1: str, l2: str):
@@ -142,10 +144,10 @@ class QSphere:
 
         # gets theta vals
         for i in range(len(self._lat_vals)):
-            temp_arr = (np.linspace(2 *
-                                    (np.pi) /
-                                    len(self._lat_vals[i]), 2 *
-                                    (np.pi), len(self._lat_vals[i])))
+            temp_arr = (
+                np.linspace(2 * (np.pi) / len(self._lat_vals[i]),
+                            2 * (np.pi), len(self._lat_vals[i]))
+            )
             theta.append(temp_arr)
 
         # gets phi vals
@@ -209,14 +211,13 @@ class QSphere:
                 x, y, z = i[0], i[1], i[2]
                 ax.plot3D(x, y, z, color=colors(norm(cur_phase)))
                 ax.scatter(
-                    x[1], y[1], z[1], s=5, color=colors(
-                        norm(cur_phase)))
+                    x[1], y[1], z[1], s=5,
+                    color=colors(norm(cur_phase))
+                )
                 ax.text(
-                    x[1] * 1.15,
-                    y[1] * 1.15,
-                    z[1] * 1.15,
-                    f"|{j}>",
-                    color=_text)
+                    x[1] * 1.15, y[1] * 1.15, z[1] * 1.15,
+                    f"|{j}>", color=_text
+                )
         # code for colorbar on rightside
         cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm), shrink=.55)
         cbar.set_label("Phase Angle", rotation=270, labelpad=15, color=_accent)
