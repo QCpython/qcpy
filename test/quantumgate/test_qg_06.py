@@ -3,18 +3,22 @@ import numpy as np
 
 
 def test_qg_06a():
-    assert (CNot(inverse=False).matrix == np.array([
-        [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
-        [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
-        [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j]
-    ], 'F')).all(), 'test_qg_06a Failed'
+    assert (
+        CNot(inverse=False).matrix == np.array([
+            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
+            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j]
+        ], 'F')
+    ).all(), 'test_qg_06a Failed on CNot'
 
 
 def test_qg_06b():
-    assert (CNot(inverse=True).matrix == np.array([
-        [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
-        [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j]
-    ], 'F')).all(), 'test_qg_06b Failed'
+    assert (
+        CNot(inverse=True).matrix == np.array([
+            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j]
+        ], 'F')
+    ).all(), 'test_qg_06b Failed on CNot'

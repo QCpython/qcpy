@@ -11,68 +11,35 @@ def inc(x):
 
 
 def test_15a():
-    assert (inc(3) == np.array([0.5 +
-                                0j, 0 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0.5j], 'F').reshape(8, 1)).all(), "test_15a Failed"
+    assert (
+        inc(3) == np.array([
+            0.5 + 0j, 0 + 0j, 0.5 + 0j, 0 + 0j,
+            0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0.5j
+        ], 'F').reshape(8, 1)
+    ).all(), "test_15a Failed hadamard -> hadamard -> rccx"
 
 
 def test_15b():
-    assert (inc(4) == np.array([0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0.5j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(16, 1)).all(), "test_15b Failed"
+    assert (
+        inc(4) == np.array([
+            0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0.5j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(16, 1)
+    ).all(), "test_15b Failed hadamard -> hadamard -> rccx"
 
 
 def test_15c():
-    assert (inc(5) == np.array([0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0.5j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(32, 1)).all(), "test_15c Failed"
+    assert (
+        inc(5) == np.array([
+            0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0.5j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(32, 1)
+    ).all(), "test_15c Failed hadamard -> hadamard -> rccx"

@@ -11,68 +11,35 @@ def inc(x):
 
 
 def test_08a():
-    assert (inc(3) == np.array([0.5 +
-                                0j, 0.5 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0.5 +
-                                0j], 'F').reshape(8, 1)).all(), "test_08a Failed"
+    assert (
+        inc(3) == np.array([
+            0.5 + 0j, 0.5 + 0j, 0.5 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0.5 + 0j
+        ], 'F').reshape(8, 1)
+    ).all(), "test_08a Failed on hadamard -> hadamard -> toffoli"
 
 
 def test_08b():
-    assert (inc(4) == np.array([0.5 +
-                                0j, 0.5 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(16, 1)).all(), "test_08b Failed"
+    assert (
+        inc(4) == np.array([
+            0.5 + 0j, 0.5 + 0j, 0.5 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0.5 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(16, 1)
+    ).all(), "test_08b Failed on hadamard -> hadamard -> toffoli"
 
 
 def test_08c():
-    assert (inc(5) == np.array([0.5 +
-                                0j, 0.5 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0.5 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(32, 1)).all(), "test_08c Failed"
+    assert (
+        inc(5) == np.array([
+            0.5 + 0j, 0.5 + 0j, 0.5 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0.5 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(32, 1)
+    ).all(), "test_08c Failed on hadamard -> hadamard -> toffoli"

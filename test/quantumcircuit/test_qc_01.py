@@ -8,42 +8,29 @@ def inc(x):
 
 
 def test_01a():
-    assert (inc(1) == np.array([1 + 0j, 0 + 0j],
-            'F').reshape(2, 1)).all(), "test_01a Failed"
+    assert (
+        inc(1) == np.array([1 + 0j, 0 + 0j], 'F').reshape(2, 1)
+    ).all(), "test_01a Failed on QuantumCircuit"
 
 
 def test_01b():
-    assert (inc(2) == np.array(
-        [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j], 'F').reshape(4, 1)).all(), "test_01b Failed"
+    assert (
+        inc(2) == np.array([1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j], 'F').reshape(4, 1)
+    ).all(), "test_01b Failed on QuantumCircuit"
 
 
 def test_01c():
-    assert (inc(3) == np.array([1 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j]).reshape(8, 1)).all(), "test_01c Failed"
+    assert (
+        inc(3) == np.array([
+            1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
+        ]).reshape(8, 1)
+    ).all(), "test_01c Failed on QuantumCircuit"
 
 
 def test_01d():
-    assert (inc(4) == np.array([1 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(16, 1)).all(), "test_01d Failed"
+    assert (
+        inc(4) == np.array([
+            1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(16, 1)
+    ).all(), "test_01d Failed on QuantumCircuit"

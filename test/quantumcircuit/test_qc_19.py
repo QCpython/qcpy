@@ -11,40 +11,28 @@ def inc(x):
 
 
 def test_19a():
-    assert (inc(2) == np.array([0.707 +
-                                0j, 0 -
-                                0.707j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(4, 1)).all(), "test_19a Failed"
+    assert (
+        inc(2) == np.array([
+            0.707 + 0j, 0 - 0.707j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(4, 1)
+    ).all(), "test_19a Failed on hadamard -> rzz -> hadamard"
 
 
 def test_19b():
-    assert (inc(3) == np.array([0.707 +
-                                0j, 0 -
-                                0.707j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(8, 1)).all(), "test_19b Failed"
+    assert (
+        inc(3) == np.array([
+            0.707 + 0j, 0 - 0.707j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(8, 1)
+    ).all(), "test_19b Failed on hadamard -> rzz -> hadamard"
 
 
 def test_19c():
-    assert (inc(4) == np.array([0.707 +
-                                0j, 0 -
-                                0.707j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(16, 1)).all(), "test_19c Failed"
+    assert (
+        inc(4) == np.array([
+            0.707 + 0j, 0 - 0.707j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(16, 1)
+    ).all(), "test_19c Failed on hadamard -> rzz -> hadamard"

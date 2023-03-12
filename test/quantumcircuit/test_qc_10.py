@@ -12,51 +12,34 @@ def inc(x):
 
 
 def test_10a():
-    assert (inc(1) == np.array([0.707 + 0j, 0.5 - 0.5j],
-            'F').reshape(2, 1)).all(), "test_10a Failed"
+    assert (
+        inc(1) == np.array([0.707 + 0j, 0.5 - 0.5j], 'F').reshape(2, 1)
+    ).all(), "test_10a Failed on hadamard -> tdg"
 
 
 def test_10b():
-    assert (inc(2) == np.array([0.5 +
-                                0j, 0.354 -
-                                0.354j, 0.354 -
-                                0.354j, 0 -
-                                0.5j], 'F').reshape(4, 1)).all(), "test_10b Failed"
+    assert (
+        inc(2) == np.array([
+            0.5 + 0j, 0.354 - 0.354j, 0.354 - 0.354j, 0 - 0.5j
+        ], 'F').reshape(4, 1)
+    ).all(), "test_10b Failed on hadamard -> tdg"
 
 
 def test_10c():
-    assert (inc(3) == np.array([0.354 +
-                                0j, 0.25 -
-                                0.25j, 0.25 -
-                                0.25j, 0 -
-                                0.354j, 0.25 -
-                                0.25j, 0 -
-                                0.354j, 0 -
-                                0.354j, -
-                                0.25 -
-                                0.25j], 'F').reshape(8, 1)).all(), "test_10c Failed"
+    assert (
+        inc(3) == np.array([
+            0.354 + 0j, 0.25 - 0.25j, 0.25 - 0.25j, 0 - 0.354j,
+            0.25 - 0.25j, 0 - 0.354j, 0 - 0.354j, -0.25 - 0.25j
+        ], 'F').reshape(8, 1)
+    ).all(), "test_10c Failed on hadamard -> tdg"
 
 
 def test_10d():
-    assert (inc(4) == np.array([0.25 +
-                                0j, 0.177 -
-                                0.177j, 0.177 -
-                                0.177j, 0 -
-                                0.25j, 0.177 -
-                                0.177j, 0 -
-                                0.25j, 0 -
-                                0.25j, -
-                                0.177 -
-                                0.177j, 0.177 -
-                                0.177j, 0 -
-                                0.25j, 0 -
-                                0.25j, -
-                                0.177 -
-                                0.177j, 0 -
-                                0.25j, -
-                                0.177 -
-                                0.177j, -
-                                0.177 -
-                                0.177j, -
-                                0.25 +
-                                0j], 'F').reshape(16, 1)).all(), "test_10d Failed"
+    assert (
+        inc(4) == np.array([
+            0.25 + 0j, 0.177 - 0.177j, 0.177 - 0.177j, 0 - 0.25j,
+            0.177 - 0.177j, 0 - 0.25j, 0 - 0.25j, -0.177 - 0.177j,
+            0.177 - 0.177j, 0 - 0.25j, 0 - 0.25j, -0.177 - 0.177j,
+            0 - 0.25j, -0.177 - 0.177j, -0.177 - 0.177j, -0.25 + 0j
+        ], 'F').reshape(16, 1)
+    ).all(), "test_10d Failed on hadamard -> tdg"
