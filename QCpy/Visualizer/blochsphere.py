@@ -31,7 +31,9 @@ class BlochSphere:
         """
         if (circuit.circuitSize() > 1):
             exit(
-                f"Error: BlochSphere() -- BlochSphere only calculates 1 qubit circuits.")
+                f"Error: BlochSphere() --",
+                f"BlochSphere only calculates 1 qubit circuits."
+            )
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
 
