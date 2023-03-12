@@ -1601,7 +1601,7 @@ print(qc.state())
 
 *A collection of classes to visualize the quantum circuit*
 
-> ## *class* QC.Visualizer.QSphere(*circuit*)
+> ## *class* QCpy.Visualizer.QSphere(*circuit*)
 
 *Visualizes the quantum circuit as a q-sphere*
 
@@ -1695,7 +1695,7 @@ sphere_ex = BlochSphere(qc)
 sphere_ex.makeSphere(show_bit=1, save=False, show=True)
 ```
 
-> ## *class* QC.Visualizer.StateVector(*circuit*)
+> ## *class* QCpy.Visualizer.StateVector(*circuit*)
 
 *Visualizes the quantum circuit's quantum amplitutes using a bar graph*
 
@@ -1741,7 +1741,7 @@ stateVector_ex = StateVector(qc)
 stateVector_ex.makeGraph(save=False, show=True)
 ```
 
-> ## *class* QC.Visualizer.Probabilities(*circuit*)
+> ## *class* QCpy.Visualizer.Probabilities(*circuit*)
 
 *Visualizes the quantum circuit's qubits probability of being measured using a bar graph*
 
