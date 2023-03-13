@@ -10,40 +10,28 @@ def inc(x):
 
 
 def test_12a():
-    assert (inc(2) == np.array([0.707 +
-                                0j, 0 +
-                                0j, 0.707 +
-                                0j, 0 +
-                                0j], 'F').reshape(4, 1)).all(), "test_12a Failed"
+    assert (
+        inc(2) == np.array([
+            0.707 + 0j, 0 + 0j, 0.707 + 0j, 0 + 0j
+        ], 'F').reshape(4, 1)
+    ).all(), "test_12a Failed on hadamard -> swap"
 
 
 def test_12b():
-    assert (inc(3) == np.array([0.707 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0.707 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(8, 1)).all(), "test_12b Failed"
+    assert (
+        inc(3) == np.array([
+            0.707 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0.707 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(8, 1)
+    ).all(), "test_12b Failed on hadamard -> swap"
 
 
 def test_12c():
-    assert (inc(4) == np.array([0.707 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0.707 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j, 0 +
-                                0j], 'F').reshape(16, 1)).all(), "test_12c Failed"
+    assert (
+        inc(4) == np.array([
+            0.707 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0.707 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
+            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
+        ], 'F').reshape(16, 1)
+    ).all(), "test_12c Failed on hadamard -> swap"
