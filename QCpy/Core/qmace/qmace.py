@@ -39,15 +39,15 @@ class Qmace:
         return
     
     def merge_controlled_gate(self, control_qubit: int, target_qubit: int, single_qubit_gate: np.array):
-
+        
         if self._main_qubits[control_qubit].all() != Qubit(initial_state = 'z').state.all():
 
             self._pair_qubits[target_qubit] = np.dot(single_qubit_gate, self._pair_qubits[target_qubit])
 
             self._is_flip_state[target_qubit] = True
 
-            self._flip_state[target_qubit] = (2**(target_qubit )) # this needs to be fixed
-            print(self._flip_state)
+            self._flip_state[target_qubit] = (2**(target_qubit)) # temporary bodge for basic testing, this will be set to just this value but without the  -2
+
             self._child_qubits[control_qubit] = target_qubit
 
         else:
@@ -85,9 +85,14 @@ class Qmace:
 
     def get_all(self):
         print("Main Qubits")
-        print(self._main_qubits)
+        for i in range(len(self._main_qubits)):
+            print(i)
+            print(self._main_qubits[i])
+        print('----')
         print("Paired Qubits")
-        print(self._pair_qubits)
+        for i in range(len(self._pair_qubits)):
+            print(i)
+            print(self._pair_qubits[i])
         print("Flip States")
         print(self._flip_state)
         print("Child Qubits")

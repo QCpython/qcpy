@@ -67,16 +67,33 @@ class QuantumCircuit:
         inverse = False
 
         if control_qubit > target_qubit:
+
             inverse = True
             control_qubit, target_qubit = target_qubit, control_qubit
-            self._qmace_matrix.merge_single_gate(control_qubit, Hadamard().matrix)
-            self._qmace_matrix.merge_single_gate(target_qubit, Hadamard().matrix)
+            
+            self._qmace_matrix.merge_single_gate(control_qubit, 
+                                                 Hadamard().matrix)
+            self._qmace_matrix.merge_single_gate(target_qubit, 
+                                                 Hadamard().matrix)
 
-        self._qmace_matrix.merge_controlled_gate(control_qubit, target_qubit, PauliX().matrix)
-
+        self._qmace_matrix.merge_controlled_gate(control_qubit, 
+                                                 target_qubit, 
+                                                 PauliX().matrix)
         if inverse:
+
             self._qmace_matrix.merge_single_gate(control_qubit, Hadamard().matrix)
             self._qmace_matrix.merge_single_gate(target_qubit, Hadamard().matrix)
+        return
+    
+    def swap(self, control_qubit: int, target_qubit: int):
+
+        self.cnot(target_qubit, control_qubit)
+
+        self.cnot(control_qubit, target_qubit)
+
+        self.cnot(target_qubit, control_qubit)
+
+        return
 
     def get_all(self):
         self._qmace_matrix.get_all()
