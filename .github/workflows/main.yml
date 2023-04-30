@@ -37,3 +37,19 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+    - name: Install twine
+      run: |
+        pip install twine
+    - name: Check distribution files
+      run: |
+        ls dist
+    - name: Upload to Test PyPI
+      if: github.ref == 'refs/heads/master'
+      run: |
+        twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+        echo "Package has been published to Test PyPI!"
+    - name: Upload to PyPI
+      if: github.ref == 'refs/tags/*'
+      run: |
+        twine upload dist/*
+        echo "Package has been published to PyPI!"
