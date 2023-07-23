@@ -1,94 +1,101 @@
-from ...QuantumGate import *
-from ..tools import *
 import numpy as np
+from ...qubit import Qubit
 
+"""
+Qmace:
+    Also known as QMACE (Quantum Math Accelerated Calculations and Efficiency),
+    this is the core structuring for what the Controlled Kronocker needs to
+    compute quantum computing math. 
+"""
 
 class Qmace:
-    def __init__(self, qubits: int, little_endian: bool = False):
+
+    def __init__(self, qubits: int, little_endian: bool = False, prep: chr = 'z'):
+
         self._little_endian = little_endian
         self._circuit_size = qubits
-        self._order_of_operation = [[1] for _ in range(self._circuit_size)]
 
-    def __merge_single_gate__(self, qubit: int, single_qubit_gate: np.array):
-        if (type(self._order_of_operation[qubit][0]) == int):
-            self._order_of_operation[qubit][0] = single_qubit_gate
+        self._main_qubits = [Qubit(prep).state for _ in range(self._circuit_size)]
+        self._pair_qubits = [Qubit(prep).state for _ in range(self._circuit_size)]
+        
+
+        self._is_flip_state = [False for _ in range(self._circuit_size)]
+        self._flip_state = [-1 for _ in range(self._circuit_size)]
+        self._child_qubits = [-1 for _ in range(self._circuit_size)]
+
+
+    def merge_single_gate(self, qubit: int, single_qubit_gate: np.array):
+        
+        if self._child_qubits[qubit] == -1:
+            self._main_qubits[qubit] = np.dot(single_qubit_gate, self._main_qubits[qubit])
+            self._pair_qubits[qubit] = np.dot(single_qubit_gate, self._pair_qubits[qubit])
         else:
-            self._order_of_operation[qubit][0] = np.dot(
-                self._order_of_operation[qubit][0], single_qubit_gate)
+            self._main_qubits[self._child_qubits[qubit]] = \
+            np.dot(single_qubit_gate, self._main_qubits[self._child_qubits[qubit]])
+
+            self._pair_qubits[self._child_qubits[qubit]] = \
+            np.dot(single_qubit_gate, self._pair_qubits[self._child_qubits[qubit]])
+
         return
     
+    def merge_controlled_gate(self, control_qubit: int, target_qubit: int, single_qubit_gate: np.array):
+        
+        if self._main_qubits[control_qubit].all() != Qubit(initial_state = 'z').state.all():
 
-    def execute(self, state: np.array):
-        to_end_qubits = 0
+            self._pair_qubits[target_qubit] = np.dot(single_qubit_gate, self._pair_qubits[target_qubit])
 
-        while to_end_qubits < self._circuit_size:
-            if (type(self._order_of_operation[to_end_qubits][0]) != int):
-                state[to_end_qubits] = np.dot(self._order_of_operation[to_end_qubits], state[to_end_qubits])
-            to_end_qubits += 1
+            self._is_flip_state[target_qubit] = True
 
-        if self._little_endian:
-            curr = state[-1]
-            current_len = len(state) - 2
-            while current_len != -1:
-                curr = np.kron(curr, state[current_len])
-                current_len -= 1
+            self._flip_state[target_qubit] = (2**(target_qubit)) # temporary bodge for basic testing, this will be set to just this value but without the  -2
+
+            self._child_qubits[control_qubit] = target_qubit
 
         else:
-            curr = state[0]
-            current_len = 1
+            """
+            Needs to be inserted. This will deal with 
+            """
+            return
+        return
+    
+    def set_qubit(self, qubit: int, prep: chr = 'z'):
 
-            while current_len != len(state):
-                curr = np.kron(curr, state[current_len])
-                current_len += 1
+        self._main_qubits[qubit] = Qubit(prep).state
+        return
+    
+    """ All of these need rework as simply calling the reverse of the result is not enough """
+    def get_little_endian(self):
+        return self._little_endian
+    
+    def get_circuit_size(self):
+        return self._circuit_size
+    
+    def get_main_qubits(self):
+        return self._main_qubits[::-1] if self._little_endian else self._main_qubits
+    
+    def get_pair_qubits(self):
+        return self._pair_qubits[::-1] if self._little_endian else self._pair_qubits
+    
+    def get_flip_state(self):
+        return self._flip_state[::-1] if self._little_endian else self._flip_state
+    
+    def get_is_flip_state(self):
+        return self._is_flip_state[::-1] if self._little_endian else self._is_flip_state
 
-        return curr
+    """ Needs to be deleted """
 
-    def identity(self, qubit: int):
-        self.__merge_single_gate__(qubit, Identity().matrix)
-
-    def x(self, qubit: int):
-        self.__merge_single_gate__(qubit, PauliX().matrix)
-
-    def y(self, qubit: int):
-        self.__merge_single_gate__(qubit, PauliY().matrix)
-
-    def z(self, qubit: int):
-        self.__merge_single_gate__(qubit, PauliZ().matrix)
-
-    def hadamard(self, qubit: int):
-        self.__merge_single_gate__(qubit, Hadamard().matrix)
-
-    def phase(self, qubit: int, theta: float = np.pi / 2):
-        self.__merge_single_gate__(qubit, Phase(theta).matrix)
-
-    def s(self, qubit: int):
-        self.__merge_single_gate__(qubit, S().matrix)
-
-    def sdg(self, qubit: int):
-        self.__merge_single_gate__(qubit, Sdg().matrix)
-
-    def t(self, qubit: int):
-        self.__merge_single_gate__(qubit, T().matrix)
-
-    def tdg(self, qubit: int):
-        self.__merge_single_gate__(qubit, Tdg().matrix)
-
-    def rz(self, qubit: int, theta: float = np.pi / 2):
-        self.__merge_single_gate__(qubit, Rz(theta).matrix)
-
-    def rx(self, qubit: int, theta: float = np.pi / 2):
-        self.__merge_single_gate__(qubit, Rx(theta).matrix)
-
-    def ry(self, qubit: int, theta: float = np.pi / 2):
-        self.__merge_single_gate__(qubit, Ry(theta).matrix)
-
-    def sx(self, qubit: int):
-        self.__merge_single_gate__(qubit, Sx().matrix)
-
-    def sxdg(self, qubit: int):
-        self.__merge_single_gate__(qubit, Sxdg().matrix)
-
-    def u(self, qubit: int, theta: float = np.pi / 2, phi: float = np.pi / 2, lmbda: float = np.pi / 2):
-        self.__merge_single_gate__(qubit, U(theta, phi, lmbda).matrix)
-
+    def get_all(self):
+        print("Main Qubits")
+        for i in range(len(self._main_qubits)):
+            print(i)
+            print(self._main_qubits[i])
+        print('----')
+        print("Paired Qubits")
+        for i in range(len(self._pair_qubits)):
+            print(i)
+            print(self._pair_qubits[i])
+        print("Flip States")
+        print(self._flip_state)
+        print("Child Qubits")
+        print(self._child_qubits)
+        return
 

@@ -1,2 +1,2 @@
-from .quantumcircuit import QuantumCircuit
-from .quantumcircuit import *
+from .qmacequantumcircuit import QuantumCircuit
+from .qmacequantumcircuit import *
