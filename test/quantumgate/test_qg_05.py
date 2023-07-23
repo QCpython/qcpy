@@ -1,10 +1,10 @@
-from QCpy.QuantumGate import Hadamard
+from qcpy.quantumgate import hadamard
 import numpy as np
 
 
 def test_qg_05():
     assert (
-        Hadamard().matrix == np.array([
+        hadamard() == np.array([
             [1 + 0j, 1 + 0j],
             [1 + 0j, -1 + 0j]
         ], 'F') * (1 / np.sqrt(2))

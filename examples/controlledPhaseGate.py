@@ -1,8 +1,8 @@
-from QCpy import QuantumCircuit
-from QCpy.QuantumGate import U
+from qcpy import quantumcircuit
+from qcpy.quantumgate import U
 
 # Create Quantum Circuit class object of 3 qubits and represent the placement of values in little_endian format.
-qc = QuantumCircuit(qubits = 2, little_endian = True)
+qc = quantumcircuit(qubits = 2, little_endian = True)
 
 # Create variable to store matrix representation of the U gate.
 u = U().matrix

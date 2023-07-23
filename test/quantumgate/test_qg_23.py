@@ -1,10 +1,10 @@
-from QCpy.QuantumGate import Cz
+from qcpy.quantumgate import cz
 import numpy as np
 
 
 def test_qg_23():
     assert (
-        Cz().matrix == np.array([
+        cz() == np.array([
             [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
             [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
             [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],

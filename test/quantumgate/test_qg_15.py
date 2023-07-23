@@ -1,10 +1,10 @@
-from QCpy.QuantumGate import Rx
+from qcpy.quantumgate import rx
 import numpy as np
 
 
 def test_qg_15():
     assert (
-        Rx().matrix == np.array([
+        rx() == np.array([
             [np.cos((np.pi / 2) / 2), 0 - 1j * np.sin((np.pi / 2) / 2)],
             [0 - 1j * np.sin((np.pi / 2) / 2), np.cos((np.pi / 2) / 2)]
         ], 'F')

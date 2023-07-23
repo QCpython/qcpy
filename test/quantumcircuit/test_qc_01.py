@@ -1,9 +1,9 @@
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 import numpy as np
 
 
 def inc(x):
-    qc = QuantumCircuit(qubits=x, little_endian=True, prep='z')
+    qc = quantumcircuit(qubits=x, little_endian=True, prep='z')
     return qc.state()
 
 

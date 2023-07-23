@@ -1,10 +1,10 @@
-from QCpy.QuantumGate import Tdg
+from qcpy.quantumgate import tdg
 import numpy as np
 
 
 def test_qg_13():
     assert (
-        Tdg().matrix == np.array([
+        tdg() == np.array([
             [1 + 0j, 0 + 0j],
             [0 + 0j, np.exp((0 - 1j * np.pi) / 4)]
         ], 'F')
