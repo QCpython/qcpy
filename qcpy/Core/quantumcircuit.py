@@ -1,8 +1,8 @@
 """
-QuantumCircuit.py
+quantumcircuit.py
 """
 from ..qubit import Qubit
-from ..QuantumGate import *
+from ..quantumgate import *
 from .tools import amplitude, phaseAngle, probabilities, measure
 import numpy as np
 
@@ -92,7 +92,7 @@ Methods:
 """
 
 
-class QuantumCircuit:
+class quantumcircuit:
     def __init__(
             self,
             qubits: int,
@@ -130,14 +130,15 @@ class QuantumCircuit:
         self._circuit_size = qubits
         # Makes tensored vector state of all qubits, and stores it within
         # _state to get a vector of [[1], [0], [0],....2^n].
-        self._state = Qubit(prep).state
+        
         # represent the circuit in dict
         self._circuit = []
+        self._state = Qubit(prep)
         # increases the current vector size on the number of qubits - 1.
         for _ in range(qubits - 1):
             # _state is converted into the new lengthed vector based on the
             # kronocker product on the prepped qubit state.
-            self._state = np.kron(self._state, Qubit(prep).state)
+            self._state = np.kron(self._state, Qubit(prep))
 
     def __operator_matrix__(
             self,
@@ -155,7 +156,7 @@ class QuantumCircuit:
                 Matrix after final calculation from the tensor product algorithm.
         """
         # Identity matrix is called.
-        i_matrix = Identity().matrix
+        i_matrix = identity()
         # gate queue for the computation
         gate_queue = [i_matrix for _ in range(self._circuit_size)]
         # replaces the placement of the identity gate at the qubit index with
@@ -201,7 +202,6 @@ class QuantumCircuit:
         # create temp target_qubit variable
         temp_target_qubit = target_qubit
         # call from QuantumGate and stores Hadamard gate into variable.
-        hadamard = Hadamard().matrix
         # If target_qubit and control_qubit qubits are next to each other, then no further
         # logic needs to be done and calls base system.
         if (abs(target_qubit - control_qubit) == 1):
@@ -212,10 +212,10 @@ class QuantumCircuit:
                 # this implementation.
                 self._state = np.dot(
                     self.__operator_matrix__(
-                        hadamard, temp_target_qubit), self._state)
+                        hadamard(), temp_target_qubit), self._state)
                 self._state = np.dot(
                     self.__operator_matrix__(
-                        hadamard, temp_target_qubit + 1), self._state)
+                        hadamard(), temp_target_qubit + 1), self._state)
                 # Call to _state to commit a dot product on the state to
                 # include the given gate of the method.
                 self._state = np.dot(
@@ -229,10 +229,10 @@ class QuantumCircuit:
 
                 self._state = np.dot(
                     self.__operator_matrix__(
-                        hadamard, temp_target_qubit), self._state)
+                        hadamard(), temp_target_qubit), self._state)
                 self._state = np.dot(
                     self.__operator_matrix__(
-                        hadamard, temp_target_qubit + 1), self._state)
+                        hadamard(), temp_target_qubit + 1), self._state)
                 # used for inversing all other gates that the target_qubit is less
                 # than the control_qubit to make it inversed in logic.
             else:
@@ -268,10 +268,10 @@ class QuantumCircuit:
             # call hadamard gates on control_qubit and target_qubit variables.
             self._state = np.dot(
                 self.__operator_matrix__(
-                    hadamard, temp_target_qubit), self._state)
+                    hadamard(), temp_target_qubit), self._state)
             self._state = np.dot(
                 self.__operator_matrix__(
-                    hadamard,
+                    hadamard(),
                     temp_target_qubit + 1),
                 self._state)
             # Call to _state to commit a dot product on the state to include
@@ -286,11 +286,11 @@ class QuantumCircuit:
             # this implementation.
             self._state = np.dot(
                 self.__operator_matrix__(
-                    hadamard, temp_target_qubit),
+                    hadamard(), temp_target_qubit),
                 self._state)
             self._state = np.dot(
                 self.__operator_matrix__(
-                    hadamard,
+                    hadamard(),
                     temp_target_qubit + 1),
                 self._state)
             # used for inversing all other gates that the target_qubit is less than
@@ -433,11 +433,11 @@ class QuantumCircuit:
                 f"Error: QuantumCircuit().toffoli -- Quantum Circuit size must be 3 or more qubits. Current number of qubits is: {self._circuit_size}")
         # Calls of gates here represent the Toffoli matrix using other quantum
         # gates.
-        self.customControlPhase(control_2, target_qubit, Sx().matrix)
+        self.customControlPhase(control_2, target_qubit, sx())
         self.cnot(control_1, control_2)
-        self.customControlPhase(control_2, target_qubit, Sxdg().matrix)
+        self.customControlPhase(control_2, target_qubit, sxdg())
         self.cnot(control_1, control_2)
-        self.customControlPhase(control_1, target_qubit, Sx().matrix)
+        self.customControlPhase(control_1, target_qubit, sx())
         # append gate to self._circuit
         self._circuit.append(('toffoli', control_1, control_2, target_qubit))
 
@@ -523,9 +523,9 @@ class QuantumCircuit:
         # Determines if the little endian or big endian CNOT gate needs to be
         # established for calculations.
         if self._little_endian:
-            cnot_matrix = CNot().matrix
+            cnot_matrix = cnot()
         else:
-            cnot_matrix = CNot(inverse=True).matrix
+            cnot_matrix = cnot(inverse=True)
         # Sends to __controlled_phase_handler alongside a boolean confirming
         # the gate is indeed a CNOT gate
         self.__controlled_phase_handler__(
@@ -547,9 +547,7 @@ class QuantumCircuit:
             exit(
                 f"Error: QuantumCircuit().cr -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         self.__controlled_phase_handler__(
-            Cr().matrix, control_qubit, target_qubit)
-        # append gate to self._circuit
-        self._circuit.append(('cr', control_qubit, target_qubit))
+            cr(), control_qubit, target_qubit)
 
     def cz(self, control_qubit: int, target_qubit: int):
         """
@@ -565,9 +563,7 @@ class QuantumCircuit:
             exit(
                 f"Error: QuantumCircuit().cz -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         self.__controlled_phase_handler__(
-            Cz().matrix, control_qubit, target_qubit)
-        # append gate to self._circuit
-        self._circuit.append(('cz', control_qubit, target_qubit))
+            cz(), control_qubit, target_qubit)
 
     def swap(self, qubit_1: int, qubit_2: int):
         """
@@ -583,7 +579,7 @@ class QuantumCircuit:
             exit(
                 f"Error: QuantumCircuit().swap -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         # get the swap matrix
-        swap_matrix = Swap().matrix
+        swap_matrix = swap()
         # determines if the two values at play are at distance greater than
         # one, if so it will call in private method for larger matrix
         # operations.
@@ -623,7 +619,7 @@ class QuantumCircuit:
         if (self._circuit_size < 2):
             exit(
                 f"Error: QuantumCircuit().rxx -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
-        rxx_matrix = Rxx(theta).matrix
+        rxx_matrix = rxx(theta)
         self.__controlled_phase_handler__(rxx_matrix, qubit_1, qubit_2)
         # append gate to self._circuit
         self._circuit.append(('rxx', qubit_1, qubit_2))
@@ -644,13 +640,11 @@ class QuantumCircuit:
                 f"Error: QuantumCircuit().rzz -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
         if (qubit_2 < qubit_1):
             qubit_2, qubit_1 = qubit_1, qubit_2
-        rzz_matrix = Rzz(theta).matrix
+        rzz_matrix = rzz(theta)
         # determines if the two values at play are at distance greater than
         # one, if so it will call in private method for larger matrix
         # operations.
         self.__controlled_phase_handler__(rzz_matrix, qubit_1, qubit_2)
-        # append gate to self._circuit
-        self._circuit.append(('rzz', qubit_1, qubit_2))
 
     def customControlPhase(
             self,
@@ -710,11 +704,9 @@ class QuantumCircuit:
                 f"Error: QuantumCircuit().identity -- Must select a qubit to enact on quantum gate.")
         self._state = np.dot(
             self.__operator_matrix__(
-                Identity().matrix,
+                identity(),
                 qubit),
             self._state)
-        # append gate to self._circuit
-        self._circuit.append((Identity().symbol, qubit))
 
     def x(self, qubit: int):
         """
@@ -730,9 +722,7 @@ class QuantumCircuit:
         # get the not matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                PauliX().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((PauliX().symbol, qubit))
+                paulix(), qubit), self._state)
 
     def hadamard(self, qubit: int):
         """
@@ -748,9 +738,7 @@ class QuantumCircuit:
         # get the hadamard matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                Hadamard().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((Hadamard().symbol, qubit))
+                hadamard(), qubit), self._state)
 
     def y(self, qubit: int):
         """
@@ -766,9 +754,7 @@ class QuantumCircuit:
         # get the Y matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                PauliY().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append(PauliY().symbol)
+                pauliy(), qubit), self._state)
 
     def z(self, qubit: int):
         """
@@ -784,9 +770,7 @@ class QuantumCircuit:
         # get the Z matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                PauliZ().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((PauliZ().symbol, qubit))
+                pauliz(), qubit), self._state)
 
     def phase(self, qubit: int, theta: float = np.pi / 2):
         """
@@ -803,9 +787,7 @@ class QuantumCircuit:
         # get the Phase matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                Phase(theta).matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((Phase(theta).symbol, qubit))
+                phase(theta), qubit), self._state)
 
     def s(self, qubit: int):
         """
@@ -821,9 +803,7 @@ class QuantumCircuit:
         # get the Phase matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                S().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((S().symbol, qubit))
+                s(), qubit), self._state)
 
     def sdg(self, qubit: int):
         """
@@ -839,9 +819,7 @@ class QuantumCircuit:
         # get the Sdg matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                Sdg().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((Sdg().symbol, qubit))
+                sdg(), qubit), self._state)
 
     def t(self, qubit: int):
         """
@@ -857,9 +835,7 @@ class QuantumCircuit:
         # get the T matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                T().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((T().symbol, qubit))
+                t(), qubit), self._state)
 
     def tdg(self, qubit: int):
         """
@@ -875,9 +851,7 @@ class QuantumCircuit:
         # get the Tdg matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                Tdg().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((Tdg().symbol, qubit))
+                tdg(), qubit), self._state)
 
     def rz(self, qubit: int, theta: float = np.pi / 2):
         """
@@ -894,9 +868,7 @@ class QuantumCircuit:
         # get the Rz matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                Rz(theta).matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((Rz(theta).matrix, qubit))
+                rz(theta), qubit), self._state)
 
     def ry(self, qubit: int, theta: float = np.pi / 2):
         """
@@ -913,9 +885,7 @@ class QuantumCircuit:
         # get the Ry matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                Ry(theta).matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((Ry().symbol, qubit))
+                ry(theta), qubit), self._state)
 
     def rx(self, qubit: int, theta: float = np.pi / 2):
         """
@@ -932,9 +902,7 @@ class QuantumCircuit:
         # get the Rx matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                Rx(theta).matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((Rx(theta).matrix, qubit))
+                rx(theta), qubit), self._state)
 
     def sx(self, qubit: int):
         """
@@ -950,9 +918,7 @@ class QuantumCircuit:
         # get the Sx matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                Sx().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((Sx().symbol, qubit))
+                sx(), qubit), self._state)
 
     def sxdg(self, qubit: int):
         """
@@ -968,9 +934,7 @@ class QuantumCircuit:
         # get the Sxdg matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                Sxdg().matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((Sxdg().symbol, qubit))
+                sxdg(), qubit), self._state)
 
     def u(
         self,
@@ -995,9 +959,7 @@ class QuantumCircuit:
         # get the U matrix
         self._state = np.dot(
             self.__operator_matrix__(
-                U(theta, phi, lmbda).matrix, qubit), self._state)
-        # append gate to self._circuit
-        self._circuit.append((U().symbol, qubit))
+                u(theta, phi, lmbda), qubit), self._state)
 
     def custom(self, qubit: int, custom_matrix: np.array):
         """
@@ -1017,4 +979,3 @@ class QuantumCircuit:
                 custom_matrix,
                 qubit),
             self._state)
-        self._circuit.append(('C', qubit))

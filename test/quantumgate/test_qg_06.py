@@ -1,10 +1,20 @@
-from QCpy.QuantumGate import CNot
+from qcpy.quantumgate import cnot
 import numpy as np
 
 
 def test_qg_06a():
     assert (
-        CNot(inverse=False).matrix == np.array([
+        cnot(inverse=True) == np.array([
+            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j]
+        ], 'F')
+    ).all(), 'test_qg_06b Failed on CNot'
+
+def test_qg_06b():
+    assert (
+        cnot() == np.array([
             [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
             [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
             [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
@@ -13,12 +23,4 @@ def test_qg_06a():
     ).all(), 'test_qg_06a Failed on CNot'
 
 
-def test_qg_06b():
-    assert (
-        CNot(inverse=True).matrix == np.array([
-            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
-            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
-            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j]
-        ], 'F')
-    ).all(), 'test_qg_06b Failed on CNot'
+

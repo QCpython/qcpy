@@ -1,10 +1,10 @@
-from QCpy.QuantumGate import U
+from qcpy.quantumgate import u
 import numpy as np
 
 
 def test_qg_19():
     assert (
-        U().matrix == np.array([
+        u() == np.array([
             [
                 np.cos((np.pi / 2) / 2),
                 -1 * np.exp(0 + 1j * (np.pi / 2)) * np.sin((np.pi / 2) / 2)

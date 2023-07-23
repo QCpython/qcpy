@@ -1,9 +1,9 @@
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 import numpy as np
 
 
 def inc(x):
-    qc = QuantumCircuit(qubits=x, little_endian=True, prep='z')
+    qc = quantumcircuit(qubits=x, little_endian=True, prep='z')
     for i in range(x):
         qc.hadamard(i)
     return qc.state()

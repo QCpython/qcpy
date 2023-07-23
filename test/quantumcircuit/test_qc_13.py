@@ -1,9 +1,9 @@
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 import numpy as np
 
 
 def inc(x):
-    qc = QuantumCircuit(qubits=x, little_endian=True, prep='z')
+    qc = quantumcircuit(qubits=x, little_endian=True, prep='z')
     qc.hadamard(0)
     qc.swap(0, x - 1)
     qc.swap(x - 1, 0)

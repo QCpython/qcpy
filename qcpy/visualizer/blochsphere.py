@@ -1,5 +1,5 @@
 import numpy as np
-from ..Core import QuantumCircuit
+from ..Core import quantumcircuit
 import matplotlib.pyplot as plt
 from .tools.sphere import Sphere
 

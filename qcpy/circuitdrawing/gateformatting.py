@@ -1,4 +1,4 @@
-from ..QuantumGate import *
+from ..quantumgate import *
 import sys
 
 class GateFormatting:

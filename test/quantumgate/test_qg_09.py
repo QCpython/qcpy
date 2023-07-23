@@ -1,10 +1,10 @@
-from QCpy.QuantumGate import Phase
+from qcpy.quantumgate import phase
 import numpy as np
 
 
 def test_qg_09():
     assert (
-        Phase().matrix == np.array([
+        phase() == np.array([
             [1 + 0j, 0 + 0j],
             [0 + 0j, np.exp(0 + 1j * (np.pi / 2))]
         ], 'F')

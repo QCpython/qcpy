@@ -1,10 +1,10 @@
-from QCpy.QuantumGate import Rzz
+from qcpy.quantumgate import rzz
 import numpy as np
 
 
 def test_qg_21():
     assert (
-        Rzz().matrix == np.array([
+        rzz() == np.array([
             [
                 np.exp(0 - 1j * ((np.pi / 2) / 2)),
                 0 + 0j,
