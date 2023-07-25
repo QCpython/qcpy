@@ -6,7 +6,7 @@ from matplotlib.cm import ScalarMappable
 import numpy as np
 
 
-def Sphere(_background):
+def sphere(_background):
     # creates a sphere
     plt.clf()
     plt.close()

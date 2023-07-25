@@ -1,6 +1,6 @@
 from numpy import mod, pi, around, angle
 
-def phaseAngle(state, circuit_size, show_bit = -1, round: int = 3, radian: bool = True):
+def phaseangle(state, circuit_size, show_bit = -1, round: int = 3, radian: bool = True):
     """
     Calculates an array of possible phase angles based off the state. Converts each value using np.angle() function then degree to radian.
     Params:

@@ -4,10 +4,10 @@ import numpy as np
 
 def inc(x):
     qc = quantumcircuit(qubits=x, little_endian=True, prep='z')
-    qc.hadamard(x - 2)
-    qc.hadamard(x - 1)
+    qc.h(x - 2)
+    qc.h(x - 1)
     qc.rccx(x - 1, x - 2, 0)
-    return qc.state()
+    return qc.flatten()
 
 
 def test_15a():
@@ -15,7 +15,7 @@ def test_15a():
         inc(3) == np.array([
             0.5 + 0j, 0 + 0j, 0.5 + 0j, 0 + 0j,
             0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0.5j
-        ], 'F').reshape(8, 1)
+        ], 'F')
     ).all(), "test_15a Failed hadamard -> hadamard -> rccx"
 
 
@@ -26,7 +26,7 @@ def test_15b():
             0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
             0.5 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
             0 + 0j, 0 + 0.5j, 0 + 0j, 0 + 0j
-        ], 'F').reshape(16, 1)
+        ], 'F')
     ).all(), "test_15b Failed hadamard -> hadamard -> rccx"
 
 
@@ -41,5 +41,5 @@ def test_15c():
             0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
             0 + 0j, 0 + 0.5j, 0 + 0j, 0 + 0j,
             0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
-        ], 'F').reshape(32, 1)
+        ], 'F')
     ).all(), "test_15c Failed hadamard -> hadamard -> rccx"

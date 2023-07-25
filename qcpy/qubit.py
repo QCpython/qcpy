@@ -14,7 +14,7 @@ None.
 """
 
 
-def Qubit(initial_state: chr = 'z'):
+def qubit(initial_state: chr = 'z'):
     """
     Args:
         initial_state:
