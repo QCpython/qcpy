@@ -4,11 +4,11 @@ import numpy as np
 
 def inc(x):
     qc = quantumcircuit(qubits=x, little_endian=True, prep='z')
-    qc.hadamard(x - 1)
-    qc.hadamard(x - 2)
-    qc.hadamard(x - 3)
+    qc.h(x - 1)
+    qc.h(x - 2)
+    qc.h(x - 3)
     qc.rc3x(x - 1, x - 2, x - 3, 0)
-    return qc.state()
+    return qc.flatten()
 
 
 def test_18a():
@@ -18,7 +18,7 @@ def test_18a():
             0.354 + 0j, 0 + 0j, 0.354 + 0j, 0 + 0j,
             0.354 + 0j, 0 + 0j, 0.354 + 0j, 0 + 0j,
             0 + 0.354j, 0 + 0j, 0 + 0j, -0.354 + 0j
-        ], 'F').reshape(16, 1)
+        ], 'F')
     ).all(), "test_18a Failed hadamard (x3) -> rc3x"
 
 
@@ -33,5 +33,5 @@ def test_18b():
             0.354 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
             0 + 0.354j, 0 + 0j, 0 + 0j, 0 + 0j,
             0 + 0j, -0.354 + 0j, 0 + 0j, 0 + 0j
-        ], 'F').reshape(32, 1)
+        ], 'F')
     ).all(), "test_18b Failed hadamard (x3) -> rc3x"

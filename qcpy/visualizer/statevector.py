@@ -1,14 +1,14 @@
 import numpy as np
-from ..Core import quantumcircuit
+from ..core import quantumcircuit
 import matplotlib.pyplot as plt
 # ScalerMappable is needed for creating the color bar on the State Vector
 # visualization
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import rgb2hex
-from .tools.graph import Graph
+from .tools.graph import graph
 
 
-class StateVector:
+class statevector:
     """
     Visualizes the quantum circuit's quantum amplitutes using a bar graph
 
@@ -48,7 +48,7 @@ class StateVector:
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
 
-    def makeGraph(
+    def make(
             self,
             path: str = "statevector.png",
             save: bool = True,
@@ -73,7 +73,7 @@ class StateVector:
             _background = 'white'
 
         # clears any previous plots
-        ax = Graph(_text, _background, self._num_qubits)
+        ax = graph(_text, _background, self._num_qubits)
 
         ax.set_ylim(0, np.amax(self._amplitutes))
         colors = plt.get_cmap('hsv')  # color map

@@ -25,7 +25,7 @@ CZ Gate:
 
 """
 
-def cnot(inverse: bool = False):
+def cnot(little_endian: bool = False):
     """
     CNOT Gate allows for two qubits to be entangled with each other if the
     control qubit is greater than 0. This gate needs to be formatted based off
@@ -42,19 +42,19 @@ def cnot(inverse: bool = False):
                                       [0, 0, 0, 1]
                                       [0, 0, 1, 0]
     """
-    if inverse:
-        return np.array([
-            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
-            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
-            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j]
-        ], 'F')
-    else:
+    if little_endian:
         return np.array([
             [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
             [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
             [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
             [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j]
+        ], 'F')
+    else:
+        return np.array([
+            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j]
         ], 'F')
 
 

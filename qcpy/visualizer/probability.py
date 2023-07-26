@@ -1,10 +1,10 @@
 import numpy as np
-from ..Core import quantumcircuit
+from ..core import quantumcircuit
 import matplotlib.pyplot as plt
-from .tools.graph import Graph
+from .tools.graph import graph
 
 
-class Probabilities:
+class probability:
     """
     Visualizes the quantum circuit's qubits probability of being measured using a bar graph
 
@@ -35,7 +35,7 @@ class Probabilities:
         ]
         self._percents = [i * 100 for i in circuit.probabilities()]
 
-    def makeGraph(
+    def make(
             self,
             path: str = "probabilities.png",
             save: bool = False,
@@ -63,7 +63,7 @@ class Probabilities:
         plt.clf()
         plt.close()
         # sets up bar graph
-        ax = Graph(_text, _background, self._num_qubits)
+        ax = graph(_text, _background, self._num_qubits)
         # sets x and y labels and title
         ax.bar(self._state_list, self._percents, color='#39c0ba')
         plt.xlabel('Computational basis states', color=_accent)

@@ -1,10 +1,10 @@
 import numpy as np
-from ..Core import quantumcircuit
+from ..core import quantumcircuit
 import matplotlib.pyplot as plt
-from .tools.sphere import Sphere
+from .tools.sphere import sphere
 
 
-class BlochSphere:
+class bloch:
     """
     Visualizes the quantum state of a single qubit as a sphere
 
@@ -37,7 +37,7 @@ class BlochSphere:
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
 
-    def makeSphere(
+    def make(
             self,
             path: str = "BlochSphere.png",
             show_bit: int = 0,
@@ -64,7 +64,7 @@ class BlochSphere:
             _background = 'white'
 
         # creates a sphere
-        ax = Sphere(_background)
+        ax = sphere(_background)
         # x-axis arrow
         ax.quiver(1, 0, 0, .75, 0, 0, color="lightgray")
         ax.text(2, 0, 0, "+x", color="gray")

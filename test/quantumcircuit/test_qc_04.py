@@ -4,16 +4,16 @@ import numpy as np
 
 def inc(x):
     qc = quantumcircuit(qubits=x, little_endian=True, prep='z')
-    qc.hadamard(0)
+    qc.h(0)
     qc.cnot(0, x - 1)
-    return qc.state()
+    return qc.flatten()
 
 
 def test_04a():
     assert (
         inc(2) == np.array([
             0.707 + 0j, 0 + 0j, 0 + 0j, 0.707 + 0j
-        ], 'F').reshape(4, 1)
+        ], 'F')
     ).all(), "test_04a Failed on hadamard and cnot"
 
 
@@ -22,7 +22,7 @@ def test_04b():
         inc(3) == np.array([
             0.707 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
             0 + 0j, 0.707 + 0j, 0 + 0j, 0 + 0j
-        ], 'F').reshape(8, 1)
+        ], 'F')
     ).all(), "test_04b Failed on hadamard and cnot"
 
 
@@ -31,5 +31,5 @@ def test_04c():
         inc(4) == np.array([
             0.707 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
             0 + 0j, 0.707 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
-        ], 'F').reshape(16, 1)
+        ], 'F')
     ).all(), "test_04c Failed on hadamard and cnot"

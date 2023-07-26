@@ -2,41 +2,57 @@
 
 # QCpy - A Quantum Computing Library for Python
 
-QCpy is an open source python library and collaborative project for flexible simulations and visualizations of quantum circuits. Designed by college students with students in mind, this library contains a powerful set of tools to teach computer scientists about the emerging discipline of quantum computing (QC).
+QCpy is an open source python library and collaborative project for flexible simulations and visualizations of quantum circuits. Designed by college students with students in mind, this library contains a powerful set of tools to teach computer scientists about the emerging discipline of quantum computing.
 
 You can download the package using pip:
 
 ```txt
-pip install QCpython
+pip install qcpython
 ```
-
-## Recommended Resources on Quantum Computing:
-
-- [Microsoft’s Linear Algebra for Quantum Computing](https://learn.microsoft.com/en-us/azure/quantum/overview-algebra-for-quantum-computing)
-- [IBM’s Quantum Computing: a field guide](https://quantum-computing.ibm.com/composer/docs/iqx/guide/)
-- [Wikipedia: Quantum Computing](https://en.wikipedia.org/wiki/Quantum_computing)
-
 ---
 
-# Qubits
+# Qubit
 
-> ## *class* QCpy.`Qubit`(*initial_state=’z’*)
+> ## qcpy.`qubit`(*initial_state=’z’*)
 
 *Object representation of a qubit.*
 
 ### Parameters:
 
-`initial_state (chr)` - Character input for starting direction in the *x*, *y*, or *z* axis.
+`initial_state (chr)` default: `z` - Character input for starting direction in the *x*, *y*, or *z* axis.
 
 ### Attributes:
 
-`state (numpy.ndarray)` -  current state of qubit in matrix representation.
+`None`
 
+### Example:
+
+```python
+from qcpy import qubit
+
+qx = qubit(initial_state = 'x')
+qy = qubit(initial_state = 'y')
+qz = qubit(initial_state = 'z')
+print("qx:\n", qx)
+print("qy:\n", qy)
+print("qz:\n", qz)
+
+
+# qx:
+#  [[0.70710677+0.j]
+#  [0.70710677+0.j]]
+# qy:
+#  [[0.70710677+0.j]
+#  [0.+0.70710677j]]
+# qz:
+#  [[1.+0.j]
+#  [0.+0.j]]
+```
 ---
 
 # Quantum Gates
 
-> ## *class* QC.QuantumGate.`Identity`()
+> ## quantumgate.`identity`()
 
 *Gate that does not modify the quantum state.*
 
@@ -44,16 +60,21 @@ pip install QCpython
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of Identity gate.
+```python
+identity=[1+0j, 0+0j], 
+         [0+0j, 1+0j]
+```
+### Example:
 
 ```python
-Identity.matrix = [1+0j, 0+0j], 
-	          [0+0j, 1+0j]
-```
+from qcpy import identity 
 
-> ## *class* QC.QuantumGate.`PauliX`()
+print(identity())
+
+# [[1.+0.j 0.+0.j]
+#  [0.+0.j 1.+0.j]]
+```
+> ## quantumgate.`paulix`()
 
 *Quantum equivalent of the NOT gate in classical computing with respect to the standard basis |0>, |1>.*
 
@@ -61,16 +82,21 @@ Identity.matrix = [1+0j, 0+0j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of Pauli-X gate.
+```python
+PauliX = [0+0j, 1+0j], 
+	 [1+0j, 0+0j]
+```
+### Example:
 
 ```python
-PauliX.matrix = [0+0j, 1+0j], 
-	        [1+0j, 0+0j]
-```
+from qcpy import paulix
 
-> ## *class* QC.QuantumGate.`PauliY`()
+print(paulix())
+
+# [[1.+0.j 0.+0.j]
+#  [0.+0.j 1.+0.j]]
+```
+> ## quantumgate.`pauliy`()
 
 *Rotation around y-axis of the bloch sphere by π radiains, mapping |0> to i|1> and |1> to -i|0>.*
 
@@ -78,16 +104,21 @@ PauliX.matrix = [0+0j, 1+0j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of Pauli-Y gate.
+```python
+PauliY = [0+0j, 0-1j],
+         [0+1j, 0+0j]
+```
+### Example:
 
 ```python
-PauliY.matrix = [0+0j, 0-1j],
-                [0+1j, 0+0j]
-```
+from qcpy import pauliy
 
-> ## *class* QC.QuantumGate.`PauliZ`()
+print(pauliy())
+
+# [[0+0j, 0-1j]
+#  [0+1j, 0+0j]]
+```
+> ## quantumgate.`pauliz`()
 
 *Rotation around z-axis of the bloch sphere by π radiains, mapping |1> to -|1>; known as the phase-flip.*
 
@@ -95,16 +126,21 @@ PauliY.matrix = [0+0j, 0-1j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of Pauli-Z gate.
+```python
+PauliZ = [1+0j, 0+0j], 
+         [0+0j, -1+0j]
+```
+### Example:
 
 ```python
-PauliZ.matrix = [1+0j, 0+0j], 
-                [0+0j, -1+0j]
-```
+from qcpy import pauliz
 
-> ## *class* QC.QuantumGate.`Hadamard`()
+print(pauliz())
+
+# [[1+0j, 0+0j], 
+#  [0+0j, -1+0j]]
+```
+> ## quantumgate.`hadamard`()
 
 *Maps the basis states |0> to |+> and |1> to |->, creating a superposition state if given a computation basis state.*
 
@@ -112,41 +148,58 @@ PauliZ.matrix = [1+0j, 0+0j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of Hadamard gate.
+```python
+Hadamard = [1,  1] 
+           [1, -1] * (1/sqrt(2))
+```
+### Example:
 
 ```python
-Hadamard.matrix = ([1,  1] 
-                   [1, -1]) * (1/sqrt(2))
-```
+from qcpy import hadamard
 
-> ## *class* QC.QuantumGate.`CNot`(*inverse=False*)
+print(hadamard())
+
+# [[ 0.70710677+0.j  0.70710677+0.j]
+#  [ 0.70710677+0.j -0.70710677+0.j]]
+```
+> ## quantumgate.`cnot`(*little_endian=False*)
 
 *Controlled gate acts on two or more qubits, performing the NOT operation of the target qubit only if the control qubits are |1>, can act as a quantum regiester and is used to entangle and disentangle Bell states.*
 
 ### Parameters:
 
-`inverse (bool)` - if the gate is an inverse, with the target being above the control.
-
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of CNOT gate.
+`little_endian (bool)` - if the gate is an inverse, with the target being above the control.
 
 ```python
 # regular
-CNot.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
-              [0+0j, 1+0j, 0+0j, 0+0j],
-              [0+0j, 0+0j, 0+0j, 1+0j],
-              [0+0j, 0+0j, 1+0j, 0+0j]
-# inverse
-CNot.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
-              [0+0j, 0+0j, 0+0j, 1+0j],
-              [0+0j, 0+0j, 1+0j, 0+0j],
-              [0+0j, 1+0j, 0+0j, 0+0j] 
+CNot = [1+0j, 0+0j, 0+0j, 0+0j],
+       [0+0j, 1+0j, 0+0j, 0+0j],
+       [0+0j, 0+0j, 0+0j, 1+0j],
+       [0+0j, 0+0j, 1+0j, 0+0j]
+# little_endian = True
+CNot = [1+0j, 0+0j, 0+0j, 0+0j],
+       [0+0j, 0+0j, 0+0j, 1+0j],
+       [0+0j, 0+0j, 1+0j, 0+0j],
+       [0+0j, 1+0j, 0+0j, 0+0j] 
 ```
+### Example:
 
-> ## *class* QC.QuantumGate.`Swap`()
+```python
+from qcpy import cnot
+
+print(cnot())
+
+# [[1.+0.j 0.+0.j 0.+0.j 0.+0.j]
+#  [0.+0.j 1.+0.j 0.+0.j 0.+0.j]
+#  [0.+0.j 0.+0.j 0.+0.j 1.+0.j]
+#  [0.+0.j 0.+0.j 1.+0.j 0.+0.j]]
+
+# [[1.+0.j 0.+0.j 0.+0.j 0.+0.j]
+#  [0.+0.j 0.+0.j 0.+0.j 1.+0.j]
+#  [0.+0.j 0.+0.j 1.+0.j 0.+0.j]
+#  [0.+0.j 1.+0.j 0.+0.j 0.+0.j]]
+```
+> ## quantumgate.`swap`()
 
 *Swaps two qubits, with respect to the basis |00>, |01>, |10>, and |11>.*
 
@@ -154,18 +207,25 @@ CNot.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of SWAP gate.
+```python
+Swap = [1+0j, 0+0j, 0+0j, 0+0j],
+       [0+0j, 0+0j, 1+0j, 0+0j],
+       [0+0j, 1+0j, 0+0j, 0+0j],
+       [0+0j, 0+0j, 0+0j, 1+0j]
+```
+### Example:
 
 ```python
-Swap.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
-              [0+0j, 0+0j, 1+0j, 0+0j],
-              [0+0j, 1+0j, 0+0j, 0+0j],
-              [0+0j, 0+0j, 0+0j, 1+0j]
-```
+from qcpy import swap
 
-> ## *class* QC.QuantumGate.`Toffoli`()
+print(swap())
+
+# [1+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 1+0j, 0+0j],
+# [0+0j, 1+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 0+0j, 1+0j]
+```
+> ## quantumgate.`toffoli`()
 
 *Universal reversible logic gate, known as the “controlled-controlled-NOT” gate; if the two control bits are set to 1, it will invert the target.*
 
@@ -173,22 +233,33 @@ Swap.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of Toffoli gate.
+```python
+Toffoli = [1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+          [0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+          [0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+          [0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+          [0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j],
+          [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j],
+          [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j],
+          [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j]
+```
+### Example:
 
 ```python
-Toffoli.matrix = [1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
-                 [0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
-                 [0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
-                 [0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j],
-                 [0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j],
-                 [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j],
-                 [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j],
-                 [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j]
-```
+from qcpy import toffoli
 
-> ## *class* QC.QuantumGate.`Phase`(*theta=numpy.pi/2*)
+print(toffoli())
+
+# [1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j],
+# [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j]
+```
+> ## quantumgate.`phase`(*theta=numpy.pi/2*)
 
 *Applies a rotation of theta around the z-axis.*
 
@@ -196,16 +267,27 @@ Toffoli.matrix = [1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
 
 `theta (float)` default: `numpy.pi/2` -  angle of rotation around z-axis.
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of Phase gate.
+```python
+Phase = [1+0j, 0+0j],
+	[0+0j, numpy.exp(0+1j * theta)]
+```
+### Example:
 
 ```python
-Phase.matrix = [1+0j, 0+0j],
-	       [0+0j, numpy.exp(0+1j * theta)]
-```
+from qcpy import phase
 
-> ## *class* QC.QuantumGate.`S`()
+print(phase())
+
+# [1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j, 0+0j],
+# [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j],
+# [0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 0+0j, 1+0j, 0+0j]
+```
+> ## quantumgate.`s`()
 
 *Equivalent to a pi/2 rotation around the z-axis.*
 
@@ -213,16 +295,21 @@ Phase.matrix = [1+0j, 0+0j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of S gate.
-
 ```python
 S.matrix = [1+0j, 0+0j],
            [0+0j, 0+1j]
 ```
+### Example:
 
-> ## *class* QC.QuantumGate.`Sdg`()
+```python
+from qcpy import s
+
+print(s())
+
+# [1+0j, 0+0j],
+# [0+0j, 0+1j]
+```
+> ## quantumgate.`sdg`()
 
 *Inverse of S gate; a -pi/2 rotation around the z-axis.*
 
@@ -230,16 +317,21 @@ S.matrix = [1+0j, 0+0j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an inverse S gate.
-
 ```python
 Sdg.matrix = [1+0j, 0+0j],
              [0+0j, 0-1j]
 ```
+### Example:
 
-> ## *class* QC.QuantumGate.`T`()
+```python
+from qcpy import sdg
+
+print(sdg())
+
+# [1+0j, 0+0j],
+# [0+0j, 0-1j]
+```
+> ## quantumgate.`t`()
 
 *Square of S gate; where T = S^2.*
 
@@ -247,16 +339,21 @@ Sdg.matrix = [1+0j, 0+0j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of a T gate.
-
 ```python
 T.matrix = [1+0j, 0+0j],
            [0+0j, numpy.exp((0+1j * numpy.pi) / 4)]
 ```
+### Example:
 
-> ## *class* QC.QuantumGate.`Tdg`()
+```python
+from qcpy import t
+
+print(t())
+
+# [[1.+0.j 0.+0.j]
+#  [0.+0.j 0.70710677+0.70710677j]]
+```
+> ## quantumgate.`tdg`()
 
 *Inverse of T gate.*
 
@@ -264,16 +361,21 @@ T.matrix = [1+0j, 0+0j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of a inverse of T gate.
+```python
+Tdg = [1+0j, 0+0j],
+      [0+0j, numpy.exp((0-1j * numpy.pi) / 4)]
+```
+### Example:
 
 ```python
-Tdg.matrix = [1+0j, 0+0j],
-             [0+0j, numpy.exp((0-1j * numpy.pi) / 4)]
-```
+from qcpy import tdg
 
-> ## *class* QC.QuantumGate.`Rz`(*theta=numpy.pi/2*)
+print(tdg())
+
+# [[1.+0.j 0.+0.j]
+#  [0.+0.j 0.70710677-0.70710677j]]
+```
+> ## quantumgate.`rz`(*theta=numpy.pi/2*)
 
 *Rotation of qubit around the z-axis.*
 
@@ -281,16 +383,12 @@ Tdg.matrix = [1+0j, 0+0j],
 
 `theta (float)` default: `numpy.pi/2` -  angle of rotation around z-axis.
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an Rz gate.
-
 ```python
-Rz.matrix = [numpy.exp((0-1j * (theta / 2))), 0+0j],
-            [0+0j, numpy.exp(0+1j * (theta / 2))]
+Rz = [numpy.exp((0-1j * (theta / 2))), 0+0j],
+     [0+0j, numpy.exp(0+1j * (theta / 2))]
 ```
 
-> ## *class* QC.QuantumGate.`Rx`(*theta=numpy.pi/2*)
+> ## quantumgate.`rx`(*theta=numpy.pi/2*)
 
 *Rotation of qubit around the x-axis.*
 
@@ -298,16 +396,21 @@ Rz.matrix = [numpy.exp((0-1j * (theta / 2))), 0+0j],
 
 `theta (float)` default: `numpy.pi/2` -  angle of rotation around x-axis.
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an Rx gate.
+```python
+Rx = [numpy.cos(theta / 2), 0-1j * numpy.sin(theta / 2)],
+     [0-1j * numpy.sin(theta / 2), numpy.cos(theta / 2)]
+```
+### Example:
 
 ```python
-Rx.matrix = [numpy.cos(theta / 2), 0-1j * numpy.sin(theta / 2)],
-            [0-1j * numpy.sin(theta / 2), numpy.cos(theta / 2)]
-```
+from qcpy import rx
 
-> ## *class* QC.QuantumGate.`Ry`(*theta=numpy.pi/2*)
+print(rx())
+
+# [[0.70710677+0.j 0.-0.70710677j]
+#  [0.-0.70710677j 0.70710677+0.j]]
+```
+> ## quantumgate.`ry`(*theta=numpy.pi/2*)
 
 *Rotation of qubit around the y-axis.*
 
@@ -315,16 +418,21 @@ Rx.matrix = [numpy.cos(theta / 2), 0-1j * numpy.sin(theta / 2)],
 
 `theta (float)`default: `numpy.pi/2` -  angle of rotation around y-axis.
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an Ry gate.
+```python
+Ry = [numpy.cos(theta / 2), -1 * numpy.sin(theta / 2)],
+     [numpy.sin(theta / 2), numpy.cos(theta / 2)]
+```
+### Example:
 
 ```python
-Ry.matrix = [numpy.cos(theta / 2), -1 * numpy.sin(theta / 2)],
-            [numpy.sin(theta / 2), numpy.cos(theta / 2)]
-```
+from qcpy import ry
 
-> ## *class* QC.QuantumGate.`Sx`()
+print(ry())
+
+# [[ 0.70710677+0.j -0.70710677+0.j]
+#  [ 0.70710677+0.j  0.70710677+0.j]]
+```
+> ## quantumgate.`sx`()
 
 *Rotation around the x-axis by 90 degrees in the counter-clockwise direction. Also known as the “square-root X gate” due to the fact that applying the SX gate twice results in an X gate.*
 
@@ -332,16 +440,21 @@ Ry.matrix = [numpy.cos(theta / 2), -1 * numpy.sin(theta / 2)],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an Sx gate.
+```python
+Sx = [1+1j, 1-1j], 
+     [1-1j, 1+1j] * (1 / 2)
+```
+### Example:
 
 ```python
-Sx.matrix = [1+1j, 1-1j], 
-            [1-1j, 1+1j]]) * (1 / 2)
-```
+from qcpy import sx
 
-> ## *class* QC.QuantumGate.`Sxdg`()
+print(sx())
+
+# [[0.5+0.5j 0.5-0.5j]
+#  [0.5-0.5j 0.5+0.5j]]
+```
+> ## quantumgate.`sxdg`()
 
 *Inverse of the Sx gate.*
 
@@ -349,16 +462,21 @@ Sx.matrix = [1+1j, 1-1j],
 
 `None`
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an inverse Sx gate.
+```python
+Sxdg = [1-1j, 1+1j], 
+       [1+1j, 1-1j] * (1 / 2)
+```
+### Example:
 
 ```python
-Sxdg.matrix = [1-1j, 1+1j], 
-              [1+1j, 1-1j]]) * (1 / 2)
-```
+from qcpy import sxdg
 
-> ## *class* QC.QuantumGate.`U`(*theta=numpy.pi/2, phi=numpy.pi/2, lmbda=numpy.pi/2*)
+print(sxdg())
+
+# [[0.5-0.5j 0.5+0.5j]
+#  [0.5+0.5j 0.5-0.5j]]
+```
+> ## quantumgate.`u`(*theta=numpy.pi/2, phi=numpy.pi/2, lmbda=numpy.pi/2*)
 
 *Rotation of qubit with respect to theta, phi, and lambda, in Euler angles.*
 
@@ -370,16 +488,21 @@ Sxdg.matrix = [1-1j, 1+1j],
 
 `lmbda (float)` default: `numpy.pi/2` -  angle of rotation around Eulear angle lambda.
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of a U gate.
-
 ```python
 U.matrix = [numpy.cos(theta / 2), -1 * numpy.exp(0+1j * lmbda) * numpy.sin(theta / 2)], 
            [numpy.exp(0+1j * phi) * numpy.sin(theta / 2), numpy.exp(0+1j * (lmbda + phi)) * numpy.cos(theta / 2)]]
 ```
+### Example:
 
-> ## *class* QC.QuantumGate.`Rxx`(*theta=numpy.pi/2*)
+```python
+from qcpy import u
+
+print(u())
+
+# [[0.7071+0.j -0.-0.7071j]
+#  [0.+0.7071j -0.7071+0.j]]
+```
+> ## quantumgate.`rxx`(*theta=numpy.pi/2*)
 
 *Rotation about XX, maximally entangling at theta = pi/2.*
 
@@ -387,18 +510,25 @@ U.matrix = [numpy.cos(theta / 2), -1 * numpy.exp(0+1j * lmbda) * numpy.sin(theta
 
 `theta (float)` default: `numpy.pi/2` -  angle of rotation around XX.
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an Rxx gate.
-
 ```python
 Rxx.matrix = [numpy.cos(theta / 2), 0+0j, 0+0j, 0-1j * numpy.sin(theta / 2)],
              [0+0j, numpy.cos(theta / 2), 0-1j * numpy.sin(theta / 2), 0+0j],
              [0+0j, 0-1j * numpy.sin(theta / 2), numpy.cos(theta / 2), 0+0j],
              [0-1j * numpy.sin(theta / 2), 0+0j, 0+0j, numpy.cos(theta / 2)]
 ```
+### Example:
 
-> ## *class* QC.QuantumGate.`Rzz`(*theta=numpy.pi/2*)
+```python
+from qcpy import rxx
+
+print(rxx())
+
+# [[0.70710677+0.j 0+0.j 0+0.j 0-0.70710677j]
+#  [0+0.j 0.70710677+0.j 0-0.70710677j 0+0.j]
+#  [0+0.j 0-0.70710677j 0.70710677+0.j 0+0.j]
+#  [0-0.70710677j 0+0.j 0.+0.j 0.70710677+0.j]]
+```
+> ## quantumgate.`rzz`(*theta=numpy.pi/2*)
 
 *Rotation about ZZ, maximally entangling at theta = pi/2.*
 
@@ -406,18 +536,25 @@ Rxx.matrix = [numpy.cos(theta / 2), 0+0j, 0+0j, 0-1j * numpy.sin(theta / 2)],
 
 `theta (float)` default: `numpy.pi/2` -  angle of rotation around ZZ.
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an Rzz gate.
-
 ```python
 Rzz.matrix = [numpy.exp(0-1j * (theta / 2)), 0+0j, 0+0j, 0+0j],
              [0+0j, numpy.exp(0+1j * (theta / 2)), 0+0j, 0+0j],
              [0+0j, 0+0j, numpy.exp(0+1j * (theta / 2)), 0+0j],
              [0+0j, 0+0j, 0+0j, numpy.exp(0-1j * (theta / 2))]
 ```
+### Example:
 
-> ## *class* QC.QuantumGate.`Cr`(*theta=numpy.pi/2*)
+```python
+from qcpy import rzz
+
+print(rzz())
+
+# [[0.70710677-0.70710677j 0+0.j 0+0.jn 0+0.j]
+#  [0+0.j 0.70710677+0.70710677j 0+0.j 0+0.j]
+#  [0+0.j 0+0.j 0.70710677+0.70710677j 0+0.j]
+#  [0+0.j 0+0.j 0+0.j 0.70710677-0.70710677j]]
+```
+> ## quantumgate.`cr`(*theta=numpy.pi/2*)
 
 *Controlled phase shift rotation in theta radians; generalization of Cz gate.*
 
@@ -425,18 +562,25 @@ Rzz.matrix = [numpy.exp(0-1j * (theta / 2)), 0+0j, 0+0j, 0+0j],
 
 `theta (float)` default: `numpy.pi/2` -  angle of rotation in theta radians.
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an Cr gate.
+```python
+Cr = [1+0j, 0+0j, 0+0j, 0+0j],
+     [0+0j, 1+0j, 0+0j, 0+0j],
+     [0+0j, 0+0j, 1+0j, 0+0j],
+     [0+0j, 0+0j, 0+0j, exp(theta * 0+1j)]
+```
+### Example:
 
 ```python
-Cz.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
-            [0+0j, 1+0j, 0+0j, 0+0j],
-            [0+0j, 0+0j, 1+0j, 0+0j],
-            [0+0j, 0+0j, 0+0j, numpy.exp(theta * 0+1j)]
-```
+from qcpy import cr
 
-> ## *class* QC.QuantumGate.`Cz`(*theta=numpy.pi/2*)
+print(cr())
+
+# [[1+0.j 0+0.j 0+0.j 0+0.j]
+#  [0+0.j 1+0.j 0+0.j 0+0.j]
+#  [0+0.j 0+0.j 1+0.j 0+0.j]
+#  [0+0.j 0+0.j 0+0.j 0.5403023+0.84147096j]]
+```
+> ## quantumgate.`cz`(*theta=numpy.pi/2*)
 
 *Controlled phase shift rotation in theta radians.*
 
@@ -444,19 +588,27 @@ Cz.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
 
 `theta (float)` default: `numpy.pi/2` -  angle of rotation in theta radians.
 
-### Attributes:
-
-`matrix (np.ndarray)` - matrix representation of an Cz gate.
+```python
+Cz = [1+0j, 0+0j, 0+0j, 0+0j],
+     [0+0j, 1+0j, 0+0j, 0+0j],
+     [0+0j, 0+0j, 1+0j, 0+0j],
+     [0+0j, 0+0j, 0+0j, -1+0j]
+```
+### Example:
 
 ```python
-Cz.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
-            [0+0j, 1+0j, 0+0j, 0+0j],
-            [0+0j, 0+0j, 1+0j, 0+0j],
-            [0+0j, 0+0j, 0+0j, -1+0j]
+from qcpy import cz
+
+print(cz())
+
+# [[ 1.+0.j  0.+0.j  0.+0.j  0.+0.j]
+#  [ 0.+0.j  1.+0.j  0.+0.j  0.+0.j]
+#  [ 0.+0.j  0.+0.j  1.+0.j  0.+0.j]
+#  [ 0.+0.j  0.+0.j  0.+0.j -1.+0.j]]
 ```
 ---
 # Quantum Circuit
-> ## *class* QCpy.`QuantumCircuit`(*qubits*, *little_endian=False*, *prep='z'*)
+> ## *class* qcpy.`quantumcircuit`(*qubits: int*, *little_endian: bool=False*, *prep: char='z'*)
 
 *Quantum circuit that represents the state of a quantum system and performs operations on select qubits.*
 
@@ -470,38 +622,10 @@ Cz.matrix = [1+0j, 0+0j, 0+0j, 0+0j],
 
 ### Attributes:
 
-`None`
+`state (numpy.ndarray)` -  current state of quantum circuit in matrix representation.
 
-> ## QuantumCircuit.`circuit`()
 
-*Dictionary representation of the circuit*
-
-### Parameters:
-
-`None`
-
-### Returns:
-
-`circuit (dict[int, list[str]])` - key: qubit; value: name of gate.
-
-### Example:
-
-```python
-from QCpy import QuantumCircuit
-
-qc = QuantumCircuit(2)
-
-qc.hadamard(0)
-qc.cnot(0, 1)
-qc.hadamard(0)
-
-print(qc.circuit())
-
-# {0: ['hadamard', 'cnot_control', 'hadamard'], 
-#  1: ['cnot_target']}
-```
-
-> ## QuantumCircuit.`amplitude`(*round=3*)
+> ## quantumcircuit.`amplitude`(*round: int=3*)
 
 *Returns vector of all possible amplitudes for the quantum circuit*
 
@@ -516,13 +640,13 @@ print(qc.circuit())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 qc.cnot(0, 1)
-qc.hadamard(0)
+qc.h(0)
 
 print(qc.amplitude())
 
@@ -532,13 +656,13 @@ print(qc.amplitude())
 # [0.5]]
 ```
 
-> ## QuantumCircuit.`phaseAngle`(*round=2*, *radian=True*)
+> ## quantumcircuit.`phaseangle`(*round: int=2*, *radian: bool=True*)
 
 *Calculates possible phase angles for the quantum circuit*
 
 ### Parameters:
 
-`round (int)` - rounding the amplitude to the nearest `round`
+`round (int)` - round phase angle for readability.
 
 `radian (bool)` - whether or not the values are in radians or degrees.
 
@@ -549,15 +673,15 @@ print(qc.amplitude())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 qc.cnot(0, 1)
-qc.hadamard(0)
+qc.h(0)
 
-print(qc.phaseAngle())
+print(qc.phaseangle())
 
 # [[0.        ]
 # [0.         ]
@@ -565,29 +689,29 @@ print(qc.phaseAngle())
 # [3.14159265]]
 ```
 
-> ## QuantumCircuit.`state`(*round=3*)
+> ## quantumcircuit.`state`
 
 *Returns state of the quantum circuit.*
 
 ### Parameters:
 
-`round (int)` - rounding the state to the nearest `round`
+`None`
 
 ### Returns:
 
-`_state (numpy.ndarray)` - array of quantum circuit's state.
+`state (numpy.ndarray)` - array of quantum circuit's state.
 
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 qc.cnot(0, 1)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j]
 # [0.   +0.j]
@@ -595,7 +719,34 @@ print(qc.state())
 # [0.707+0.j]]
 ```
 
-> ## QuantumCircuit.`circuitQueue()`
+> ## quantumcircuit.`flatten(round: int=3)`
+
+*Returns state of the quantum circuit in a 1D array.*
+
+### Parameters:
+
+`round (int)` - round state for readability.
+
+### Returns:
+
+`state (numpy.ndarray)` - array of quantum circuit's state.
+
+### Example:
+
+```python
+from qcpy import quantumcircuit
+
+qc = quantumcircuit(2)
+
+qc.h(0)
+qc.cnot(0, 1)
+
+print(qc.flatten())
+
+# [0.707+0.j 0.   +0.j 0.   +0.j 0.707+0.j]
+```
+
+> ## quantumcircuit.`circuitqueue()`
 
 *Returns queue of gates on quantum circuit.*
 
@@ -609,7 +760,7 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
 qc = QuantumCircuit(4)
 
@@ -618,7 +769,7 @@ qc.x(1)
 qc.x(2)
 qc.rc3x(0, 1, 2, 3)
 
-print(qc.circuitQueue())
+print(qc.circuitqueue())
 
 # [('X', 0), ('X', 1), ('X', 2), ('U', 3), ('U', 3), ('cnot', 2, # 3), ('U', 3), ('U', 3), ('swap', 2, 3), ('swap', 1, 2), 
 # ('swap', 1, 2), ('swap', 2, 3), ('cnot', 0, 3), ('U', 3),
@@ -629,13 +780,17 @@ print(qc.circuitQueue())
 #  ('U', 3), ('U', 3), ('rc3x', 0, 1, 2, 3)]
 ```
 
-> ## QuantumCircuit.`probabilities`(*round=3*)
+> ## quantumcircuit.`probabilities`(*show_percent: bool=False*, *show_bit=-1*, *round: int=3*)
 
 *Returns probabilitiy of the qubits within the quantum circuit.*
 
 ### Parameters:
 
-`round (int)` - rounding the probabilities to the nearest `round`
+`show_percent (bool)` - convert probability to be shown in percentage.
+
+`show_bit (int or str)` - get the probability of a single bit with a given string of binary or a integer.
+
+`round (int)` - rounding the probabilities to the nearest `round`.
 
 ### Returns:
 
@@ -644,11 +799,11 @@ print(qc.circuitQueue())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.cnot(0, 1)
 
@@ -657,7 +812,7 @@ print(qc.probabilities())
 # [0.5 0.  0.  0.5]
 ```
 
-> ## QuantumCircuit.`measure`()
+> ## quantumcircuit.`measure`()
 
 *Collapses the state based on the quantum circuit's probabilities.*
 
@@ -672,20 +827,19 @@ print(qc.probabilities())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 qc.cnot(0, 1)
 
 print(qc.measure())
 
-# ~Results may vary~
 # 00
 ```
 
-> ## QuantumCircuit.`reverse`()
+> ## quantumcircuit.`reverse`()
 
 *Reverses the quantum circuit's values.*
 
@@ -700,17 +854,17 @@ print(qc.measure())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
-print(qc.state())
+print(qc.state)
 
 qc.reverse()
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j]
 # [0.   +0.j]
@@ -722,7 +876,7 @@ print(qc.state())
 # [0.   +0.j]
 # [0.707+0.j]]
 ```
-> ## QuantumCircuit.`toffoli`(*control_1*, *control_2*, *target*)
+> ## quantumcircuit.`toffoli`(*control_1: int*, *control_2: int*, *target: int*)
 
 *A 3-qubit quantum gate that takes in two control qubits and one target qubit.*
 
@@ -741,17 +895,17 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(3)
+qc = quantumcircuit(3)
 
-qc.hadamard(0)
+qc.h(0)
 
-qc.hadamard(1)
+qc.h(1)
 
 qc.toffoli(0,1,2)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.5+0.j]
 # [0. +0.j]
@@ -763,7 +917,7 @@ print(qc.state())
 # [0.5+0.j]]
 ```
 
-> ## QuantumCircuit.`rccx`(*control_1*, *control_2*, *target*)
+> ## quantumcircuit.`rccx`(*control_1*, *control_2*, *target*)
 
 *A 3-qubit quantum gate that takes in two control qubits and one target qubit.*
 
@@ -782,16 +936,16 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-qc = QuantumCircuit(3)
+from qcpy import quantumcircuit
+qc = quantumcircuit(3)
 
-qc.hadamard(0)
+qc.h(0)
 
-qc.hadamard(1)
+qc.h(1)
 
 qc.rccx(0,1,2)
 
-print(qc.state())
+print(qc.state)
 
 # [[ 0.5-0.j ]
 # [ 0. +0.j ]
@@ -803,19 +957,19 @@ print(qc.state())
 # [ 0. +0.5j]]
 ```
 
-> ## QuantumCircuit.`rc3x`(*a*, *b*, *c*, *d*)
+> ## quantumcircuit.`rc3x`(*qubit_1: int*, *qubit_2: int*, *qubit_3: int*, *qubit_4: int*)
 
 *A 4-qubit quantum gate that takes in 4 unique qubits.*
 
 ### Parameters:
 
-`a (int)` - first input qubit.
+`qubit_1 (int)` - first input qubit.
 
-`b (int)` - second input qubit.
+`qubit_2 (int)` - second input qubit.
 
-`c (int)` - third input qubit.
+`qubit_3 (int)` - third input qubit.
 
-`d (int)` - fourth input qubit.
+`qubit_4 (int)` - fourth input qubit.
 
 
 ### Returns:
@@ -824,18 +978,18 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-qc = QuantumCircuit(4)
+from qcpy import quantumcircuit
+qc = quantumcircuit(4)
 
-qc.hadamard(0)
+qc.h(0)
 
-qc.hadamard(1)
+qc.h(1)
 
-qc.hadamard(2)
+qc.h(2)
 
-qc.rc3x(0,1,2)
+qc.rc3x(0,1,2,3)
 
-print(qc.state())
+print(qc.state)
 
 # [[ 0.354-0.j   ]
 # [ 0.   +0.j   ]
@@ -854,7 +1008,7 @@ print(qc.state())
 # [ 0.   -0.j   ]
 # [-0.354+0.j   ]]
 ```
-> ## QuantumCircuit.`cnot`(*control*, *target*)
+> ## quantumcircuit.`cnot`(*control: int*, *target: int*)
 
 *A 2-qubit quantum gate that takes in a control qubit and one target qubit.*
 
@@ -871,14 +1025,14 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-qc = QuantumCircuit(2)
+from qcpy import quantumcircuit
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.cnot(0,1)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j]
 # [0.   +0.j]
@@ -886,7 +1040,7 @@ print(qc.state())
 # [0.707+0.j]]
 ```
 
-> ## QuantumCircuit.`cr`(*control*, *target*)
+> ## quantumcircuit.`cr`(*control: int*, *target: int*)
 
 *A 2-qubit quantum gate that takes in a control qubit and one target qubit.*
 
@@ -903,14 +1057,14 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-qc = QuantumCircuit(2)
+from qcpy import quantumcircuit
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.cr(0,1)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j]
 # [0.   +0.j]
@@ -919,7 +1073,7 @@ print(qc.state())
 ```
 
 
-> ## QuantumCircuit.`cz`(*control*, *target*)
+> ## quantumcircuit.`cz`(*control: int*, *target: int*)
 
 *A 2-qubit quantum gate that takes in a control qubit and one target qubit.*
 
@@ -936,14 +1090,14 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-qc = QuantumCircuit(2)
+from qcpy import quantumcircuit
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.cz(0,1)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j]
 # [0.   +0.j]
@@ -951,7 +1105,7 @@ print(qc.state())
 # [0.   +0.j]]
 ```
 
-> ## QuantumCircuit.`swap`(*qubit_1*, *qubit_2*)
+> ## quantumcircuit.`swap`(*qubit_1: int*, *qubit_2: int*)
 
 *A 2-qubit quantum gate that takes in 2 qubits to swap there properties.*
 
@@ -968,14 +1122,14 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-qc = QuantumCircuit(2)
+from qcpy import quantumcircuit
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.swap(0,1)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j]
 # [0.707+0.j]
@@ -983,7 +1137,7 @@ print(qc.state())
 # [0.   +0.j]]
 ```
 
-> ## QuantumCircuit.`rxx`(*qubit_1*, *qubit_2*, *theta=numpy.pi/2*)
+> ## quantumcircuit.`rxx`(*qubit_1: int*, *qubit_2: int*, *theta: float=numpy.pi/2*)
 
 *A 2-qubit quantum gate that takes in two qubits and a representation of theta to initialize in the quantum state.*
 
@@ -1001,14 +1155,14 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-qc = QuantumCircuit(2)
+from qcpy import quantumcircuit
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.rxx(0,1)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.5+0.j ]
 # [0. -0.5j]
@@ -1016,7 +1170,7 @@ print(qc.state())
 # [0. -0.5j]]
 ```
 
-> ## QuantumCircuit.`rzz`(*qubit_1*, *qubit_2*, *theta=numpy.pi/2*)
+> ## quantumcircuit.`rzz`(*qubit_1*, *qubit_2*, *theta=numpy.pi/2*)
 
 *A 2-qubit quantum gate that takes in two qubits and a representation of theta to initialize in the quantum state.*
 
@@ -1035,14 +1189,14 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-qc = QuantumCircuit(2)
+from qcpy import quantumcircuit
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.rxx(0,1)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.5+0.j ]
 # [0. -0.5j]
@@ -1050,7 +1204,7 @@ print(qc.state())
 # [0. -0.5j]]
 ```
 
-> ## QuantumCircuit.`customControlPhase`(*control*, *target*, *custom_matrix*)
+> ## quantumcircuit.`customcontrolled`(*control: int*, *target: int*, *custom_matrix: np.array*)
 
 *Used to insert single qubit based quantum gates to have a control qubit apart of it and committing to the quantum state.*
 
@@ -1060,7 +1214,7 @@ print(qc.state())
 
 `target (int)` - target qubit for given matrix.
 
-`custom_matrix (np.array)` -  matrix to be applied to the quantum circuit.
+`custom_matrix (np.array)` - (2,2) matrix to be applied to the quantum circuit.
 
 
 ### Returns:
@@ -1069,17 +1223,15 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit, paulix
 
-from QCpy.QuantumGate import PauliX
+qc = quantumcircuit(2)
 
-qc = QuantumCircuit(2)
+qc.h(0)
 
-qc.hadamard(0)
+qc.customcontrolled(0,1, paulix())
 
-qc.customControlPhase(0,1, PauliX().matrix)
-
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j]
 # [0.   +0.j]
@@ -1087,7 +1239,7 @@ print(qc.state())
 # [0.707+0.j]]
 ```
 
-> ## QuantumCircuit.`identity`(*qubit*)
+> ## quantumcircuit.`i`(*qubit: int*)
 
 *Used to confirm value that a qubit is representing and does nothing to manipulate the value of such qubit.*
 
@@ -1101,13 +1253,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.identity(0)
+qc.i(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[1.+0.j]
 # [0.+0.j]
@@ -1115,7 +1267,7 @@ print(qc.state())
 # [0.+0.j]]
 ```
 
-> ## QuantumCircuit.`x`(*qubit*)
+> ## quantumcircuit.`x`(*qubit: int*)
 
 *Used to invert the value of what a qubit is representing.*
 
@@ -1129,13 +1281,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
 qc.x(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.+0.j]
 # [0.+0.j]
@@ -1144,7 +1296,7 @@ print(qc.state())
 ```
 
 
-> ## QuantumCircuit.`hadmard`(*qubit*)
+> ## quantumcircuit.`hadmard`(*qubit: int*)
 
 *Used to put a given qubit into superposition.*
 
@@ -1158,13 +1310,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j]
 # [0.   +0.j]
@@ -1172,7 +1324,7 @@ print(qc.state())
 # [0.   +0.j]]
 ```
 
-> ## QuantumCircuit.`y`(*qubit*)
+> ## quantumcircuit.`y`(*qubit: int*)
 
 *Changes the state of a qubit by pi around the y-axis of a Bloch Sphere.*
 
@@ -1186,13 +1338,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
 qc.y(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.+0.j]
 # [0.+0.j]
@@ -1201,7 +1353,7 @@ print(qc.state())
 ```
 
 
-> ## QuantumCircuit.`z`(*qubit*)
+> ## quantumcircuit.`z`(*qubit: int*)
 
 *Changes the state of a qubit by pi around the z-axis of a Bloch Sphere.*
 
@@ -1215,15 +1367,15 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.z(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[ 0.707+0.j]
 # [ 0.   +0.j]
@@ -1231,7 +1383,7 @@ print(qc.state())
 # [ 0.   +0.j]]
 ```
 
-> ## QuantumCircuit.`phase`(*qubit*, *theta=numpy.pi/2*)
+> ## quantumcircuit.`phase`(*qubit: int*, *theta: float=numpy.pi/2*)
 
 *Commits to a rotation around the z-axis based off of the inputted theta value.*
 
@@ -1247,15 +1399,15 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.phase(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j   ]
 # [0.   +0.j   ]
@@ -1263,7 +1415,7 @@ print(qc.state())
 # [0.   +0.j   ]]
 ```
 
-> ## QuantumCircuit.`s`(*qubit*)
+> ## quantumcircuit.`s`(*qubit: int*)
 
 *Is a Phase gate where the inputted theta value is given as a constant of theta = pi / 2.*
 
@@ -1277,15 +1429,15 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.s(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j   ]
 # [0.   +0.j   ]
@@ -1293,7 +1445,7 @@ print(qc.state())
 # [0.   +0.j   ]]
 ```
 
-> ## QuantumCircuit.`sdg`(*qubit*)
+> ## quantumcircuit.`sdg`(*qubit: int*)
 
 *Is a Phase gate and inverse of the S gate where the inputted theta value is given as a constant of theta = -pi / 2.*
 
@@ -1307,15 +1459,15 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.sdg(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j   ]
 # [0.   +0.j   ]
@@ -1323,7 +1475,7 @@ print(qc.state())
 # [0.   +0.j   ]]
 ```
 
-> ## QuantumCircuit.`t`(*qubit*)
+> ## quantumcircuit.`t`(*qubit: int*)
 
 *T gate is a special use case gate that in implemented from the P Gate.*
 
@@ -1337,15 +1489,15 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.t(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j ]
 # [0.   +0.j ]
@@ -1353,7 +1505,7 @@ print(qc.state())
 # [0.   +0.j ]]
 ```
 
-> ## QuantumCircuit.`tdg`(*qubit*)
+> ## quantumcircuit.`tdg`(*qubit: int*)
 
 *Tdg gate is a special use case gate that in implemented from the P Gate and is the inverse of the T gate.*
 
@@ -1367,15 +1519,15 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.tdg(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j ]
 # [0.   +0.j ]
@@ -1383,7 +1535,7 @@ print(qc.state())
 # [0.   +0.j ]]
 ```
 
-> ## QuantumCircuit.`rz`(*qubit*, *theta=numpy.pi/2*)
+> ## quantumcircuit.`rz`(*qubit: int*, *theta: float=numpy.pi/2*)
 
 *RZ gate commits a rotation around the z-axis for a qubit.*
 
@@ -1399,15 +1551,15 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
-qc.hadamard(0)
+qc.h(0)
 
 qc.rz(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.5-0.5j]
 # [0. +0.j ]
@@ -1415,7 +1567,7 @@ print(qc.state())
 # [0. +0.j ]]
 ```
 
-> ## QuantumCircuit.`ry`(*qubit*, *theta=numpy.pi/2*)
+> ## quantumcircuit.`ry`(*qubit: int*, *theta: float=numpy.pi/2*)
 
 *RY gate commits a rotation around the y-axis for a qubit.*
 
@@ -1431,13 +1583,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
 qc.ry(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j]
 # [0.   +0.j]
@@ -1445,7 +1597,7 @@ print(qc.state())
 # [0.   +0.j]]
 ```
 
-> ## QuantumCircuit.`rx`(*qubit*, *theta=numpy.pi/2*)
+> ## quantumcircuit.`rx`(*qubit: int*, *theta: float=numpy.pi/2*)
 
 *RX gate commits a rotation around the x-axis for a qubit.*
 
@@ -1461,13 +1613,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumCircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
 qc.rx(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.707+0.j   ]
 # [0.   +0.j   ]
@@ -1475,7 +1627,7 @@ print(qc.state())
 # [0.   +0.j   ]]
 ```
 
-> ## QuantumCircuit.`sx`(*qubit*)
+> ## quantumcircuit.`sx`(*qubit: int*)
 
 *SX gate is the square root of the Inverse gate (X, PauliX Gate).*
 
@@ -1489,13 +1641,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
 qc.sx(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.5+0.5j]
 # [0. +0.j ]
@@ -1503,7 +1655,7 @@ print(qc.state())
 # [0. +0.j ]]
 ```
 
-> ## QuantumCircuit.`sxdg`(*qubit*)
+> ## quantumcircuit.`sxdg`(*qubit: int*)
 
 *SXDG gate is the negative square root of the Inverse gate (X, PauliX Gate) and inverse of the SX gate.*
 
@@ -1517,13 +1669,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
 qc.sxdg(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.5-0.5j]
 # [0. +0.j ]
@@ -1531,7 +1683,7 @@ print(qc.state())
 # [0. +0.j ]]
 ```
 
-> ## QuantumCircuit.`u`(*qubit*, *theta=numpy.pi/2*, *phi=numpy.pi/2*, *lmbda=numpy.pi/2*)
+> ## quantumcircuit.`u`(*qubit: int*, *theta: float=numpy.pi/2*, *phi: float=numpy.pi/2*, *lmbda: float=numpy.pi/2*)
 
 *U gate is given three inputs (theta, phi, and lambda) that allow the inputs to manipulate the base matrix to allow for the position of the enacted qubit around the bloch sphere representation.*
 
@@ -1551,13 +1703,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit
 
-qc = QuantumCircuit(2)
+qc = quantumcircuit(2)
 
 qc.u(0)
 
-print(qc.state())
+print(qc.state)
 
 # [[0.5-0.5j]
 # [0. +0.j ]
@@ -1565,7 +1717,7 @@ print(qc.state())
 # [0. +0.j ]]
 ```
 
-> ## QuantumCircuit.`custom`(*qubit*, *custom_matrix*)
+> ## quantumcircuit.`custom`(*qubit: int*, *custom_matrix: np.array*)
 
 *Will take in a custom single qubit quantum gate and implement it on a qubit.*
 
@@ -1581,15 +1733,13 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
+from qcpy import quantumcircuit, paulix
 
-from QCpy.QuantumGate import PauliX
+qc = quantumcircuit(2)
 
-qc = QuantumCircuit(2)
+qc.custom(0, paulix())
 
-qc.custom(0, PauliX().matrix)
-
-print(qc.state())
+print(qc.state)
 
 # [[0.+0.j]
 # [0.+0.j]
@@ -1601,7 +1751,7 @@ print(qc.state())
 
 *A collection of classes to visualize the quantum circuit*
 
-> ## *class* QCpy.Visualizer.QSphere(*circuit*)
+> ## *class* qcpy.qsphere(*circuit*)
 
 *Visualizes the quantum circuit as a q-sphere*
 
@@ -1613,7 +1763,7 @@ print(qc.state())
 
 `None`
 
-> ## QSphere.`makeSphere`(*path="qsphere.png"*, *save=True*, *show=True*, *darkmode=True*)
+> ## qsphere.`make`(*path: str="qsphere.png"*, *save: bool=True*, *show: bool=True*, *darkmode: bool=True*)
 
 *Returns a Q-Sphere that plots a global visualization of the quantum states in a 3D global view*
 
@@ -1634,20 +1784,19 @@ print(qc.state())
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-from QCpy.Visualizer import *
+from qcpy import quantumcircuit, qsphere
 
-qc = QuantumCircuit(3)
+qc = quantumcircuit(3)
 
-qc.hadamard(0)
-qc.hadamard(1)
-qc.hadamard(2)
+qc.h(0)
+qc.h(1)
+qc.h(2)
 
-sphere_ex = QSphere(qc)
-sphere_ex.makeSphere(save=False, show=True)
+sphere_ex = qsphere(qc)
+sphere_ex.make(save=False, show=True)
 ```
 
-> ## *class* QC.Visualizer.BlochSphere(*circuit*)
+> ## *class* qcpy.bloch(*circuit*)
 
 *Visualizes the quantum state of a single qubit as a sphere*
 
@@ -1659,7 +1808,7 @@ sphere_ex.makeSphere(save=False, show=True)
 
 `None`
 
-> ## BlochSphere.`makeSphere`(*show_bit=0*, *path="qsphere.png"*, *save=True*, *show=True*, *darkmode=True*)
+> ## blochsphere.`make`(*show_bit: int=0*, *path: str="qsphere.png"*, *save: bool=True*, *show: bool=True*, *darkmode: bool=True*)
 
 *Returns a Bloch Sphere that plots the quantum state of a single qubit in a 3D global view*
 
@@ -1682,20 +1831,19 @@ sphere_ex.makeSphere(save=False, show=True)
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-from QCpy.Visualizer import *
+from qcpy import quantumcircuit, bloch
 
-qc = QuantumCircuit(3)
+qc = quantumcircuit(3)
 
-qc.hadamard(0)
-qc.hadamard(1)
-qc.hadamard(2)
+qc.h(0)
+qc.h(1)
+qc.h(2)
 
-sphere_ex = BlochSphere(qc)
-sphere_ex.makeSphere(show_bit=1, save=False, show=True)
+sphere_ex = bloch(qc)
+sphere_ex.make(show_bit=1, save=False, show=True)
 ```
 
-> ## *class* QCpy.Visualizer.StateVector(*circuit*)
+> ## *class* qcpy.statevector(*circuit*)
 
 *Visualizes the quantum circuit's quantum amplitutes using a bar graph*
 
@@ -1707,7 +1855,7 @@ sphere_ex.makeSphere(show_bit=1, save=False, show=True)
 
 `None`
 
-> ## StateVector.`makeGraph`(*path="statevector.png"*, *save=True*, *show=True*, *darkmode=True*)
+> ## statevector.`make`(*path: str="statevector.png"*, *save: bool=True*, *show: bool=True*, *darkmode: bool=True*)
 
 *Returns a graph that plots all the amplitudes of the qubits being measured*
 
@@ -1728,20 +1876,18 @@ sphere_ex.makeSphere(show_bit=1, save=False, show=True)
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-from QCpy.Visualizer import *
+from qcpy import quantumcircuit, statevector
 
-qc = QuantumCircuit(3)
+qc = quantumcircuit(3)
 
-qc.hadamard(0)
-qc.hadamard(1)
-qc.hadamard(2)
+qc.h(0)
+qc.h(1)
+qc.h(2)
 
-stateVector_ex = StateVector(qc)
-stateVector_ex.makeGraph(save=False, show=True)
+statevector(qc).make(save=False, show=True)
 ```
 
-> ## *class* QCpy.Visualizer.Probabilities(*circuit*)
+> ## *class* qcpy.probability(*circuit*)
 
 *Visualizes the quantum circuit's qubits probability of being measured using a bar graph*
 
@@ -1753,7 +1899,7 @@ stateVector_ex.makeGraph(save=False, show=True)
 
 `None`
 
-> ## Probabilities.`makeGraph`(*path="probabilities.png"*, *save=True*, *show=True*, *darkmode=True*)
+> ## probability.`make`(*path: str="probability.png"*, *save: bool=True*, *show: bool=True*, *darkmode: bool=True*)
 
 *Returns a graph that plots all the probabilities of the qubits being measured*
 
@@ -1774,15 +1920,13 @@ stateVector_ex.makeGraph(save=False, show=True)
 ### Example:
 
 ```python
-from QCpy import QuantumCircuit
-from QCpy.Visualizer import *
+from qcpy import quantumcircuit, probability
 
-qc = QuantumCircuit(3)
+qc = quantumcircuit(3)
 
-qc.hadamard(0)
-qc.hadamard(1)
-qc.hadamard(2)
+qc.h(0)
+qc.h(1)
+qc.h(2)
 
-probabilities_ex = Probabilities(qc)
-probabilities_ex.makeGraph(save=False, show=True)
+probability(qc).make(save=False, show=True)
 ```

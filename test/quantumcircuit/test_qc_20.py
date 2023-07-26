@@ -4,17 +4,17 @@ import numpy as np
 
 def inc(x):
     qc = quantumcircuit(qubits=x, little_endian=True, prep='z')
-    qc.hadamard(x - 1)
+    qc.h(x - 1)
     qc.rzz(x - 1, 0)
-    qc.hadamard(x - 1)
-    return qc.state()
+    qc.h(x - 1)
+    return qc.flatten()
 
 
 def test_20a():
     assert (
         inc(2) == np.array([
             0.707 + 0j, 0 + 0j, 0 - 0.707j, 0 + 0j
-        ], 'F').reshape(4, 1)
+        ], 'F')
     ).all(), "test_20a Failed on hadamard -> rzz -> hadamard"
 
 
@@ -23,7 +23,7 @@ def test_20b():
         inc(3) == np.array([
             0.707 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
             0 - 0.707j, 0 + 0j, 0 + 0j, 0 + 0j
-        ], 'F').reshape(8, 1)
+        ], 'F')
     ).all(), "test_20b Failed on hadamard -> rzz -> hadamard"
 
 
@@ -34,5 +34,5 @@ def test_20c():
             0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
             0 - 0.707j, 0 + 0j, 0 + 0j, 0 + 0j,
             0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
-        ], 'F').reshape(16, 1)
+        ], 'F')
     ).all(), "test_20c Failed on hadamard -> rzz -> hadamard"

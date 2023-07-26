@@ -4,11 +4,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="QCpython",
-    version="1.0.3",
+    name="qcpython",
+    version="1.1.0",
     author='Brennan Freeze, Paris Osuch, Aundre Barras, Soren Richenberg, Suzanne Rivoire',
     author_email='freezebrennan@gmail.com, osuch@sonoma.edu, barras@sonoma.edu, richenbe@sonoma.edu, rivoire@sonoma.edu',
-    description="QCpy is a comprehensive and user-friendly library for quantum computing, providing a wide range of functionality for quantum algorithms and quantum circuits. It is built on using open-source libraries NumPy and Matplotlib; compatible with Python 3.",
+    description="QCpy is an open source python library and collaborative project for flexible simulations and visualizations of quantum circuits. Designed by college students with students in mind, this library contains a powerful set of tools to teach computer scientists about the emerging discipline of quantum computing.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/QCpython/QCpy",
@@ -20,10 +20,8 @@ setuptools.setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        "numpy>=1.22.0",
-        "matplotlib>=3.5.1",
-        "six>=1.16.0",
-        "pyparsing>=3.0.4",
-        "pytest>=6.2.4"
+        "matplotlib==3.7.2",
+        "numpy==1.25.1",
+        "setuptools==65.5.0",
     ],
 )

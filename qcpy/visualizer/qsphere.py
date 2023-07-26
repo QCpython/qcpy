@@ -1,24 +1,19 @@
 import numpy as np
-from ..Core import quantumcircuit
 import matplotlib.pyplot as plt
-from .tools.sphere import Sphere
-# ScalerMappable is needed for creating the color bar on the State Vector visualization
-# that shows what each qubit's phase angle is
 from matplotlib.cm import ScalarMappable
-# deque is needed for the function that gets the qubit states in order of which the appear
-# on a QSphere
 from collections import deque
+from .tools.sphere import sphere
+from ..core.tools import amplitude, phaseangle, probabilities
 
-
-class QSphere:
+class qsphere:
     """
     Visualizes the quantum circuit as a q-sphere
 
     Methods
     --------
-    makeSphere() :
-        returns a Q-Sphere that plots a global visualization of the quantum states
-        in a 3D global view
+    make() :
+        returns a Q-Sphere that plots a global visualization of the quantum 
+        states in a 3D global view
     """
 
     def __init__(self, circuit=None):
@@ -35,7 +30,8 @@ class QSphere:
             _probabilities :
                 an array of all the probabilities of the qubits being measured
             _percents :
-                the array of probabilities turned into an array of values adding to 100
+                the array of probabilities turned into an array of values adding 
+                to 100
             _amplitudes :
                 an array of the amplitude for every state
             _phase_angles :
@@ -45,7 +41,8 @@ class QSphere:
             _phase_dict :
                 a dictionary of the phase angles mapped to the state list
             _lat_vals :
-                a list of lists of the qubit states in order as the appear upon the latitudes of a QSphere
+                a list of lists of the qubit states in order as the appear upon 
+                the latitudes of a QSphere
         """
         self._num_qubits = int(np.log2(len(circuit.probabilities())))
         self._state_list = [
@@ -55,7 +52,7 @@ class QSphere:
         self._probabilities = circuit.probabilities()
         self._percents = [i * 100 for i in self._probabilities]
         self._amplitutes = circuit.amplitude().flatten()
-        self._phase_angles = circuit.phaseAngle().flatten()
+        self._phase_angles = circuit.phaseangle().flatten()
         self._prob_dict = {
             self._state_list[i]: self._probabilities[i]
             for i in range(len(self._state_list))
@@ -68,23 +65,29 @@ class QSphere:
 
     def __hamming_distance__(self, l1: str, l2: str):
         """
-        Determines if the count of the number of 1 values match up between two strings.
+        Determines if the count of the number of 1 values match up between
+            two strings.
 
         Args:
             l1: string
             l2: string
         Returns:
-            Boolean representation if the count of ones in l1 and l2 are equal to each other.
+            Boolean representation if the count of ones in l1 and l2 are equal 
+            to each other.
         """
         return l1.count("1") == l2.count("1")
 
     def __latitude_finder__(self):
         """
-        Creates a 2D array of placed values on each latitude ring, alongside the amount of rotations around the specific lognitude that need to shifted for proper placement.
+        Creates a 2D array of placed values on each latitude ring, alongside the 
+        amount of rotations around the specific lognitude that need to shifted 
+        for proper placement.
         Args:
             None
         Returns:
-            2D array of needed values and an abstract view of the rotation around each longitude placement, given the length of each row within the 2D array.
+            2D array of needed values and an abstract view of the rotation 
+            around each longitude placement, given the length of each row within 
+            the 2D array.
         """
         # Main holder of values of latitude placement values
         latitude_values = [[]]
@@ -165,7 +168,7 @@ class QSphere:
 
         return coords
 
-    def makeSphere(
+    def make(
             self,
             path: str = "qsphere.png",
             save: bool = False,
@@ -188,7 +191,7 @@ class QSphere:
             _text = 'black'
             _accent = 'black'
             _background = 'white'
-        ax = Sphere(_background)
+        ax = sphere(_background)
         # coords will be in the order of states from the __latitude_finder__ function
         # and not in order of self._state_list, we can use our dict to look up each states
         # probability in any order now b/c we do not want to plot a qubit if it

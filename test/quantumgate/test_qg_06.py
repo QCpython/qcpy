@@ -4,7 +4,7 @@ import numpy as np
 
 def test_qg_06a():
     assert (
-        cnot(inverse=True) == np.array([
+        cnot() == np.array([
             [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
             [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
             [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
@@ -14,7 +14,7 @@ def test_qg_06a():
 
 def test_qg_06b():
     assert (
-        cnot() == np.array([
+        cnot(little_endian=True) == np.array([
             [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
             [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
             [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],

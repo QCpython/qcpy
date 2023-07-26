@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 # visualization
 
 
-def Graph(_text, _background, num_qubits):
+def graph(_text, _background, num_qubits):
     plt.clf()
     plt.close()
     # sets up bar graph and colors that map to a qubits phase angle

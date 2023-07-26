@@ -6,7 +6,7 @@ qc = quantumcircuit(qubits = number_of_qubits, little_endian = True, prep = 'z')
 
 # Enact the hadamard gate on each and every qubit in the quantum circuit.
 for i in range(number_of_qubits):
-    qc.hadamard(i)
+    qc.h(i)
 # Print the probabilites of the quantum circuit.
 print(qc.probabilities())
 

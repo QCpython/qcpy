@@ -4,17 +4,17 @@ import numpy as np
 
 def inc(x):
     qc = quantumcircuit(qubits=x, little_endian=True, prep='z')
-    qc.hadamard(0)
-    qc.hadamard(1)
-    qc.hadamard(2)
-    qc.hadamard(3)
-    qc.hadamard(4)
-    qc.hadamard(5)
+    qc.h(0)
+    qc.h(1)
+    qc.h(2)
+    qc.h(3)
+    qc.h(4)
+    qc.h(5)
     qc.rxx(0, 1)
     qc.rxx(2, 3)
     qc.rxx(4, 5)
     qc.rx(5)
-    return qc.state()
+    return qc.flatten()
 
 
 def test_16a():
@@ -36,5 +36,5 @@ def test_16a():
             -0.125 + 0j, -0.125 + 0j, -0.125 + 0j, -0.125 + 0j,
             -0.125 + 0j, -0.125 + 0j, -0.125 + 0j, -0.125 + 0j,
             -0.125 + 0j, -0.125 + 0j, -0.125 + 0j, -0.125 + 0j
-        ], 'F').reshape(64, 1)
+        ], 'F')
     ).all(), "test_16a Failed on hadamard (x6) -> rxx (x3) -> rx"
