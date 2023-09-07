@@ -99,13 +99,13 @@ class quantumcircuit:
             little_endian: bool = False,
             prep: chr = 'z'):
         """
-        Constructor that initilizes the quantum state in a vector given the 
+        Constructor that initilizes the quantum state in a vector given the
         number of qubits, endian positioning, and prepping of the qubits.
         Args:
             qubits:
                 The number of qubits that will be within the circuit.
             little_endian:
-                a boolean variable to determine the placement of values, as 
+                a boolean variable to determine the placement of values, as
                 well as determining the inverse of tensor product.
             prep:
 
@@ -127,21 +127,16 @@ class quantumcircuit:
             exit(
                 f"Error: QuantumCircuit().__init__ -- Quantum Circuit size must \
                 be 1 or more qubits. Current number of qubits is: {qubits}")
-        # Determines if tensor calculation of __operator_matrix__ will be
-        # reversed or not.
+
         self._little_endian = little_endian
-        # Gets the number of qubits in play to store for later use.
+
         self._circuit_size = qubits
-        # Makes tensored vector state of all qubits, and stores it within
-        # _state to get a vector of [[1], [0], [0],....2^n].
-        
-        # represent the circuit in dict
+
         self._circuit = []
         self.state = qubit(prep)
-        # increases the current vector size on the number of qubits - 1.
+
         for _ in range(qubits - 1):
-            # _state is converted into the new lengthed vector based on the
-            # kronocker product on the prepped qubit state.
+
             self.state = np.kron(self.state, qubit(prep))
 
     def __operator_matrix__(
@@ -150,7 +145,7 @@ class quantumcircuit:
             qubit: int,
             double: bool = False):
         """
-        Return a matrix from the tensor product calculation algorithm from any 
+        Return a matrix from the tensor product calculation algorithm from any
         inplaced quantum gate.
         Params:
             gate_matrix: np.array
@@ -160,25 +155,22 @@ class quantumcircuit:
             operator_matrix (numpy array):
                 Matrix after final calculation from the tensor product algorithm.
         """
-        # Identity matrix is called.
+
         i_matrix = identity()
-        # gate queue for the computation
         gate_queue = [i_matrix for _ in range(self._circuit_size)]
-        # replaces the placement of the identity gate at the qubit index with
-        # the gate to get a correct calculation of final product
         gate_queue[qubit] = gate_matrix
-        # if double is true, then CNOT, toffli, or any gate more than one qubit
-        # is being asked to be implemented.
+
         if double:
             gate_queue.pop(qubit + 1)
-        # if little_endian variable is true to follow IBM and Qiskit notation.
-        # Inverses queue of operation.
+
         if (self._little_endian):
+
             gate_queue = gate_queue[::-1]
-        # stores final value to be stored into operator_matrix value
+
         operator_matrix = gate_queue[0]
-        # uses np.kron() function to tensor product the queue
+
         for gate in gate_queue[1:]:
+
             operator_matrix = np.kron(operator_matrix, gate)
 
         return operator_matrix
@@ -189,8 +181,8 @@ class quantumcircuit:
             control_qubit: int,
             target_qubit: int):
         """
-        Calls a control_qubit and target_qubit represented as integers and will 
-        then correctly create a system of mathematic implementations of any 
+        Calls a control_qubit and target_qubit represented as integers and will
+        then correctly create a system of mathematic implementations of any
         given controlled quantum gate.
         Params:
             matrix_to_calculate: np.array
@@ -200,124 +192,44 @@ class quantumcircuit:
             None.
         """
 
-        inverse = False
+        if matrix_to_calculate.shape != (2, 2):
+            matrix_to_calculate = matrix_to_calculate[-2:, -2:]
 
-        if (target_qubit < control_qubit):
-            inverse = True
+        bra_ket_zero = np.array([[1 + 0j, 0 + 0j],
+                                [0 + 0j, 0 + 0j]], 'F')
 
-        temp_target_qubit = target_qubit
+        bra_ket_one = np.array([[0 + 0j, 0 + 0j],
+                                [0 + 0j, 1 + 0j]], 'F')
 
-        if (abs(target_qubit - control_qubit) == 1):
+        bra_ket_zero_kron = [identity()] * self._circuit_size
 
-            if inverse:
+        bra_ket_one_kron = [identity()] * self._circuit_size
 
-                self.state = np.dot(
-                    self.__operator_matrix__(
-                        hadamard(), temp_target_qubit), self.state)
-                
-                self.state = np.dot(
-                    self.__operator_matrix__(
-                        hadamard(), temp_target_qubit + 1), self.state)
+        bra_ket_zero_kron[control_qubit] = bra_ket_zero
+        bra_ket_one_kron[control_qubit] = bra_ket_one
+        bra_ket_one_kron[target_qubit] = matrix_to_calculate
 
-                self.state = np.dot(
-                    self.__operator_matrix__(
-                        matrix_to_calculate,
-                        temp_target_qubit,
-                        double=True),
-                    self.state)
+        if self._little_endian:
 
+            bra_ket_zero_kron = bra_ket_zero_kron[::-1]
+            bra_ket_one_kron = bra_ket_one_kron[::-1]
 
-                self.state = np.dot(
-                    self.__operator_matrix__(
-                        hadamard(), temp_target_qubit), self.state)
-                self.state = np.dot(
-                    self.__operator_matrix__(
-                        hadamard(), temp_target_qubit + 1), self.state)
+        to_add_zero = bra_ket_zero_kron[0]
 
-            else:
+        to_add_one = bra_ket_one_kron[0]
 
-                self.state = np.dot(
-                    self.__operator_matrix__(
-                        matrix_to_calculate,
-                        control_qubit,
-                        double=True),
-                    self.state)
-            return
-        
-        while (abs(temp_target_qubit - control_qubit) != 1):
-            # calls from called bool variable to see if the base CNOT matrix
-            # needs to be inverted to confirm correct logic structuring.
-            if inverse:
-                # This is implemented due to other controlled gates not needing
-                # this implementation.
-                self.swap(temp_target_qubit, temp_target_qubit + 1)
-                # update temp target_qubit position.
-                temp_target_qubit += 1
-            else:
-                # swap the temp target_qubit closer to the target_qubit.
-                self.swap(temp_target_qubit - 1, temp_target_qubit)
-                # update temp target_qubit position.
-                temp_target_qubit -= 1
-        # calls from called bool variable to see if the base CNOT matrix needs
-        # to be inverted to confirm correct logic structuring.
-        if inverse:
-            # will create inversed controlled_phase of what is inputted through here, determined if the inversed variable is marked true.
-            # call hadamard gates on control_qubit and target_qubit variables.
-            self.state = np.dot(
-                self.__operator_matrix__(
-                    hadamard(), temp_target_qubit), self.state)
-            self.state = np.dot(
-                self.__operator_matrix__(
-                    hadamard(),
-                    temp_target_qubit + 1),
-                self.state)
-            # Call to _state to commit a dot product on the state to include
-            # the given gate of the method.
-            self.state = np.dot(
-                self.__operator_matrix__(
-                    matrix_to_calculate,
-                    temp_target_qubit,
-                    double=True),
-                self.state)
-            # This is implemented due to other controlled gates not needing
-            # this implementation.
-            self.state = np.dot(
-                self.__operator_matrix__(
-                    hadamard(), temp_target_qubit),
-                self.state)
-            self.state = np.dot(
-                self.__operator_matrix__(
-                    hadamard(),
-                    temp_target_qubit + 1),
-                self.state)
-            # used for inversing all other gates that the target_qubit is less than
-            # the control_qubit to make it inversed in logic.
-        else:
-            # if not inverse, what the controlled gate is will be enacted on
-            # the _state using dot product system.
-            self.state = np.dot(
-                self.__operator_matrix__(
-                    matrix_to_calculate,
-                    control_qubit,
-                    double=True),
-                self.state)
+        for i in range(1, len(bra_ket_zero_kron)):
 
-        # while the temp target_qubit does not equal the original target_qubit
-        while (temp_target_qubit != target_qubit):
-            if inverse:
-                # swap the temp target_qubit with the position closer to original
-                # target_qubit
-                self.swap(temp_target_qubit - 1, temp_target_qubit)
-                # update temp target_qubit position
-                temp_target_qubit -= 1
-            else:
-                # swap the temp target_qubit with the position closer to original
-                # target_qubit
-                self.swap(temp_target_qubit, temp_target_qubit + 1)
-                # update temp target_qubit position
-                temp_target_qubit += 1
+            to_add_zero = np.kron(to_add_zero, bra_ket_zero_kron[i])
 
+            to_add_one = np.kron(to_add_one, bra_ket_one_kron[i])
 
+        to_add_zero += to_add_one
+
+        self.state = np.dot(
+            to_add_zero,
+            self.state)
+        return
 
     def circuit(self):
         """
@@ -340,9 +252,14 @@ class quantumcircuit:
             np.around(statevector) (numpy array):
                 Matrix after final calculation from the sqrt(x^2 + y^2) algorithm for finding the amplitude.
         """
-        return amplitude(self.state, self._circuit_size, show_bit, round, radian)
+        return amplitude(
+            self.state,
+            self._circuit_size,
+            show_bit,
+            round,
+            radian)
 
-    def phaseangle(self, show_bit = -1, round: int = 3, radian: bool = True):
+    def phaseangle(self, show_bit=-1, round: int = 3, radian: bool = True):
         """
         Calculates an array of possible phase angles based off the state. Converts each value using np.angle() function then degree to radian.
         Params:
@@ -353,15 +270,24 @@ class quantumcircuit:
             np.around(phaseAngles) (numpy array):
                 Matrix after final calculation from the phase angle algorithm.
         """
-        return phaseangle(self.state, self._circuit_size, show_bit, round, radian)
-    
+        return phaseangle(
+            self.state,
+            self._circuit_size,
+            show_bit,
+            round,
+            radian)
+
     def circuitqueue(self):
         return self._circuit
-    
+
     def circuitsize(self):
         return self._circuit_size
 
-    def probabilities(self, show_percent: bool = False, show_bit: int = -1, round: int = 3):
+    def probabilities(
+            self,
+            show_percent: bool = False,
+            show_bit: int = -1,
+            round: int = 3):
         """
         Return a matrix with all the probabilities for each state
         Params:
@@ -372,7 +298,12 @@ class quantumcircuit:
             prob_matrix (numpy array):
                 matrix with all the weighted probabilities of being measured
         """
-        return probabilities(self.state, self._circuit_size, show_percent, show_bit, round)
+        return probabilities(
+            self.state,
+            self._circuit_size,
+            show_percent,
+            show_bit,
+            round)
 
     def measure(self):
         """
@@ -383,7 +314,7 @@ class quantumcircuit:
             final_state (str):
                 the winning state displayed in classical bits notation
         """
-        # randomly selects the measured state using self.probabilities()
+
         return measure(self.state, self._circuit_size, self.probabilities())
 
     def reverse(self):
@@ -394,7 +325,7 @@ class quantumcircuit:
         Returns:
             None.
         """
-        # reverses the entire state, useful for quantum algorithms.
+
         self.state = self.state[::-1]
 
     def flatten(self, round: int = 3):
@@ -424,18 +355,17 @@ class quantumcircuit:
         Returns:
             None.
         """
-        # If circuit is less than 3, means Toffoli gate cannot be allowed.
+
         if (self._circuit_size < 3):
             exit(
                 f"Error: QuantumCircuit().toffoli -- Quantum Circuit size must be 3 or more qubits. Current number of qubits is: {self._circuit_size}")
-        # Calls of gates here represent the Toffoli matrix using other quantum
-        # gates.
+
         self.customcontrolled(control_2, target_qubit, sx())
         self.cnot(control_1, control_2)
         self.customcontrolled(control_2, target_qubit, sxdg())
         self.cnot(control_1, control_2)
         self.customcontrolled(control_1, target_qubit, sx())
-        # append gate to self._circuit
+
         self._circuit.append(('toffoli', control_1, control_2, target_qubit))
 
     def rccx(self, control_1: int, control_2: int, target_qubit: int):
@@ -448,12 +378,11 @@ class quantumcircuit:
         Returns:
             None.
         """
-        # If circuit is less than 3, means RCCX gate cannot be allowed.
+
         if (self._circuit_size < 3):
             exit(
                 f"Error: QuantumCircuit().rccx -- Quantum Circuit size must be 3 or more qubits. Current number of qubits is: {self._circuit_size}")
-        # Calls of gates here represent the RCCX matrix using other quantum
-        # gates.
+
         self.u(target_qubit, np.pi / 2, 0, np.pi)
         self.u(target_qubit, 0, 0, np.pi / 4)
         self.cnot(control_2, target_qubit)
@@ -463,7 +392,7 @@ class quantumcircuit:
         self.cnot(control_2, target_qubit)
         self.u(target_qubit, 0, 0, (-1 * np.pi) / 4)
         self.u(target_qubit, np.pi / 2, 0, np.pi)
-        # append gate to self._circuit
+
         self._circuit.append(('rccx', control_1, control_2, target_qubit))
 
     def rc3x(self, qubit_1: int, qubit_2: int, qubit_3: int, qubit_4: int):
@@ -477,12 +406,11 @@ class quantumcircuit:
         Returns:
             None.
         """
-        # If circuit is less than 4, means RC3X gate cannot be allowed.
+
         if (self._circuit_size < 4):
             exit(
                 f"Error: QuantumCircuit().rc3x -- Quantum Circuit size must be 4 or more qubits. Current number of qubits is: {self._circuit_size}")
-        # Calls of gates here represent the RC3X matrix using other quantum
-        # gates.
+
         self.u(qubit_4, np.pi / 2, 0, np.pi)
         self.u(qubit_4, 0, 0, np.pi / 4)
         self.cnot(qubit_3, qubit_4)
@@ -501,7 +429,7 @@ class quantumcircuit:
         self.cnot(qubit_3, qubit_4)
         self.u(qubit_4, 0, 0, (-1 * np.pi / 4))
         self.u(qubit_4, np.pi / 2, 0, np.pi)
-        # append gate to self._circuit
+
         self._circuit.append(('rc3x', qubit_1, qubit_2, qubit_3, qubit_4))
 
     def cnot(self, control_qubit: int, target_qubit: int):
@@ -513,21 +441,14 @@ class quantumcircuit:
         Returns:
             None.
         """
-        # If circuit is less than 2, means CNOT gate cannot be allowed.
+
         if (self._circuit_size < 2):
             exit(
                 f"Error: QuantumCircuit().cnot -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
-        # Determines if the little endian or big endian CNOT gate needs to be
-        # established for calculations.
-        if self._little_endian:
-            cnot_matrix = cnot(little_endian=True)
-        else:
-            cnot_matrix = cnot()
-        # Sends to __controlled_phase_handler alongside a boolean confirming
-        # the gate is indeed a CNOT gate
+
         self.__controlled_phase_handler__(
-            cnot_matrix, control_qubit, target_qubit)
-        # append gate to self._circuit
+            paulix(), control_qubit, target_qubit)
+
         self._circuit.append(('cnot', control_qubit, target_qubit))
 
     def cr(self, control_qubit: int, target_qubit: int):
@@ -539,7 +460,6 @@ class quantumcircuit:
         Returns:
             None.
         """
-        # If circuit is less than 2, means CR gate cannot be allowed.
         if (self._circuit_size < 2):
             exit(
                 f"Error: QuantumCircuit().cr -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
@@ -555,7 +475,6 @@ class quantumcircuit:
         Returns:
             None.
         """
-        # If circuit is less than 2, means CZ gate cannot be allowed.
         if (self._circuit_size < 2):
             exit(
                 f"Error: QuantumCircuit().cz -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
@@ -571,35 +490,13 @@ class quantumcircuit:
         Returns:
             None.
         """
-        # If circuit is less than 2, means SWAP gate cannot be allowed.
+
         if (self._circuit_size < 2):
             exit(
                 f"Error: QuantumCircuit().swap -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
-        # get the swap matrix
-        swap_matrix = swap()
-        # determines if the two values at play are at distance greater than
-        # one, if so it will call in private method for larger matrix
-        # operations.
-        if (qubit_1 - qubit_2 != 1 and qubit_1 - qubit_2 != -1):
-            self.__controlled_phase_handler__(swap_matrix, qubit_1, qubit_2)
-        # if qubit_2 is above qubit_1 on the quantum wire, then it will use
-        # qubit_2 as the call to __operator_matrix__.
-        elif (qubit_1 > qubit_2):
-            self.state = np.dot(
-                self.__operator_matrix__(
-                    swap_matrix,
-                    qubit_2,
-                    double=True),
-                self.state)
-        # simply commits a normal SWAP quantum gate functionality.
-        else:
-            self.state = np.dot(
-                self.__operator_matrix__(
-                    swap_matrix,
-                    qubit_1,
-                    double=True),
-                self.state)
-        # append gate to self._circuit
+        self.cnot(qubit_1, qubit_2)
+        self.cnot(qubit_2, qubit_1)
+        self.cnot(qubit_1, qubit_2)
         self._circuit.append(('swap', qubit_1, qubit_2))
 
     def rxx(self, qubit_1: int, qubit_2: int, theta: float = np.pi / 2):
@@ -616,8 +513,15 @@ class quantumcircuit:
         if (self._circuit_size < 2):
             exit(
                 f"Error: QuantumCircuit().rxx -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
-        rxx_matrix = rxx(theta)
-        self.__controlled_phase_handler__(rxx_matrix, qubit_1, qubit_2)
+        self.u(qubit_1, phi=theta, lmbda=0, theta=np.pi / 2)
+        self.h(qubit_2)
+        self.cnot(qubit_1, qubit_2)
+        self.u(qubit_2, lmbda=-1 * theta, theta=0, phi=0)
+        self.cnot(qubit_1, qubit_2)
+        self.u(qubit_1, theta=np.pi / 2, phi=-1 *
+               np.pi, lmbda=np.pi - theta)
+        self.h(qubit_2)
+
         # append gate to self._circuit
         self._circuit.append(('rxx', qubit_1, qubit_2))
 
@@ -635,13 +539,16 @@ class quantumcircuit:
         if (self._circuit_size < 2):
             exit(
                 f"Error: QuantumCircuit().rzz -- Quantum Circuit size must be 2 or more qubits. Current number of qubits is: {self._circuit_size}")
-        if (qubit_2 < qubit_1):
-            qubit_2, qubit_1 = qubit_1, qubit_2
-        rzz_matrix = rzz(theta)
-        # determines if the two values at play are at distance greater than
-        # one, if so it will call in private method for larger matrix
-        # operations.
-        self.__controlled_phase_handler__(rzz_matrix, qubit_1, qubit_2)
+        if (qubit_1 > qubit_2):
+            self.h(qubit_1)
+            self.h(qubit_2)
+
+        self.cnot(qubit_1, qubit_2)
+        self.u(qubit_2, theta=0, phi=0, lmbda=np.pi / 2)
+        self.cnot(qubit_1, qubit_2)
+        if (qubit_1 > qubit_2):
+            self.h(qubit_1)
+            self.h(qubit_2)
 
     def customcontrolled(
             self,
@@ -657,31 +564,12 @@ class quantumcircuit:
         Returns:
             None.
         """
-        # custom quantum gate can only call in a single qubit based matrix to
-        # manipulate the state.
+
         if (custom_matrix.shape != (2, 2)):
             exit(f"Error: QuantumCircuit().customControlPhase -- can only include a single qubit based quantum gate (2,2) matrix for state manipulation.")
-        # Determines if the matrix needs to be representing in little or big
-        # endian format.
-        if self._little_endian:
-            # If little endian format is being used.
-            controlled_custom_matrix = np.array([
-                [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-                [0 + 0j, custom_matrix[0][0], 0 + 0j, custom_matrix[0][1]],
-                [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
-                [0 + 0j, custom_matrix[1][0], 0 + 0j, custom_matrix[1][1]]
-            ])
 
-        else:
-            # If big endian format is in being used.
-            controlled_custom_matrix = np.array([
-                [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-                [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
-                [0 + 0j, 0 + 0j, custom_matrix[0][0], custom_matrix[0][1]],
-                [0 + 0j, 0 + 0j, custom_matrix[1][0], custom_matrix[1][1]]
-            ])
         self.__controlled_phase_handler__(
-            controlled_custom_matrix, control_qubit, target_qubit)
+            custom_matrix, control_qubit, target_qubit)
         self._circuit.append(('C', control_qubit, target_qubit))
 
     """
