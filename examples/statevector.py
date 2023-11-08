@@ -1,15 +1,17 @@
+import numpy as np
+
 from qcpy import quantumcircuit
 from qcpy.visualizer import statevector
-import numpy as np
-circuit = quantumcircuit(5, little_endian = True)
+
+circuit = quantumcircuit(5, little_endian=True)
 circuit.h(0)
 circuit.h(1)
 circuit.h(2)
 circuit.h(3)
 circuit.h(4)
 
-circuit.cnot(0,1)
-circuit.toffoli(0,1,2)
+circuit.cnot(0, 1)
+circuit.toffoli(0, 1, 2)
 circuit.t(1)
 circuit.t(2)
 circuit.h(1)

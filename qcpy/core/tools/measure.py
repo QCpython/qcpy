@@ -1,4 +1,6 @@
-from numpy import random, arange
+from numpy import arange, random
+
+
 def measure(state, circuit_size, probabilities):
     """
     Collapes the quantum circuit into classical bits
@@ -15,7 +17,7 @@ def measure(state, circuit_size, probabilities):
     #  and p = weights of each element
     final_state = random.choice(arange(len(state), dtype=int), 1, p=probabilities)
     # take out the bits from the returned list and convert to a string
-    final_state =str(bin(final_state[0]))[2:]
+    final_state = str(bin(final_state[0]))[2:]
     # pad with zeroes if needed
     final_state = final_state.zfill(circuit_size)
     # return the final state

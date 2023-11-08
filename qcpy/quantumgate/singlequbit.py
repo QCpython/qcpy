@@ -1,6 +1,5 @@
 import numpy as np
 
-
 """
 Identity:
     Confirms the state of a qubit as well as used in expanding other gates to then be applied to a specific qubit within a quantum circuit.
@@ -53,6 +52,7 @@ U Gate:
 
 """
 
+
 def identity():
     """
     Confirms the state of a qubit as well as used in expanding other gates to then be applied to a specific qubit within a quantum circuit.
@@ -60,10 +60,7 @@ def identity():
         I = [1, 0]
             [0, 1]
     """
-    return np.array([
-        [1 + 0j, 0 + 0j],
-        [0 + 0j, 1 + 0j]
-    ], 'F')
+    return np.array([[1 + 0j, 0 + 0j], [0 + 0j, 1 + 0j]], "F")
 
 
 def paulix():
@@ -73,10 +70,7 @@ def paulix():
         X = [0, 1]
             [1, 0]
     """
-    return np.array([
-        [0 + 0j, 1 + 0j],
-        [1 + 0j, 0 + 0j]
-    ], 'F')
+    return np.array([[0 + 0j, 1 + 0j], [1 + 0j, 0 + 0j]], "F")
 
 
 def pauliy():
@@ -86,10 +80,7 @@ def pauliy():
         Y = [0, -i]
             [i,  0]
     """
-    return np.array([
-        [0 + 0j, 0 - 1j],
-        [0 + 1j, 0 + 0j]
-    ], 'F')
+    return np.array([[0 + 0j, 0 - 1j], [0 + 1j, 0 + 0j]], "F")
 
 
 def pauliz():
@@ -99,10 +90,7 @@ def pauliz():
         Z = [1,  0]
             [0, -1]
     """
-    return np.array([
-        [1 + 0j, 0 + 0j],
-        [0 + 0j, -1 + 0j]
-    ], 'F')
+    return np.array([[1 + 0j, 0 + 0j], [0 + 0j, -1 + 0j]], "F")
 
 
 def hadamard():
@@ -113,10 +101,7 @@ def hadamard():
         Hadamard = [1,  1]
                    [1, -1] * (1/sqrt(2))
     """
-    return np.array([
-        [1 + 0j, 1 + 0j],
-        [1 + 0j, -1 + 0j]
-    ], 'F') * (1 / np.sqrt(2))
+    return np.array([[1 + 0j, 1 + 0j], [1 + 0j, -1 + 0j]], "F") * (1 / np.sqrt(2))
 
 
 def phase(theta: float = np.pi / 2):
@@ -130,10 +115,7 @@ def phase(theta: float = np.pi / 2):
         theta: Initially set to pi / 2, can be inputted to change how this
         gate will shift the qubits position.
     """
-    return np.array([
-        [1 + 0j, 0 + 0j],
-        [0 + 0j, np.exp(0 + 1j * theta)]
-    ], 'F')
+    return np.array([[1 + 0j, 0 + 0j], [0 + 0j, np.exp(0 + 1j * theta)]], "F")
 
 
 def s():
@@ -143,10 +125,7 @@ def s():
         S = [1, 0]
             [0, i]
     """
-    return np.array([
-        [1 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 1j]
-    ], 'F')
+    return np.array([[1 + 0j, 0 + 0j], [0 + 0j, 0 + 1j]], "F")
 
 
 def sdg():
@@ -157,10 +136,7 @@ def sdg():
         SDG = [1, 0]
               [0, -i]
     """
-    return np.array([
-        [1 + 0j, 0 + 0j],
-        [0 + 0j, 0 - 1j]
-    ], 'F')
+    return np.array([[1 + 0j, 0 + 0j], [0 + 0j, 0 - 1j]], "F")
 
 
 def t():
@@ -170,10 +146,7 @@ def t():
         T = [1, 0]
             [0, e^((i * pi) / 4]
     """
-    return np.array([
-        [1 + 0j, 0 + 0j],
-        [0 + 0j, np.exp((0 + 1j * np.pi) / 4)]
-    ], 'F')
+    return np.array([[1 + 0j, 0 + 0j], [0 + 0j, np.exp((0 + 1j * np.pi) / 4)]], "F")
 
 
 def tdg():
@@ -184,10 +157,7 @@ def tdg():
         TDG = [1, 0]
               [0, e^((-i * pi) / 4]
     """
-    return np.array([
-        [1 + 0j, 0 + 0j],
-        [0 + 0j, np.exp((0 - 1j * np.pi) / 4)]
-    ], 'F')
+    return np.array([[1 + 0j, 0 + 0j], [0 + 0j, np.exp((0 - 1j * np.pi) / 4)]], "F")
 
 
 def rz(theta: float = np.pi / 2):
@@ -201,10 +171,7 @@ def rz(theta: float = np.pi / 2):
         theta: Initially set to pi / 2, can be inputted to change how this gate \
         will shift the qubits position.
     """
-    return np.array([
-        [np.exp((0 - 1j * (theta / 2))), 0 + 0j],
-        [0 + 0j, np.exp(0 + 1j * (theta / 2))]
-    ], 'F')
+    return np.array([[np.exp((0 - 1j * (theta / 2))), 0 + 0j], [0 + 0j, np.exp(0 + 1j * (theta / 2))]], "F")
 
 
 def rx(theta: float = np.pi / 2):
@@ -218,10 +185,9 @@ def rx(theta: float = np.pi / 2):
         theta: Initially set to pi / 2, can be inputted to change how this gate
         will shift the qubits position.
     """
-    return np.array([
-        [np.cos(theta / 2), 0 - 1j * np.sin(theta / 2)],
-        [0 - 1j * np.sin(theta / 2), np.cos(theta / 2)]
-    ], 'F')
+    return np.array(
+        [[np.cos(theta / 2), 0 - 1j * np.sin(theta / 2)], [0 - 1j * np.sin(theta / 2), np.cos(theta / 2)]], "F"
+    )
 
 
 def ry(theta: float = np.pi / 2):
@@ -235,10 +201,7 @@ def ry(theta: float = np.pi / 2):
         theta: Initially set to pi / 2, can be inputted to change how this gate
         will shift the qubits position.
     """
-    return np.array([
-        [np.cos(theta / 2), -1 * np.sin(theta / 2)],
-        [np.sin(theta / 2), np.cos(theta / 2)]
-    ], 'F')
+    return np.array([[np.cos(theta / 2), -1 * np.sin(theta / 2)], [np.sin(theta / 2), np.cos(theta / 2)]], "F")
 
 
 def sx():
@@ -250,9 +213,7 @@ def sx():
         SX = [1 + i, 1 - i]
              [1 - i, 1 + i] * (1 / 2)
     """
-    return np.array([
-        [1 + 1j, 1 - 1j],
-        [1 - 1j, 1 + 1j]], 'F') * (1 / 2)
+    return np.array([[1 + 1j, 1 - 1j], [1 - 1j, 1 + 1j]], "F") * (1 / 2)
 
 
 def sxdg():
@@ -263,15 +224,10 @@ def sxdg():
         SXDG = [1 - i, 1 + i]
                [1 + i, 1 - i] * (1 / 2)
     """
-    return np.array([
-        [1 - 1j, 1 + 1j],
-        [1 + 1j, 1 - 1j]], 'F') * (1 / 2)
+    return np.array([[1 - 1j, 1 + 1j], [1 + 1j, 1 - 1j]], "F") * (1 / 2)
 
 
-def u(
-        theta: float = np.pi / 2,
-        phi: float = np.pi / 2,
-        lmbda: float = np.pi / 2):
+def u(theta: float = np.pi / 2, phi: float = np.pi / 2, lmbda: float = np.pi / 2):
     """
     U gate is given three inputs (theta, phi, and lambda) that allow the inputs
     to manipulate the base matrix to allow for the position of the enacted qubit
@@ -285,7 +241,10 @@ def u(
         phi: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
         lmbda: Initially set to pi / 2, can be inputted to change how this gate will shift the qubits position.
     """
-    return np.array([
-        [np.cos(theta / 2), -1 * np.exp(0 + 1j * lmbda) * np.sin(theta / 2)],
-        [np.exp(0 + 1j * phi) * np.sin(theta / 2), np.exp(0 + 1j *
-                                                          (lmbda + phi)) * np.cos(theta / 2)]], 'F')
+    return np.array(
+        [
+            [np.cos(theta / 2), -1 * np.exp(0 + 1j * lmbda) * np.sin(theta / 2)],
+            [np.exp(0 + 1j * phi) * np.sin(theta / 2), np.exp(0 + 1j * (lmbda + phi)) * np.cos(theta / 2)],
+        ],
+        "F",
+    )

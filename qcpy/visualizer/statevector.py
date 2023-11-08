@@ -1,10 +1,12 @@
-import numpy as np
-from ..core import quantumcircuit
 import matplotlib.pyplot as plt
+import numpy as np
+
 # ScalerMappable is needed for creating the color bar on the State Vector
 # visualization
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import rgb2hex
+
+from ..core import quantumcircuit
 from .tools.graph import graph
 
 
@@ -39,21 +41,13 @@ class statevector:
                 an array of the phase angle for every state
         """
         self._num_qubits = circuit.circuitSize()
-        self._state_list = [
-            format(i, 'b').zfill(self._num_qubits)
-            for i in range(2**self._num_qubits)
-        ]
+        self._state_list = [format(i, "b").zfill(self._num_qubits) for i in range(2**self._num_qubits)]
         self._probabilities = circuit.probabilities()
         self._percents = [i * 100 for i in circuit.probabilities()]
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
 
-    def make(
-            self,
-            path: str = "statevector.png",
-            save: bool = True,
-            show: bool = False,
-            darkmode: bool = True):
+    def make(self, path: str = "statevector.png", save: bool = True, show: bool = False, darkmode: bool = True):
         """
             Creates a graph of the circuit's amplitudes and phase angles
         Args:
@@ -64,28 +58,28 @@ class statevector:
         """
         # sets up darkmode or lightmode
         if darkmode:
-            _text = 'white'
-            _accent = '#39c0ba'
-            _background = '#2e3037'
+            _text = "white"
+            _accent = "#39c0ba"
+            _background = "#2e3037"
         else:
-            _text = 'black'
-            _accent = 'black'
-            _background = 'white'
+            _text = "black"
+            _accent = "black"
+            _background = "white"
 
         # clears any previous plots
         ax = graph(_text, _background, self._num_qubits)
 
         ax.set_ylim(0, np.amax(self._amplitutes))
-        colors = plt.get_cmap('hsv')  # color map
+        colors = plt.get_cmap("hsv")  # color map
         # need phase angle values to be normalized from 0 to 2pi
         norm = plt.Normalize(0, np.pi * 2)
         # array of hexvals corresponding to qubit's phase angles
         hex_arr = [rgb2hex(i) for i in colors(norm(self._phase_angles))]
         ax.bar(self._state_list, self._amplitutes, color=hex_arr)
         # sets x and y labels and title
-        plt.xlabel('Computational basis states', color=_accent)
-        plt.ylabel('Amplitutde', labelpad=5, color=_accent)
-        plt.title('State Vector', pad=10, color=_accent)
+        plt.xlabel("Computational basis states", color=_accent)
+        plt.ylabel("Amplitutde", labelpad=5, color=_accent)
+        plt.title("State Vector", pad=10, color=_accent)
         # code for colorbar on rightside
         cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm))
         cbar.set_label("Phase Angle", rotation=270, labelpad=10, color=_accent)

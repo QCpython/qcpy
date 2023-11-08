@@ -1,9 +1,12 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.cm import ScalarMappable
 from collections import deque
-from .tools.sphere import sphere
+
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.cm import ScalarMappable
+
 from ..core.tools import amplitude, phaseangle, probabilities
+from .tools.sphere import sphere
+
 
 class qsphere:
     """
@@ -12,7 +15,7 @@ class qsphere:
     Methods
     --------
     make() :
-        returns a Q-Sphere that plots a global visualization of the quantum 
+        returns a Q-Sphere that plots a global visualization of the quantum
         states in a 3D global view
     """
 
@@ -30,7 +33,7 @@ class qsphere:
             _probabilities :
                 an array of all the probabilities of the qubits being measured
             _percents :
-                the array of probabilities turned into an array of values adding 
+                the array of probabilities turned into an array of values adding
                 to 100
             _amplitudes :
                 an array of the amplitude for every state
@@ -41,26 +44,17 @@ class qsphere:
             _phase_dict :
                 a dictionary of the phase angles mapped to the state list
             _lat_vals :
-                a list of lists of the qubit states in order as the appear upon 
+                a list of lists of the qubit states in order as the appear upon
                 the latitudes of a QSphere
         """
         self._num_qubits = int(np.log2(len(circuit.probabilities())))
-        self._state_list = [
-            format(i, 'b').zfill(self._num_qubits)
-            for i in range(2**self._num_qubits)
-        ]
+        self._state_list = [format(i, "b").zfill(self._num_qubits) for i in range(2**self._num_qubits)]
         self._probabilities = circuit.probabilities()
         self._percents = [i * 100 for i in self._probabilities]
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseangle().flatten()
-        self._prob_dict = {
-            self._state_list[i]: self._probabilities[i]
-            for i in range(len(self._state_list))
-        }
-        self._phase_dict = {
-            self._state_list[i]: self._phase_angles[i]
-            for i in range(len(self._state_list))
-        }
+        self._prob_dict = {self._state_list[i]: self._probabilities[i] for i in range(len(self._state_list))}
+        self._phase_dict = {self._state_list[i]: self._phase_angles[i] for i in range(len(self._state_list))}
         self._lat_vals = self.__latitude_finder__()
 
     def __hamming_distance__(self, l1: str, l2: str):
@@ -72,21 +66,21 @@ class qsphere:
             l1: string
             l2: string
         Returns:
-            Boolean representation if the count of ones in l1 and l2 are equal 
+            Boolean representation if the count of ones in l1 and l2 are equal
             to each other.
         """
         return l1.count("1") == l2.count("1")
 
     def __latitude_finder__(self):
         """
-        Creates a 2D array of placed values on each latitude ring, alongside the 
-        amount of rotations around the specific lognitude that need to shifted 
+        Creates a 2D array of placed values on each latitude ring, alongside the
+        amount of rotations around the specific lognitude that need to shifted
         for proper placement.
         Args:
             None
         Returns:
-            2D array of needed values and an abstract view of the rotation 
-            around each longitude placement, given the length of each row within 
+            2D array of needed values and an abstract view of the rotation
+            around each longitude placement, given the length of each row within
             the 2D array.
         """
         # Main holder of values of latitude placement values
@@ -126,8 +120,7 @@ class qsphere:
             # goes through the 2d array rows and determines which starting
             # value has the same hamming distance as the bit_representation.
             for i in range(1, len(latitude_values) - 1):
-                if (self.__hamming_distance__(
-                        bit_representation, latitude_values[i][0])):
+                if self.__hamming_distance__(bit_representation, latitude_values[i][0]):
                     latitude_values[i].append(bit_representation)
 
         return latitude_values
@@ -147,10 +140,7 @@ class qsphere:
 
         # gets theta vals
         for i in range(len(self._lat_vals)):
-            temp_arr = (
-                np.linspace(2 * (np.pi) / len(self._lat_vals[i]),
-                            2 * (np.pi), len(self._lat_vals[i]))
-            )
+            temp_arr = np.linspace(2 * (np.pi) / len(self._lat_vals[i]), 2 * (np.pi), len(self._lat_vals[i]))
             theta.append(temp_arr)
 
         # gets phi vals
@@ -168,12 +158,7 @@ class qsphere:
 
         return coords
 
-    def make(
-            self,
-            path: str = "qsphere.png",
-            save: bool = False,
-            show: bool = True,
-            darkmode: bool = True):
+    def make(self, path: str = "qsphere.png", save: bool = False, show: bool = True, darkmode: bool = True):
         """
             Creates a sphere that visualizes the qubits phase angles if their probability of being measured is greater than 0
         Args:
@@ -184,13 +169,13 @@ class qsphere:
         """
 
         if darkmode:
-            _text = 'white'
-            _accent = '#39c0ba'
-            _background = '#2e3037'
+            _text = "white"
+            _accent = "#39c0ba"
+            _background = "#2e3037"
         else:
-            _text = 'black'
-            _accent = 'black'
-            _background = 'white'
+            _text = "black"
+            _accent = "black"
+            _background = "white"
         ax = sphere(_background)
         # coords will be in the order of states from the __latitude_finder__ function
         # and not in order of self._state_list, we can use our dict to look up each states
@@ -200,7 +185,7 @@ class qsphere:
         # turns self._lat_vals into a single list instead of a list of lists
         ham_states = [item for sublist in self._lat_vals for item in sublist]
         # sets up colors that will map to each states phase angle
-        colors = plt.get_cmap('hsv')
+        colors = plt.get_cmap("hsv")
         norm = plt.Normalize(0, np.pi * 2)
 
         # function to plot lines from center of the sphere to the surface
@@ -213,16 +198,10 @@ class qsphere:
             if cur_prob > 0:
                 x, y, z = i[0], i[1], i[2]
                 ax.plot3D(x, y, z, color=colors(norm(cur_phase)))
-                ax.scatter(
-                    x[1], y[1], z[1], s=5,
-                    color=colors(norm(cur_phase))
-                )
-                ax.text(
-                    x[1] * 1.15, y[1] * 1.15, z[1] * 1.15,
-                    f"|{j}>", color=_text
-                )
+                ax.scatter(x[1], y[1], z[1], s=5, color=colors(norm(cur_phase)))
+                ax.text(x[1] * 1.15, y[1] * 1.15, z[1] * 1.15, f"|{j}>", color=_text)
         # code for colorbar on rightside
-        cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm), shrink=.55)
+        cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm), shrink=0.55)
         cbar.set_label("Phase Angle", rotation=270, labelpad=15, color=_accent)
         cbar.set_ticks([2 * np.pi, (3 * np.pi) / 2, np.pi, np.pi / 2, 0])
         cbar.ax.yaxis.set_tick_params(color=_text)
@@ -230,7 +209,7 @@ class qsphere:
         cbar.set_ticklabels(["2π", "3π / 2", "π", "π / 2", "0"], color=_text)
         plt.tight_layout()
 
-        plt.axis('off')  # removes 3d grid around sphere
+        plt.axis("off")  # removes 3d grid around sphere
         # saves QSphere as a file and/or shows it as a figure
         if save:
             plt.savefig(path)
