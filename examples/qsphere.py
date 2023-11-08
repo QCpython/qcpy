@@ -1,4 +1,4 @@
-from qcpy import quantumcircuit, qsphere
+from qcpy import qsphere, quantumcircuit
 
 # creates a circuitfor 3 qubits
 qc = quantumcircuit(3)

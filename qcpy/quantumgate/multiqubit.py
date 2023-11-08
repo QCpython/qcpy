@@ -25,6 +25,7 @@ CZ Gate:
 
 """
 
+
 def cnot(little_endian: bool = False):
     """
     CNOT Gate allows for two qubits to be entangled with each other if the
@@ -43,19 +44,25 @@ def cnot(little_endian: bool = False):
                                       [0, 0, 1, 0]
     """
     if little_endian:
-        return np.array([
-            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
-            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
-            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j]
-        ], 'F')
+        return np.array(
+            [
+                [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+                [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+                [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
+                [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+            ],
+            "F",
+        )
     else:
-        return np.array([
-            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
-            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
-            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j]
-        ], 'F')
+        return np.array(
+            [
+                [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+                [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+                [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+                [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
+            ],
+            "F",
+        )
 
 
 def swap():
@@ -69,12 +76,15 @@ def swap():
                [0, 1, 0, 0]
                [0, 0, 0, 1]
     """
-    return np.array([
-        [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
-        [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j]
-    ], 'F')
+    return np.array(
+        [
+            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
+            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+        ],
+        "F",
+    )
 
 
 def toffoli():
@@ -94,16 +104,19 @@ def toffoli():
                   [0, 0, 0, 0, 0, 0, 0, 1]
                   [0, 0, 0, 0, 0, 0, 1, 0]
     """
-    return np.array([
-        [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j]
-    ], 'F')
+    return np.array(
+        [
+            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
+        ],
+        "F",
+    )
 
 
 def rxx(theta: float = np.pi / 2):
@@ -120,12 +133,15 @@ def rxx(theta: float = np.pi / 2):
         theta: Initially set to pi / 2, can be inputted to change how this gate
         will shift the qubits position.
     """
-    return np.array([
-        [np.cos(theta / 2), 0 + 0j, 0 + 0j, 0 - 1j * np.sin(theta / 2)],
-        [0 + 0j, np.cos(theta / 2), 0 - 1j * np.sin(theta / 2), 0 + 0j],
-        [0 + 0j, 0 - 1j * np.sin(theta / 2), np.cos(theta / 2), 0 + 0j],
-        [0 - 1j * np.sin(theta / 2), 0 + 0j, 0 + 0j, np.cos(theta / 2)]
-    ], 'F')
+    return np.array(
+        [
+            [np.cos(theta / 2), 0 + 0j, 0 + 0j, 0 - 1j * np.sin(theta / 2)],
+            [0 + 0j, np.cos(theta / 2), 0 - 1j * np.sin(theta / 2), 0 + 0j],
+            [0 + 0j, 0 - 1j * np.sin(theta / 2), np.cos(theta / 2), 0 + 0j],
+            [0 - 1j * np.sin(theta / 2), 0 + 0j, 0 + 0j, np.cos(theta / 2)],
+        ],
+        "F",
+    )
 
 
 def rzz(theta: float = np.pi / 2):
@@ -142,12 +158,15 @@ def rzz(theta: float = np.pi / 2):
         theta: Initially set to pi / 2, can be inputted to change how this gate
         will shift the qubits position.
     """
-    return np.array([
-        [np.exp(0 - 1j * (theta / 2)), 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, np.exp(0 + 1j * (theta / 2)), 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, np.exp(0 + 1j * (theta / 2)), 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, np.exp(0 - 1j * (theta / 2))]
-    ], 'F')
+    return np.array(
+        [
+            [np.exp(0 - 1j * (theta / 2)), 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, np.exp(0 + 1j * (theta / 2)), 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, np.exp(0 + 1j * (theta / 2)), 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, np.exp(0 - 1j * (theta / 2))],
+        ],
+        "F",
+    )
 
 
 def cr(theta: float = np.pi / 2):
@@ -163,12 +182,15 @@ def cr(theta: float = np.pi / 2):
         theta: Initially set to pi / 2, can be inputted to change how this gate
         will shift the qubits position.
     """
-    return np.array([
-        [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, np.exp(theta * 0 + 1j)]
-    ], 'F')
+    return np.array(
+        [
+            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, np.exp(theta * 0 + 1j)],
+        ],
+        "F",
+    )
 
 
 def cz():
@@ -180,9 +202,12 @@ def cz():
              [0, 0, 1, 0]
              [0, 0, 0, -1]
     """
-    return np.array([
-        [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
-        [0 + 0j, 0 + 0j, 0 + 0j, -1 + 0j]
-    ], 'F')
+    return np.array(
+        [
+            [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 1 + 0j, 0 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 1 + 0j, 0 + 0j],
+            [0 + 0j, 0 + 0j, 0 + 0j, -1 + 0j],
+        ],
+        "F",
+    )

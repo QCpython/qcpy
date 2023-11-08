@@ -1,9 +1,10 @@
-from qcpy import quantumcircuit
 import numpy as np
+
+from qcpy import quantumcircuit
 
 
 def inc(x):
-    qc = quantumcircuit(qubits=x, little_endian=True, prep='z')
+    qc = quantumcircuit(qubits=x, little_endian=True, prep="z")
     qc.h(0)
     qc.h(1)
     qc.h(2)
@@ -13,25 +14,69 @@ def inc(x):
 
 def test_17a():
     assert (
-        inc(4) == np.array([
-            0.354 + 0j, 0.354 + 0j, 0.354 + 0j, 0 + 0.354j,
-            0.354 + 0j, 0.354 + 0j, 0.354 + 0j, 0 + 0j,
-            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
-            0 + 0j, 0 + 0j, 0 + 0j, -0.354 + 0j
-        ], 'F')
+        inc(4)
+        == np.array(
+            [
+                0.354 + 0j,
+                0.354 + 0j,
+                0.354 + 0j,
+                0 + 0.354j,
+                0.354 + 0j,
+                0.354 + 0j,
+                0.354 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                -0.354 + 0j,
+            ],
+            "F",
+        )
     ).all(), "test_17a Failed on hadamard (x3) -> rc3x"
 
 
 def test_17b():
     assert (
-        inc(5) == np.array([
-            0.354 + 0j, 0.354 + 0j, 0.354 + 0j, 0 + 0.354j,
-            0.354 + 0j, 0.354 + 0j, 0.354 + 0j, 0 + 0j,
-            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
-            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
-            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
-            0 + 0j, 0 + 0j, 0 + 0j, -0.354 + 0j,
-            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j,
-            0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j
-        ], 'F')
+        inc(5)
+        == np.array(
+            [
+                0.354 + 0j,
+                0.354 + 0j,
+                0.354 + 0j,
+                0 + 0.354j,
+                0.354 + 0j,
+                0.354 + 0j,
+                0.354 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                -0.354 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+                0 + 0j,
+            ],
+            "F",
+        )
     ).all(), "test_17b Failed on hadamard (x3) -> rc3x"

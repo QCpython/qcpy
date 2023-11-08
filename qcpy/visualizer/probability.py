@@ -1,6 +1,7 @@
-import numpy as np
-from ..core import quantumcircuit
 import matplotlib.pyplot as plt
+import numpy as np
+
+from ..core import quantumcircuit
 from .tools.graph import graph
 
 
@@ -29,18 +30,10 @@ class probability:
                 the array of probabilities turned into an array of values adding to 100
         """
         self._num_qubits = circuit.circuitSize()
-        self._state_list = [
-            format(i, 'b').zfill(self._num_qubits)
-            for i in range(2**self._num_qubits)
-        ]
+        self._state_list = [format(i, "b").zfill(self._num_qubits) for i in range(2**self._num_qubits)]
         self._percents = [i * 100 for i in circuit.probabilities()]
 
-    def make(
-            self,
-            path: str = "probabilities.png",
-            save: bool = False,
-            show: bool = True,
-            darkmode: bool = True):
+    def make(self, path: str = "probabilities.png", save: bool = False, show: bool = True, darkmode: bool = True):
         """
             Creates a graph of the circuit's probabilties
         Args:
@@ -51,13 +44,13 @@ class probability:
         """
         # sets up darkmode or lightmode
         if darkmode:
-            _text = 'white'
-            _accent = '#39c0ba'
-            _background = '#2e3037'
+            _text = "white"
+            _accent = "#39c0ba"
+            _background = "#2e3037"
         else:
-            _text = 'black'
-            _accent = 'black'
-            _background = 'white'
+            _text = "black"
+            _accent = "black"
+            _background = "white"
 
         # clears any previous plots
         plt.clf()
@@ -65,10 +58,10 @@ class probability:
         # sets up bar graph
         ax = graph(_text, _background, self._num_qubits)
         # sets x and y labels and title
-        ax.bar(self._state_list, self._percents, color='#39c0ba')
-        plt.xlabel('Computational basis states', color=_accent)
-        plt.ylabel('Probability (%)', labelpad=5, color=_accent)
-        plt.title('Probabilities', pad=10, color=_accent)
+        ax.bar(self._state_list, self._percents, color="#39c0ba")
+        plt.xlabel("Computational basis states", color=_accent)
+        plt.ylabel("Probability (%)", labelpad=5, color=_accent)
+        plt.title("Probabilities", pad=10, color=_accent)
         plt.tight_layout()
 
         # saves Probabilties as a file and/or shows it as a figure

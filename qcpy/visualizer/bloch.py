@@ -1,6 +1,7 @@
-import numpy as np
-from ..core import quantumcircuit
 import matplotlib.pyplot as plt
+import numpy as np
+
+from ..core import quantumcircuit
 from .tools.sphere import sphere
 
 
@@ -29,21 +30,19 @@ class bloch:
             _phase_angles :
                 an array of the phase angle for every state
         """
-        if (circuit.circuitSize() > 1):
-            exit(
-                f"Error: BlochSphere() --",
-                f"BlochSphere only calculates 1 qubit circuits."
-            )
+        if circuit.circuitSize() > 1:
+            exit(f"Error: BlochSphere() --", f"BlochSphere only calculates 1 qubit circuits.")
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
 
     def make(
-            self,
-            path: str = "BlochSphere.png",
-            show_bit: int = 0,
-            save: bool = False,
-            show: bool = True,
-            darkmode: bool = True):
+        self,
+        path: str = "BlochSphere.png",
+        show_bit: int = 0,
+        save: bool = False,
+        show: bool = True,
+        darkmode: bool = True,
+    ):
         """
             Creates a bloch sphere that visualizes a qubit's state in a 3D view
         Args:
@@ -55,30 +54,30 @@ class bloch:
         """
         # sets up darkmode or lightmode
         if darkmode:
-            _text = 'white'
-            _accent = '#39c0ba'
-            _background = '#2e3037'
+            _text = "white"
+            _accent = "#39c0ba"
+            _background = "#2e3037"
         else:
-            _text = 'black'
-            _accent = 'black'
-            _background = 'white'
+            _text = "black"
+            _accent = "black"
+            _background = "white"
 
         # creates a sphere
         ax = sphere(_background)
         # x-axis arrow
-        ax.quiver(1, 0, 0, .75, 0, 0, color="lightgray")
+        ax.quiver(1, 0, 0, 0.75, 0, 0, color="lightgray")
         ax.text(2, 0, 0, "+x", color="gray")
         # y-axis arrow
-        ax.quiver(0, 1, 0, 0, .75, 0, color="lightgray")
+        ax.quiver(0, 1, 0, 0, 0.75, 0, color="lightgray")
         ax.text(0, 2, 0, "+y", color="gray")
         # +z and |0> arrow
-        ax.quiver(0, 0, 1, 0, 0, .75, color="lightgray")
+        ax.quiver(0, 0, 1, 0, 0, 0.75, color="lightgray")
         ax.text(0, 0, 2, "+z", color="gray")
-        ax.text(.1, 0, 1.5, "|0>", color="gray")
+        ax.text(0.1, 0, 1.5, "|0>", color="gray")
         # -z and |1> arrow
-        ax.quiver(0, 0, -1, 0, 0, -.75, color="lightgray")
+        ax.quiver(0, 0, -1, 0, 0, -0.75, color="lightgray")
         ax.text(0, 0, -2, "-z", color="gray")
-        ax.text(.1, 0, -1.5, "|1>", color="gray")
+        ax.text(0.1, 0, -1.5, "|1>", color="gray")
 
         # gets theta and phi values, theta is converted to radians
         theta = np.arcsin(self._amplitutes[1]) * 2
@@ -95,7 +94,7 @@ class bloch:
         ax.text(xs[1] * 1.15, ys[1] * 1.15, zs[1] * 1.15, "|ψ⟩", color=_text)
 
         plt.tight_layout()
-        plt.axis('off')  # removes 3d grid around sphere
+        plt.axis("off")  # removes 3d grid around sphere
         # saves Bloch Sphere as a file and/or shows it as a figure
         if save:
             plt.savefig(path)
