@@ -1,11 +1,11 @@
 import numpy as np
 
-from qcpy.quantumgate import ry
+from qcpy import gates
 
 
 def test_qg_16():
     assert (
-        ry()
+        gates.ry()
         == np.array(
             [
                 [np.cos((np.pi / 2) / 2), -1 * np.sin((np.pi / 2) / 2)],

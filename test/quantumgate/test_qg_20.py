@@ -1,17 +1,36 @@
 import numpy as np
-
-from qcpy.quantumgate import rxx
+from qcpy import gates
 
 
 def test_qg_20():
     assert (
-        rxx()
+        gates.rxx()
         == np.array(
             [
-                [np.cos((np.pi / 2) / 2), 0 + 0j, 0 + 0j, 0 - 1j * np.sin((np.pi / 2) / 2)],
-                [0 + 0j, np.cos((np.pi / 2) / 2), 0 - 1j * np.sin((np.pi / 2) / 2), 0 + 0j],
-                [0 + 0j, 0 - 1j * np.sin((np.pi / 2) / 2), np.cos((np.pi / 2) / 2), 0 + 0j],
-                [0 - 1j * np.sin((np.pi / 2) / 2), 0 + 0j, 0 + 0j, np.cos((np.pi / 2) / 2)],
+                [
+                    np.cos((np.pi / 2) / 2),
+                    0 + 0j,
+                    0 + 0j,
+                    0 - 1j * np.sin((np.pi / 2) / 2),
+                ],
+                [
+                    0 + 0j,
+                    np.cos((np.pi / 2) / 2),
+                    0 - 1j * np.sin((np.pi / 2) / 2),
+                    0 + 0j,
+                ],
+                [
+                    0 + 0j,
+                    0 - 1j * np.sin((np.pi / 2) / 2),
+                    np.cos((np.pi / 2) / 2),
+                    0 + 0j,
+                ],
+                [
+                    0 - 1j * np.sin((np.pi / 2) / 2),
+                    0 + 0j,
+                    0 + 0j,
+                    np.cos((np.pi / 2) / 2),
+                ],
             ],
             "F",
         )

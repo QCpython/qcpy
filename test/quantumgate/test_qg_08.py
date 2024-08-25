@@ -1,11 +1,11 @@
 import numpy as np
 
-from qcpy.quantumgate import toffoli
+from qcpy import gates
 
 
 def test_qg_08():
     assert (
-        toffoli()
+        gates.toffoli()
         == np.array(
             [
                 [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
