@@ -7,7 +7,7 @@ def inc(x):
     qc.h(x - 1)
     qc.cx(x - 1, 0)
     qc.h(x - 1)
-    return np.around(qc.state.toarray().flatten(), 3)
+    return np.around(qc.state.flatten(), 3)
 
 
 def test_07a():

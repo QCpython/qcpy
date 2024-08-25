@@ -7,7 +7,7 @@ def inc(x):
     qc.h(0)
     qc.rzz(0, x - 1)
     qc.h(0)
-    return np.around(qc.state.toarray().flatten(), 3)
+    return np.around(qc.state.flatten(), 3)
 
 
 def test_19a():
