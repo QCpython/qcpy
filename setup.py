@@ -19,11 +19,12 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.8",
+    # Need to update to read requirements.txt
     install_requires=[
-        "matplotlib==3.7.2",
-        "numpy==1.25.1",
-        "setuptools==65.5.0",
-        "scipy==1.11.2",
-        "pytest==7.4.2",
+        "matplotlib>=3.7.2",
+        "numpy>=1.25.1",
+        "setuptools>=65.5.0",
+        "scipy>=1.11.2",
+        "pytest>=7.4.2",
     ],
 )
