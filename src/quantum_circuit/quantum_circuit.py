@@ -20,7 +20,8 @@ class QuantumCircuit:
         self.calculator = None
         self.sparse = sparse
         self.gpu = gpu
-        if sparse and gpu:
+
+        if self.sparse and self.gpu:
             try:
                 check = subprocess.check_output(["nvcc", "--version"]).decode()
                 self.calculator = GpuSparseCalculator(qubits, big_endian, prep)
@@ -29,8 +30,10 @@ class QuantumCircuit:
                 self.gpu = False
                 self.sparse = False
                 self.calculator = BaseCalculator(qubits, big_endian, prep)
+
         elif self.sparse:
             self.calculator = SparseCalculator(qubits, big_endian, prep)
+
         elif self.gpu:
             try:
                 check = subprocess.check_output(["nvcc", "--version"]).decode()
@@ -70,8 +73,8 @@ class QuantumCircuit:
         if not self.sparse and not self.gpu:
             temp_state = self.calculator.state
         if self.sparse and self.gpu:
-            temp_state = self.calculator.state.toarray()
             temp_state = self.calculator.state.get()
+            temp_state = np.array(temp_state.toarray(), "F")
         if self.gpu and not self.sparse:
             temp_state = self.calculator.state.get()
         if self.sparse and not self.gpu:
