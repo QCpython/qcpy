@@ -1,1 +1,1 @@
-from .sparse_calculator import sparsecalculator
+from .sparse_calculator import SparseCalculator

@@ -6,7 +6,7 @@ def inc(x):
     qc = quantumcircuit(qubits=x, prep="z", gpu=True, sparse=True)
     for i in range(x):
         qc.h(i)
-    return np.around(qc.state.toarray().flatten(), 3)
+    return np.around(qc.state.flatten(), 3)
 
 
 def test_02a():

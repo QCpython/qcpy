@@ -34,13 +34,12 @@ def block_top() -> str:
 def single_gate(gate, is_controlled: bool = False, is_start: bool = False):
     top = "┌─┴─┐" if (is_controlled and not is_start) else "┌───┐"
     middle = "┤"
-    match len(gate):
-        case 1:
-            middle += " " + gate + " ├"
-        case 2:
-            middle += gate + " ├"
-        case _:
-            middle += gate + "├"
+    if len(gate) == 1:
+        middle += " " + gate + " ├"
+    elif len(gate) == 2:
+        middle += gate + " ├"
+    else:
+        middle += gate + "├"
     return top + middle + ("└───┘" if not is_start else "└─┬─┘")
 
 

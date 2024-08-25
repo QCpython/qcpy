@@ -4,7 +4,7 @@ import numpy as np
 
 def inc(x):
     qc = quantumcircuit(qubits=x, prep="z", gpu=True, sparse=True)
-    return qc.state.toarray().flatten()
+    return qc.state.flatten()
 
 
 def test_01a():

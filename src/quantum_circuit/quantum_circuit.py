@@ -1,9 +1,10 @@
 import numpy as np
 from .base import BaseCalculator
-from .sparse import sparsecalculator
+from .sparse import SparseCalculator
 from .gpu import GpuCalculator
 from .gpu_sparse import GpuSparseCalculator
-from .circuit_drawing import CircuitDrawing
+import subprocess
+from ..circuit_drawing import CircuitDrawing
 from ..quantum_gate import *
 
 
@@ -19,12 +20,28 @@ class QuantumCircuit:
         self.calculator = None
         self.sparse = sparse
         self.gpu = gpu
-        if sparse and gpu:
-            self.calculator = GpuSparseCalculator(qubits, big_endian, prep)
-        elif sparse:
-            self.calculator = sparsecalculator(qubits, big_endian, prep)
-        elif gpu:
-            self.calculator = GpuCalculator(qubits, big_endian, prep)
+
+        if self.sparse and self.gpu:
+            try:
+                check = subprocess.check_output(["nvcc", "--version"]).decode()
+                self.calculator = GpuSparseCalculator(qubits, big_endian, prep)
+            except FileNotFoundError:
+                print("ERROR: CUDA NOT INSTALLED. SWITCHING TO BASE...")
+                self.gpu = False
+                self.sparse = False
+                self.calculator = BaseCalculator(qubits, big_endian, prep)
+
+        elif self.sparse:
+            self.calculator = SparseCalculator(qubits, big_endian, prep)
+
+        elif self.gpu:
+            try:
+                check = subprocess.check_output(["nvcc", "--version"]).decode()
+                self.calculator = GpuCalculator(qubits, big_endian, prep)
+            except FileNotFoundError:
+                print("ERROR: CUDA NOT INSTALLED. SWITCHING TO BASE...")
+                self.gpu = False
+                self.calculator = BaseCalculator(qubits, big_endian, prep)
         else:
             self.calculator = BaseCalculator(qubits, big_endian, prep)
         self.circuit_drawing = CircuitDrawing(qubits)
@@ -55,10 +72,13 @@ class QuantumCircuit:
     def state(self):
         if not self.sparse and not self.gpu:
             temp_state = self.calculator.state
-        if self.sparse:
-            temp_state = self.calculator.state.toarray()
-        if self.gpu:
+        if self.sparse and self.gpu:
             temp_state = self.calculator.state.get()
+            temp_state = np.array(temp_state.toarray(), "F")
+        if self.gpu and not self.sparse:
+            temp_state = self.calculator.state.get()
+        if self.sparse and not self.gpu:
+            temp_state = np.array(self.calculator.state.toarray(), "F")
         return temp_state
 
     @property

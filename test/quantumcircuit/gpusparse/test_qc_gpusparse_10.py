@@ -8,7 +8,7 @@ def inc(x):
         qc.h(i)
     for i in range(x):
         qc.tdg(i)
-    return np.around(qc.state.toarray().flatten(), 3)
+    return np.around(qc.state.flatten(), 3)
 
 
 def test_10a():
