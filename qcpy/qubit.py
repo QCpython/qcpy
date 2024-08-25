@@ -1,6 +1,7 @@
 """
 Qubit.py
 """
+
 from sys import exit
 
 import numpy as np
