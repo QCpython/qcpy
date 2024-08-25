@@ -4,6 +4,12 @@ from .wire import Wire
 
 class CircuitDrawing:
     def __init__(self, qubits: int):
+        """Create a cirtuit drawing that is utilized in console.
+        The drawing is a representational diagram of the circuit.
+
+        Args:
+            qubits (int): Number of qubits in the circuit.
+        """
         self.qubits = qubits
         self.circuit_queue = []
         self.max_length = 0
