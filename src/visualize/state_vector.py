@@ -6,7 +6,7 @@ from .base.graph import graph
 from ..tools import amplitude, phase_angle
 
 
-def statevector(
+def state_vector(
     circuit: np.array,
     path: str = "statevector.png",
     save: bool = True,
