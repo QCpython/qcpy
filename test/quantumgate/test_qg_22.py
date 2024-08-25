@@ -1,11 +1,10 @@
 import numpy as np
-
-from qcpy.quantumgate import cr
+from qcpy import gates
 
 
 def test_qg_22():
     assert (
-        cr()
+        gates.cr()
         == np.array(
             [
                 [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],

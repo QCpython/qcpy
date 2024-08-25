@@ -1,11 +1,11 @@
 import numpy as np
 
-from qcpy.quantumgate import swap
+from qcpy import gates
 
 
 def test_qg_07():
     assert (
-        swap()
+        gates.swap()
         == np.array(
             [
                 [1 + 0j, 0 + 0j, 0 + 0j, 0 + 0j],
