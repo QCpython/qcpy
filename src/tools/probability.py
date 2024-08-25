@@ -5,7 +5,6 @@ from .base import convert_state
 def probability(
     quantumstate, show_percent: bool = False, show_bit: int = -1, round: int = 3
 ):
-
     circuit_size = int(log2(quantumstate.size))
     quantumstate = convert_state(quantumstate)
     if round < 0:
@@ -17,7 +16,6 @@ def probability(
         probability = abs(square(quantumstate))
 
     elif type(show_bit) == str or isinstance(show_bit, int):
-
         if 2**circuit_size <= show_bit:
             exit(
                 f"Error: QuantumCircuit.tools.probabilities() -- Called bit to find phase angle is not within range of possible values."

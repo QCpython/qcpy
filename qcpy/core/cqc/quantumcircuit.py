@@ -64,7 +64,9 @@ class quantumcircuit:
         return
 
     def __apply_controlled_gate__(self, control: int, target: int, gate: np.ndarray):
-        self.paired_map[target][control] = np.dot(gate, self.paired_map[target][control])
+        self.paired_map[target][control] = np.dot(
+            gate, self.paired_map[target][control]
+        )
 
         return
 

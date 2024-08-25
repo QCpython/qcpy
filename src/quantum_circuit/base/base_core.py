@@ -4,7 +4,6 @@ from ..interface import CoreInterface
 
 
 class BaseCore(CoreInterface):
-
     def __init__(self, qubits: int, big_endian: bool = False, prep: chr = "z"):
         self.big_endian = big_endian
         self.qubits = qubits

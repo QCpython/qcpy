@@ -3,7 +3,6 @@ from .base import convert_state
 
 
 def phase_angle(state, show_bit=-1, round: int = 3, radian: bool = True):
-
     size = int(log2(state.size))
 
     state = convert_state(state)

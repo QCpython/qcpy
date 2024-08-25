@@ -171,7 +171,13 @@ def rz(theta: float = np.pi / 2):
         theta: Initially set to pi / 2, can be inputted to change how this gate \
         will shift the qubits position.
     """
-    return np.array([[np.exp((0 - 1j * (theta / 2))), 0 + 0j], [0 + 0j, np.exp(0 + 1j * (theta / 2))]], "F")
+    return np.array(
+        [
+            [np.exp((0 - 1j * (theta / 2))), 0 + 0j],
+            [0 + 0j, np.exp(0 + 1j * (theta / 2))],
+        ],
+        "F",
+    )
 
 
 def rx(theta: float = np.pi / 2):
@@ -186,7 +192,11 @@ def rx(theta: float = np.pi / 2):
         will shift the qubits position.
     """
     return np.array(
-        [[np.cos(theta / 2), 0 - 1j * np.sin(theta / 2)], [0 - 1j * np.sin(theta / 2), np.cos(theta / 2)]], "F"
+        [
+            [np.cos(theta / 2), 0 - 1j * np.sin(theta / 2)],
+            [0 - 1j * np.sin(theta / 2), np.cos(theta / 2)],
+        ],
+        "F",
     )
 
 
@@ -201,7 +211,13 @@ def ry(theta: float = np.pi / 2):
         theta: Initially set to pi / 2, can be inputted to change how this gate
         will shift the qubits position.
     """
-    return np.array([[np.cos(theta / 2), -1 * np.sin(theta / 2)], [np.sin(theta / 2), np.cos(theta / 2)]], "F")
+    return np.array(
+        [
+            [np.cos(theta / 2), -1 * np.sin(theta / 2)],
+            [np.sin(theta / 2), np.cos(theta / 2)],
+        ],
+        "F",
+    )
 
 
 def sx():
@@ -244,7 +260,10 @@ def u(theta: float = np.pi / 2, phi: float = np.pi / 2, lmbda: float = np.pi / 2
     return np.array(
         [
             [np.cos(theta / 2), -1 * np.exp(0 + 1j * lmbda) * np.sin(theta / 2)],
-            [np.exp(0 + 1j * phi) * np.sin(theta / 2), np.exp(0 + 1j * (lmbda + phi)) * np.cos(theta / 2)],
+            [
+                np.exp(0 + 1j * phi) * np.sin(theta / 2),
+                np.exp(0 + 1j * (lmbda + phi)) * np.cos(theta / 2),
+            ],
         ],
         "F",
     )

@@ -1,7 +1,9 @@
 from numpy import abs, around, multiply, square
 
 
-def probabilities(state, circuit_size, show_percent: bool, show_bit: int = -1, round: int = 3):
+def probabilities(
+    state, circuit_size, show_percent: bool, show_bit: int = -1, round: int = 3
+):
     """
     Return a matrix with all the probabilities for each state
     Params:
@@ -15,7 +17,9 @@ def probabilities(state, circuit_size, show_percent: bool, show_bit: int = -1, r
     # determines if round is less than 0
     # if the
     if round < 0:
-        exit(f"Error: QuantumCircuit.tools.probabilities() -- round placement must be a value greater than 0.")
+        exit(
+            f"Error: QuantumCircuit.tools.probabilities() -- round placement must be a value greater than 0."
+        )
 
     if type(show_bit) == int and show_bit < 0:
         probability = abs(square(state.flatten()))

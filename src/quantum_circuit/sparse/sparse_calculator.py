@@ -9,7 +9,6 @@ from ...exception import QcpyException
 class SparseCalculator(
     CalculatorInterface, SparseCore, SparseSingleGate, SparseMultiGate
 ):
-
     def __init__(self, qubits: int, big_endian: bool = False, prep: chr = "z"):
         self.errorhandler = QcpyException(qubits, prep)
         SparseCore.__init__(self, qubits, big_endian, prep)

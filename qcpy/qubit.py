@@ -29,7 +29,9 @@ def qubit(initial_state: chr = "z"):
         return np.array([[1 + 0j], [0 + 0j]], "F")
         # Sets the qubit to the y-axis.
     elif initial_state == "y":
-        return np.array([[0 + 0j + 1 + 0j], [(1 + 0j + 0 + 0j) * 0 + 1j]], "F") / np.sqrt(2)
+        return np.array(
+            [[0 + 0j + 1 + 0j], [(1 + 0j + 0 + 0j) * 0 + 1j]], "F"
+        ) / np.sqrt(2)
         # Sets the qubit to the y-axis.
     elif initial_state == "x":
         return np.array([[0 + 0j + 1 + 0j], [1 + 0j + 0 + 0j]], "F") / np.sqrt(2)

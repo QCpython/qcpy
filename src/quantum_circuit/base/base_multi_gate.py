@@ -12,7 +12,6 @@ class BaseMultiGate(MultiGateInterface):
     def __create_braket_queue__(
         self, control_qubit: int, target_qubit: int, gate: np.array
     ):
-
         braket_zero = np.array([[1 + 0j, 0 + 0j], [0 + 0j, 0 + 0j]], "F")
         braket_one = np.array([[0 + 0j, 0 + 0j], [0 + 0j, 1 + 0j]], "F")
         bra_ket_zero_kron = [identity()] * self.qubits

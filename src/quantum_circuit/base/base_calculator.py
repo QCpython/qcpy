@@ -7,7 +7,6 @@ from ...exception import QcpyException
 
 
 class BaseCalculator(CalculatorInterface, BaseCore, BaseSingleGate, BaseMultiGate):
-
     def __init__(self, qubits: int, big_endian: bool = False, prep: chr = "z"):
         self.errorhandler = QcpyException(qubits, prep)
         BaseCore.__init__(self, qubits, big_endian, prep)

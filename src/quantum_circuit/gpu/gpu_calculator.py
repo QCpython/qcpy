@@ -7,7 +7,6 @@ from ...exception import QcpyException
 
 
 class GpuCalculator(CalculatorInterface, GpuCore, GpuSingleGate, GpuMultiGate):
-
     def __init__(self, qubits: int, big_endian: bool = False, prep: chr = "z"):
         self.errorhandler = QcpyException(qubits, prep)
         GpuCore.__init__(self, qubits, big_endian, prep)

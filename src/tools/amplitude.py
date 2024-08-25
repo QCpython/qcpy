@@ -11,7 +11,6 @@ def amplitude(quantumstate, show_bit=-1, round: int = 3, radian: bool = False):
         amplitude = sqrt(power(quantumstate.real, 2) + power(quantumstate.imag, 2))
 
     elif type(show_bit) == str or type(show_bit) == int:
-
         amplitude = show_bit
         if type(show_bit) == str:
             amplitude = int(show_bit, 2)

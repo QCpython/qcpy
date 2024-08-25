@@ -13,7 +13,9 @@ def amplitude(state, circuit_size, show_bit=-1, round: int = 3, radian: bool = F
             Matrix after final calculation from the sqrt(x^2 + y^2) algorithm for finding the amplitude.
     """
     if round < 0:
-        exit(f"Error: QuantumCircuit.tools.amplitude() -- round placement must be a value greater than 0.")
+        exit(
+            f"Error: QuantumCircuit.tools.amplitude() -- round placement must be a value greater than 0."
+        )
     if type(show_bit) == int and show_bit < 0:
         # for loop will go through this statement 2^n times for _state length
         # converts state to: (x^2 + y^2) where x is real values and y is imaginary values
@@ -31,7 +33,9 @@ def amplitude(state, circuit_size, show_bit=-1, round: int = 3, radian: bool = F
             exit(
                 f"Error: QuantumCircuit.tools.amplitude() -- Called bit to find amplitude is not within range of possible values."
             )
-        statevector = sqrt(power(state[statevector].real, 2) + power(state[statevector].imag, 2))
+        statevector = sqrt(
+            power(state[statevector].real, 2) + power(state[statevector].imag, 2)
+        )
     # wrong value inputted for finding the show_bit
     else:
         exit(

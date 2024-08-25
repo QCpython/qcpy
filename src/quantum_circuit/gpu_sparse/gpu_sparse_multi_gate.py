@@ -4,7 +4,6 @@ from ..interface import MultiGateInterface
 
 
 class GpuSparseMultiGate(MultiGateInterface):
-
     def __init__(self, qubits: int, big_endian: bool = False):
         self.qubits = qubits
         self.big_endian = big_endian

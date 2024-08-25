@@ -13,7 +13,9 @@ def phaseangle(state, circuit_size, show_bit=-1, round: int = 3, radian: bool = 
     """
     # if rounding value is less than 0, exits as this is improper.
     if round < 0:
-        exit(f"Error: QuantumCircuit.tools.phaseAngle() -- round placement must be a value greater than 0.")
+        exit(
+            f"Error: QuantumCircuit.tools.phaseAngle() -- round placement must be a value greater than 0."
+        )
 
     if type(show_bit) == int and show_bit < 0:
         phaseangle = mod(angle(state), 2 * pi) * (180 / pi)

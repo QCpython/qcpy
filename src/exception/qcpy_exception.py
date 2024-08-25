@@ -1,5 +1,4 @@
 class QcpyException:
-
     def __init__(self, qubits: int, prep: chr):
         self.error = "QCpy error: {}"
         self.qubits = qubits
@@ -15,7 +14,6 @@ class QcpyException:
             raise Exception(self.error.format(self.errorcodes[1].format(prep)))
 
     def singlegateexcemption(self, qubits_to_apply) -> None:
-
         if (
             type(qubits_to_apply).__module__ != "complex64"
             and type(qubits_to_apply).__module__ != "complex128"

@@ -48,13 +48,21 @@ class qsphere:
                 the latitudes of a QSphere
         """
         self._num_qubits = int(np.log2(len(circuit.probabilities())))
-        self._state_list = [format(i, "b").zfill(self._num_qubits) for i in range(2**self._num_qubits)]
+        self._state_list = [
+            format(i, "b").zfill(self._num_qubits) for i in range(2**self._num_qubits)
+        ]
         self._probabilities = circuit.probabilities()
         self._percents = [i * 100 for i in self._probabilities]
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseangle().flatten()
-        self._prob_dict = {self._state_list[i]: self._probabilities[i] for i in range(len(self._state_list))}
-        self._phase_dict = {self._state_list[i]: self._phase_angles[i] for i in range(len(self._state_list))}
+        self._prob_dict = {
+            self._state_list[i]: self._probabilities[i]
+            for i in range(len(self._state_list))
+        }
+        self._phase_dict = {
+            self._state_list[i]: self._phase_angles[i]
+            for i in range(len(self._state_list))
+        }
         self._lat_vals = self.__latitude_finder__()
 
     def __hamming_distance__(self, l1: str, l2: str):
@@ -140,7 +148,11 @@ class qsphere:
 
         # gets theta vals
         for i in range(len(self._lat_vals)):
-            temp_arr = np.linspace(2 * (np.pi) / len(self._lat_vals[i]), 2 * (np.pi), len(self._lat_vals[i]))
+            temp_arr = np.linspace(
+                2 * (np.pi) / len(self._lat_vals[i]),
+                2 * (np.pi),
+                len(self._lat_vals[i]),
+            )
             theta.append(temp_arr)
 
         # gets phi vals
@@ -158,7 +170,13 @@ class qsphere:
 
         return coords
 
-    def make(self, path: str = "qsphere.png", save: bool = False, show: bool = True, darkmode: bool = True):
+    def make(
+        self,
+        path: str = "qsphere.png",
+        save: bool = False,
+        show: bool = True,
+        darkmode: bool = True,
+    ):
         """
             Creates a sphere that visualizes the qubits phase angles if their probability of being measured is greater than 0
         Args:

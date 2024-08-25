@@ -41,13 +41,21 @@ class statevector:
                 an array of the phase angle for every state
         """
         self._num_qubits = circuit.circuitSize()
-        self._state_list = [format(i, "b").zfill(self._num_qubits) for i in range(2**self._num_qubits)]
+        self._state_list = [
+            format(i, "b").zfill(self._num_qubits) for i in range(2**self._num_qubits)
+        ]
         self._probabilities = circuit.probabilities()
         self._percents = [i * 100 for i in circuit.probabilities()]
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
 
-    def make(self, path: str = "statevector.png", save: bool = True, show: bool = False, darkmode: bool = True):
+    def make(
+        self,
+        path: str = "statevector.png",
+        save: bool = True,
+        show: bool = False,
+        darkmode: bool = True,
+    ):
         """
             Creates a graph of the circuit's amplitudes and phase angles
         Args:

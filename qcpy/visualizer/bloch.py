@@ -31,7 +31,10 @@ class bloch:
                 an array of the phase angle for every state
         """
         if circuit.circuitSize() > 1:
-            exit(f"Error: BlochSphere() --", f"BlochSphere only calculates 1 qubit circuits.")
+            exit(
+                f"Error: BlochSphere() --",
+                f"BlochSphere only calculates 1 qubit circuits.",
+            )
         self._amplitutes = circuit.amplitude().flatten()
         self._phase_angles = circuit.phaseAngle().flatten()
 

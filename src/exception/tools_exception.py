@@ -1,5 +1,4 @@
 class ToolsException:
-
     def __init__(self):
         pass
 
@@ -10,7 +9,6 @@ class ToolsException:
         pass
 
     def test_amplitude(self, show_bit, round: int, amplitude, size: int) -> None:
-
         if round <= 0:
             exit(1)
 

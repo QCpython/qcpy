@@ -27,10 +27,17 @@ class CircuitDrawing:
             for j in range(len(self._drawing)):
                 if self._drawing[j][i] != EmptySegment():
                     to_output_temp += (
-                        " " + str(self._drawing[j][i]) + (" " * (len(str(self._drawing[j][i])))) + str(EmptySegment())
+                        " "
+                        + str(self._drawing[j][i])
+                        + (" " * (len(str(self._drawing[j][i]))))
+                        + str(EmptySegment())
                     )
                 else:
                     to_output_temp += str(EmptySegment()) * 2
             max_length = max(len(to_output_temp), max_length)
-            res += to_output_temp + (str(EmptySegment()) * (max_length - len(to_output_temp))) + "\n"
+            res += (
+                to_output_temp
+                + (str(EmptySegment()) * (max_length - len(to_output_temp)))
+                + "\n"
+            )
         return res
