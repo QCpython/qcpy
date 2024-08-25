@@ -1,11 +1,8 @@
 # This pipeline enforces the black formatter on PRs
-# More information can be found at: 
+# More information can be found at:
 #  https://black.readthedocs.io/en/stable/integrations/github_actions.html
 name: black
-on: 
-  pull_request:
-    paths:
-      - '**/*.py'
+on: pull_request
 jobs:
   black:
     runs-on: ubuntu-20.04

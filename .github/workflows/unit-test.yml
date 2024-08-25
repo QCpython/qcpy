@@ -2,10 +2,7 @@
 # Using pytest
 
 name: unit-tester
-on:
-  pull_request:
-    paths:
-      - "**/*.py"
+on: pull_request
 jobs:
   test:
     runs-on: ubuntu-20.04
