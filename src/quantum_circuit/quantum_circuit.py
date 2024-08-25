@@ -3,6 +3,7 @@ from .base import BaseCalculator
 from .sparse import SparseCalculator
 from .gpu import GpuCalculator
 from .gpu_sparse import GpuSparseCalculator
+import subprocess
 from ..circuit_drawing import CircuitDrawing
 from ..quantum_gate import *
 
@@ -20,11 +21,24 @@ class QuantumCircuit:
         self.sparse = sparse
         self.gpu = gpu
         if sparse and gpu:
-            self.calculator = GpuSparseCalculator(qubits, big_endian, prep)
+            try:
+                check = subprocess.check_output(['nvcc', '--version']).decode()
+                self.calculator = GpuSparseCalculator(qubits, big_endian, prep)
+            except FileNotFoundError:
+                print("ERROR: CUDA NOT INSTALLED. SWITCHING TO BASE...")
+                gpu = False
+                sparse = False
+                self.calculator = BaseCalculator(qubits, big_endian, prep)
         elif sparse:
             self.calculator = SparseCalculator(qubits, big_endian, prep)
         elif gpu:
-            self.calculator = GpuCalculator(qubits, big_endian, prep)
+            try:
+                check = subprocess.check_output(['nvcc', '--version']).decode()
+                self.calculator = GpuCalculator(qubits, big_endian, prep)
+            except FileNotFoundError:
+                print("ERROR: CUDA NOT INSTALLED. SWITCHING TO BASE...")
+                gpu = False
+                self.calculator = BaseCalculator(qubits, big_endian, prep)
         else:
             self.calculator = BaseCalculator(qubits, big_endian, prep)
         self.circuit_drawing = CircuitDrawing(qubits)
