@@ -26,18 +26,18 @@ class QuantumCircuit:
                 self.calculator = GpuSparseCalculator(qubits, big_endian, prep)
             except FileNotFoundError:
                 print("ERROR: CUDA NOT INSTALLED. SWITCHING TO BASE...")
-                gpu = False
-                sparse = False
+                self.gpu = False
+                self.sparse = False
                 self.calculator = BaseCalculator(qubits, big_endian, prep)
-        elif sparse:
+        elif self.sparse:
             self.calculator = SparseCalculator(qubits, big_endian, prep)
-        elif gpu:
+        elif self.gpu:
             try:
                 check = subprocess.check_output(["nvcc", "--version"]).decode()
                 self.calculator = GpuCalculator(qubits, big_endian, prep)
             except FileNotFoundError:
                 print("ERROR: CUDA NOT INSTALLED. SWITCHING TO BASE...")
-                gpu = False
+                self.gpu = False
                 self.calculator = BaseCalculator(qubits, big_endian, prep)
         else:
             self.calculator = BaseCalculator(qubits, big_endian, prep)
