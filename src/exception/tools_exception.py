@@ -14,12 +14,10 @@ class ToolsException:
         if round <= 0:
             exit(1)
 
-        if (type(show_bit) != int and show_bit > 0) or (
-            type(show_bit) != str or type(show_bit) != int
+        if (not isinstance(show_bit, int) and show_bit > 0) or (
+            not isinstance(show_bit, str) or not isinstance(show_bit, int)
         ):
             exit(1)
-        # if type(amplitude) == int and 2**size <= amplitude and :
-        #     exit(1)
 
     def test_phase_angle(self, show_bit, round: int, radian: bool):
         pass

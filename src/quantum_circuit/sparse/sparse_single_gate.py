@@ -12,7 +12,7 @@ class SparseSingleGate(SingleGateInterface):
     def __create_gate_queue__(self, qubits_to_apply, gate):
         sparse_identity = sp.csr_matrix(identity())
         gate_queue = [sparse_identity] * self.qubits
-        if type(qubits_to_apply) == int:
+        if isinstance(qubits_to_apply, int):
             gate_queue[qubits_to_apply] = gate
         elif hasattr(qubits_to_apply, "__len__"):
             for i in qubits_to_apply:
