@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.cm import ScalarMappable
 from .base.sphere import sphere
-from ..tools import probability, amplitude, phase_angle
+from ..tools import probability, amplitude, phaseangle
 
 
 def hamming_distance(l1: str, l2: str):
@@ -61,9 +61,9 @@ def q_sphere(
     show: bool = True,
     darkmode: bool = True,
 ):
-    num_qubits = int(np.log2((len(quantumstate))))
+    num_qubits = int(np.log2((len(quantumstate.state))))
     probs = probability(quantumstate)
-    angle = phase_angle(quantumstate)
+    angle = phaseangle(quantumstate)
     state_list = [format(i, "b").zfill(num_qubits) for i in range(2**num_qubits)]
     prob_dict = {state_list[i]: probs[i] for i in range(len(state_list))}
     phase_dict = {state_list[i]: angle[i] for i in range(len(state_list))}
@@ -77,12 +77,10 @@ def q_sphere(
         _accent = "black"
         _background = "white"
     ax = sphere(_background)
-
     coords = get_coords(num_qubits, lat_vals)
     ham_states = [item for sublist in lat_vals for item in sublist]
     colors = plt.get_cmap("hsv")
     norm = plt.Normalize(0, np.pi * 2)
-
     for i, j in zip(coords, ham_states):
         cur_prob = prob_dict[j]
         cur_phase = phase_dict[j]
@@ -91,8 +89,7 @@ def q_sphere(
             ax.plot3D(x, y, z, color=colors(norm(cur_phase)))
             ax.scatter(x[1], y[1], z[1], s=5, color=colors(norm(cur_phase)))
             ax.text(x[1] * 1.15, y[1] * 1.15, z[1] * 1.15, f"|{j}>", color=_text)
-
-    cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm), shrink=0.55)
+    cbar = plt.colorbar(plt.cm.ScalarMappable(cmap=colors, norm=norm), ax=plt.gca(), shrink=0.55)
     cbar.set_label("Phase Angle", rotation=270, labelpad=15, color=_accent)
     cbar.set_ticks([2 * np.pi, (3 * np.pi) / 2, np.pi, np.pi / 2, 0])
     cbar.ax.yaxis.set_tick_params(color=_text)
