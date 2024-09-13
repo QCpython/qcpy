@@ -13,10 +13,10 @@ def probability(
             f"Error: QuantumCircuit.tools.probabilities() -- round placement must be a value greater than 0."
         )
 
-    if type(show_bit) == int and show_bit < 0:
+    if isinstance(show_bit, int) and show_bit < 0:
         probability = abs(square(quantumstate))
 
-    elif type(show_bit) == str or isinstance(show_bit, int):
+    elif isinstance(show_bit, str) or isinstance(show_bit, int):
 
         if 2**circuit_size <= show_bit:
             exit(

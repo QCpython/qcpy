@@ -1,3 +1,6 @@
+from numpy.dtypes import Complex64DType, Complex128DType
+
+
 class QcpyException:
 
     def __init__(self, qubits: int, prep: chr):
@@ -17,8 +20,8 @@ class QcpyException:
     def singlegateexcemption(self, qubits_to_apply) -> None:
 
         if (
-            type(qubits_to_apply).__module__ != "complex64"
-            and type(qubits_to_apply).__module__ != "complex128"
+            not isinstance(qubits_to_apply, Complex64DType)
+            and not isinstance(qubits_to_apply, Complex128DType)
             and not isinstance(qubits_to_apply, int)
             and not hasattr(qubits_to_apply, "__len__")
         ):

@@ -59,7 +59,7 @@ class QuantumCircuit:
         return self.circuit_drawing.make()
 
     def __add_single_drawing__(self, qubits_to_apply, gate: str) -> None:
-        if type(qubits_to_apply) != int:
+        if not isinstance(qubits_to_apply, int):
             for qubit in qubits_to_apply:
                 self.circuit_drawing.insert_single(gate, qubit)
         else:
