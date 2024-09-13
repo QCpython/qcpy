@@ -89,7 +89,9 @@ def q_sphere(
             ax.plot3D(x, y, z, color=colors(norm(cur_phase)))
             ax.scatter(x[1], y[1], z[1], s=5, color=colors(norm(cur_phase)))
             ax.text(x[1] * 1.15, y[1] * 1.15, z[1] * 1.15, f"|{j}>", color=_text)
-    cbar = plt.colorbar(plt.cm.ScalarMappable(cmap=colors, norm=norm), ax=plt.gca(), shrink=0.55)
+    cbar = plt.colorbar(
+        plt.cm.ScalarMappable(cmap=colors, norm=norm), ax=plt.gca(), shrink=0.55
+    )
     cbar.set_label("Phase Angle", rotation=270, labelpad=15, color=_accent)
     cbar.set_ticks([2 * np.pi, (3 * np.pi) / 2, np.pi, np.pi / 2, 0])
     cbar.ax.yaxis.set_tick_params(color=_text)
