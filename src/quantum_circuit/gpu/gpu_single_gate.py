@@ -12,7 +12,7 @@ class GpuSingleGate(SingleGateInterface):
     def __create_gate_queue__(self, qubits_to_apply, gate: cp.array):
         gpu_identity = cp.array(identity())
         gate_queue = cp.array([gpu_identity] * self.qubits)
-        if type(qubits_to_apply) == int:
+        if isinstance(qubits_to_apply, int):
             gate_queue[qubits_to_apply] = gate
         elif hasattr(qubits_to_apply, "__len__"):
             for i in qubits_to_apply:
