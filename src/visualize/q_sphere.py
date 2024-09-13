@@ -63,10 +63,10 @@ def q_sphere(
 ):
     num_qubits = int(np.log2((len(quantumstate))))
     probs = probability(quantumstate)
-    phase_angle = phase_angle(quantumstate)
+    angle = phase_angle(quantumstate)
     state_list = [format(i, "b").zfill(num_qubits) for i in range(2**num_qubits)]
     prob_dict = {state_list[i]: probs[i] for i in range(len(state_list))}
-    phase_dict = {state_list[i]: phase_angle[i] for i in range(len(state_list))}
+    phase_dict = {state_list[i]: angle[i] for i in range(len(state_list))}
     lat_vals = latitude_finder(num_qubits, state_list)
     if darkmode:
         _text = "white"
