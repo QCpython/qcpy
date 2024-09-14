@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from .base.graph import graph
-from ..tools import probability
+from ..tools import probability as prob
+from ..tools.base import convert_state
 import numpy as np
 
 
@@ -11,9 +12,10 @@ def probability(
     show: bool = True,
     darkmode: bool = True,
 ):
-    num_qubits = np.log2(len(state))
+
+    num_qubits = int(np.log2(len(convert_state(state))))
     state_list = [format(i, "b").zfill(num_qubits) for i in range(2**num_qubits)]
-    percents = [i * 100 for i in probability(state)]
+    percents = [i * 100 for i in prob(state)]
     if darkmode:
         _text = "white"
         _accent = "#39c0ba"

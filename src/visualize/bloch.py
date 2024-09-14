@@ -42,7 +42,7 @@ def bloch(
     y = 1 * np.sin(theta) * np.sin(phi)
     z = 1 * np.cos(theta)
     xs, ys, zs = [0, x], [0, y], [0, z]
-    ax.plot3D(xs, ys, zs, color=_accent)
+    ax.plot3D(xs, ys, zs, color=_accent, markevery=100)
     ax.scatter(xs[1], ys[1], zs[1], s=5, color=_accent)
     ax.text(xs[1] * 1.15, ys[1] * 1.15, zs[1] * 1.15, "|ψ⟩", color=_text)
     plt.tight_layout()

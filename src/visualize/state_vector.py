@@ -3,7 +3,8 @@ import numpy as np
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import rgb2hex
 from .base.graph import graph
-from ..tools import amplitude, phase_angle
+from ..tools import amplitude, phaseangle
+from ..tools.base import convert_state
 
 
 def state_vector(
@@ -13,10 +14,10 @@ def state_vector(
     show: bool = False,
     darkmode: bool = True,
 ):
-    num_qubits = int(np.log2(circuit.size))
+    num_qubits = int(np.log2(len(convert_state(circuit))))
     state_list = [format(i, "b").zfill(num_qubits) for i in range(2**num_qubits)]
     amplitutes = amplitude(circuit, num_qubits)
-    phase_angles = phase_angle(circuit, num_qubits)
+    phase_angles = phaseangle(circuit)
     if darkmode:
         _text = "white"
         _accent = "#39c0ba"
@@ -34,7 +35,9 @@ def state_vector(
     plt.xlabel("Computational basis states", color=_accent)
     plt.ylabel("Amplitutde", labelpad=5, color=_accent)
     plt.title("State Vector", pad=10, color=_accent)
-    cbar = plt.colorbar(ScalarMappable(cmap=colors, norm=norm))
+    cbar = plt.colorbar(
+        plt.cm.ScalarMappable(cmap=colors, norm=norm), ax=plt.gca(), shrink=0.55
+    )
     cbar.set_label("Phase Angle", rotation=270, labelpad=10, color=_accent)
     cbar.set_ticks([2 * np.pi, (3 * np.pi) / 2, np.pi, np.pi / 2, 0])
     cbar.ax.yaxis.set_tick_params(color=_text)
