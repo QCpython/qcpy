@@ -36,6 +36,7 @@ class QuantumCircuit:
 
         elif self.gpu:
             try:
+                subprocess.check_output(["nvcc", "--version"]).decode()
                 self.calculator = GpuCalculator(qubits, big_endian, prep)
             except FileNotFoundError:
                 print("ERROR: CUDA NOT INSTALLED. SWITCHING TO BASE...")
