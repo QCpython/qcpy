@@ -1,9 +1,8 @@
 from collections import deque
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.cm import ScalarMappable
 from .base.sphere import sphere
-from ..tools import probability, amplitude, phaseangle
+from ..tools import probability, phaseangle
 
 
 def hamming_distance(l1: str, l2: str):
