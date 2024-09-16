@@ -10,7 +10,6 @@ from .base import (
 )
 from ..tools import probability, phaseangle
 
-
 def q_sphere(
     circuit: any,
     path: str = "qsphere.png",

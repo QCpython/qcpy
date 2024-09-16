@@ -5,7 +5,6 @@ from ..exception.tools_exception import ToolsException
 
 def amplitude(quantumstate, show_bit=-1, round: int = 3, radian: bool = False):
     quantumstate = convert_state(quantumstate)
-    size = int(log2(quantumstate.size))
     ToolsException().test_amplitude(show_bit, round, amplitude)
     if isinstance(show_bit, int) and show_bit < 0:
         amplitude = sqrt(power(quantumstate.real, 2) + power(quantumstate.imag, 2))
