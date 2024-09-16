@@ -1,31 +1,20 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from .base import sphere
+from .base import sphere, theme, light_mode
 from ..tools import probability, amplitude
 
 
 def bloch(
-    quantumstate=np.array,
+    quantumstate: any,
     path: str = "BlochSphere.png",
     save: bool = False,
     show: bool = True,
-    darkmode: bool = True,
+    light: bool = False,
 ):
-    if np.log2(len(quantumstate)) > 1:
-        exit(
-            f"Error: BlochSphere() --", f"BlochSphere only calculates 1 qubit circuits."
-        )
     amplitutes = amplitude(quantumstate)
     phase_angles = probability(quantumstate, False)
-    if darkmode:
-        _text = "white"
-        _accent = "#39c0ba"
-        _background = "#2e3037"
-    else:
-        _text = "black"
-        _accent = "black"
-        _background = "white"
-    ax = sphere(_background)
+    light_mode(light)
+    ax = sphere(theme.BACKGROUND_COLOR)
     ax.quiver(1, 0, 0, 0.75, 0, 0, color="lightgray")
     ax.text(2, 0, 0, "+x", color="gray")
     ax.quiver(0, 1, 0, 0, 0.75, 0, color="lightgray")
@@ -42,9 +31,9 @@ def bloch(
     y = 1 * np.sin(theta) * np.sin(phi)
     z = 1 * np.cos(theta)
     xs, ys, zs = [0, x], [0, y], [0, z]
-    ax.plot3D(xs, ys, zs, color=_accent, markevery=100)
-    ax.scatter(xs[1], ys[1], zs[1], s=5, color=_accent)
-    ax.text(xs[1] * 1.15, ys[1] * 1.15, zs[1] * 1.15, "|ψ⟩", color=_text)
+    ax.plot3D(xs, ys, zs, color=theme.ACCENT_COLOR, markevery=100)
+    ax.scatter(xs[1], ys[1], zs[1], s=5, color=theme.ACCENT_COLOR)
+    ax.text(xs[1] * 1.15, ys[1] * 1.15, zs[1] * 1.15, "|ψ⟩", color=theme.ACCENT_COLOR)
     plt.tight_layout()
     plt.axis("off")
     if save:
