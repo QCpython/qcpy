@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def sphere(_background):
+def sphere(_background: str):
     plt.clf()
     plt.close()
     plt.clf()
