@@ -3,45 +3,32 @@ import numpy as np
 from matplotlib.colors import rgb2hex
 from .base.graph import graph
 from ..tools import amplitude, phaseangle
-from ..tools.base import convert_state
+from .base import color_bar, theme, light_mode
 
 
 def state_vector(
-    circuit: np.array,
+    circuit: any,
     path: str = "statevector.png",
-    save: bool = True,
-    show: bool = False,
-    darkmode: bool = True,
+    save: bool = False,
+    show: bool = True,
+    light: bool = False,
 ):
-    num_qubits = int(np.log2(len(convert_state(circuit))))
-    state_list = [format(i, "b").zfill(num_qubits) for i in range(2**num_qubits)]
-    amplitutes = amplitude(circuit, num_qubits)
+    amplitudes = amplitude(circuit)
     phase_angles = phaseangle(circuit)
-    if darkmode:
-        _text = "white"
-        _accent = "#39c0ba"
-        _background = "#2e3037"
-    else:
-        _text = "black"
-        _accent = "black"
-        _background = "white"
-    ax = graph(_text, _background, num_qubits)
-    ax.set_ylim(0, np.amax(amplitutes))
-    colors = plt.get_cmap("hsv")
+    num_qubits = int(np.log2(amplitudes.size))
+    state_list = [format(i, "b").zfill(num_qubits) for i in range(2**num_qubits)]
+    light_mode(light)
+    ax = graph(theme.TEXT_COLOR, theme.BACKGROUND_COLOR, num_qubits)
+    ax.set_ylim(0, np.amax(amplitudes))
     norm = plt.Normalize(0, np.pi * 2)
+    colors = plt.get_cmap("hsv")
+    color_bar(plt, theme.TEXT_COLOR, theme.ACCENT_COLOR, colors, norm)
     hex_arr = [rgb2hex(i) for i in colors(norm(phase_angles))]
-    ax.bar(state_list, amplitutes, color=hex_arr)
-    plt.xlabel("Computational basis states", color=_accent)
-    plt.ylabel("Amplitutde", labelpad=5, color=_accent)
-    plt.title("State Vector", pad=10, color=_accent)
-    cbar = plt.colorbar(
-        plt.cm.ScalarMappable(cmap=colors, norm=norm), ax=plt.gca(), shrink=0.55
-    )
-    cbar.set_label("Phase Angle", rotation=270, labelpad=10, color=_accent)
-    cbar.set_ticks([2 * np.pi, (3 * np.pi) / 2, np.pi, np.pi / 2, 0])
-    cbar.ax.yaxis.set_tick_params(color=_text)
-    cbar.outline.set_edgecolor(_text)
-    cbar.set_ticklabels(["2π", "3π / 2", "π", "π / 2", "0"], color=_text)
+    ax.bar(state_list, amplitudes, color=hex_arr)
+    plt.xlabel("Computational basis states", color=theme.TEXT_COLOR)
+    plt.ylabel("Amplitutde", labelpad=5, color=theme.TEXT_COLOR)
+    plt.title("State Vector", pad=10, color=theme.TEXT_COLOR)
+
     plt.tight_layout()
     if save:
         plt.savefig(path)
