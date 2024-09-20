@@ -1,5 +1,5 @@
 import numpy as np
-from ...tools import qubit
+from ...qubit import qubit
 from ..interface import CoreInterface
 
 
