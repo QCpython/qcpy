@@ -5,7 +5,10 @@ from ..quantum_circuit import QuantumCircuit
 
 
 def probability(
-    quantum_state: Union[ndarray, QuantumCircuit], show_percent: bool = False, show_bit: int = -1, round: int = 3
+    quantum_state: Union[ndarray, QuantumCircuit],
+    show_percent: bool = False,
+    show_bit: int = -1,
+    round: int = 3,
 ):
 
     circuit_size = int(log2(quantum_state.size))
