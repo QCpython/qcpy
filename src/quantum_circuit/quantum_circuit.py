@@ -216,7 +216,8 @@ class QuantumCircuit:
         self.calculator.pass_multi_gate(qubit_one, qubit_three, paulix())
         self.calculator.pass_multi_gate(qubit_three, qubit_one, paulix())
         self.calculator.pass_multi_gate(qubit_one, qubit_three, paulix())
-        self.circuit_drawing.add_block("QFT", [qubit_one, qubit_two, qubit_three])
+        self.circuit_drawing.add_block(
+            "QFT", [qubit_one, qubit_two, qubit_three])
 
     def rccx(self, control_one: int, control_two: int, target: int) -> None:
         self.calculator.pass_single_gate(target, u(np.pi / 2, 0, np.pi))
@@ -228,7 +229,8 @@ class QuantumCircuit:
         self.calculator.pass_multi_gate(control_two, target, paulix())
         self.calculator.pass_single_gate(target, u(0, 0, (-1 * np.pi) / 4))
         self.calculator.pass_single_gate(target, u(np.pi / 2, 0, np.pi))
-        self.circuit_drawing.add_block("RCCX", [control_one, control_two, target])
+        self.circuit_drawing.add_block(
+            "RCCX", [control_one, control_two, target])
 
     def rc3x(self, qubit_1: int, qubit_2: int, qubit_3: int, qubit_4: int) -> None:
         self.calculator.pass_single_gate(qubit_4, u(np.pi / 2, 0, np.pi))
@@ -249,7 +251,8 @@ class QuantumCircuit:
         self.calculator.pass_multi_gate(qubit_3, qubit_4, paulix())
         self.calculator.pass_single_gate(qubit_4, u(0, 0, (-1 * np.pi / 4)))
         self.calculator.pass_single_gate(qubit_4, u(np.pi / 2, 0, np.pi))
-        self.circuit_drawing.add_block("RC3X", [qubit_1, qubit_2, qubit_3, qubit_4])
+        self.circuit_drawing.add_block(
+            "RC3X", [qubit_1, qubit_2, qubit_3, qubit_4])
 
     def swap(self, qubit_one: int, qubit_two: int) -> None:
         self.calculator.pass_multi_gate(qubit_one, qubit_two, paulix())
