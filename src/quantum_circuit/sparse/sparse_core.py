@@ -1,6 +1,6 @@
 from scipy import sparse as sp
 from ..interface import CoreInterface
-from ...tools import qubit
+from ...qubit import qubit
 
 
 class SparseCore(CoreInterface):
