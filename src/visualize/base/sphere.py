@@ -9,8 +9,8 @@ def sphere(_background: str):
     plt.close()
     fig = plt.figure()
     ax = fig.add_subplot(111, projection="3d")
-    u = np.linspace(0, 2 * np.pi, 50)
-    v = np.linspace(0, np.pi, 50)
+    u = np.linspace(0, 2 * np.pi, 25)
+    v = np.linspace(0, np.pi, 25)
     r = 1
     x = r * np.outer(np.cos(u), np.sin(v))
     y = r * np.outer(np.sin(u), np.sin(v))
