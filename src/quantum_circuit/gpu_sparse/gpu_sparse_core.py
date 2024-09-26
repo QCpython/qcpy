@@ -2,7 +2,7 @@ import cupy as cp
 from cupyx.scipy.sparse import csr_matrix, csc_matrix
 from cupyx.scipy.sparse import kron
 from ..interface import CoreInterface
-from ...tools import qubit
+from ...qubit import qubit
 
 
 class GpuSparseCore(CoreInterface):

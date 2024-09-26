@@ -1,6 +1,6 @@
 import cupy as cp
 from ..interface import CoreInterface
-from ...tools import qubit
+from ...qubit import qubit
 
 
 class GpuCore(CoreInterface):
