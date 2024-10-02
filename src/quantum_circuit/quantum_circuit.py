@@ -58,6 +58,9 @@ class QuantumCircuit:
     def __str__(self) -> str:
         return self.circuit_drawing.make()
 
+    def __len__(self) -> int:
+        return 2**self.calculator.qubits
+
     def __add_single_drawing__(self, qubits_to_apply, gate: str) -> None:
         if not isinstance(qubits_to_apply, int):
             for qubit in qubits_to_apply:
