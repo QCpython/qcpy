@@ -63,7 +63,7 @@ class QuantumCircuit:
                     OutOfRangeError("qubit is out of range of size of quantum circuit")
                 self.circuit_drawing.insert_single(gate, qubit)
         elif isinstance(qubits_to_apply, int):
-            if qubits_to_apply not in range(self.calculator.qubts):
+            if qubits_to_apply not in range(self.calculator.qubits):
                 OutOfRangeError("qubit is out of range of size of quantum circuit")
             self.circuit_drawing.insert_single(gate, qubits_to_apply)
 
