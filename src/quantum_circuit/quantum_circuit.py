@@ -6,6 +6,7 @@ from .gpu_sparse import GpuSparseCalculator
 import subprocess
 from ..circuit_drawing import CircuitDrawing
 from ..quantum_gate import *
+from ..errors import *
 
 
 class QuantumCircuit:
@@ -20,28 +21,22 @@ class QuantumCircuit:
         self.calculator = None
         self.sparse = sparse
         self.gpu = gpu
-
-        if self.sparse and self.gpu:
-            try:
-                check = subprocess.check_output(["nvcc", "--version"]).decode()
-                self.calculator = GpuSparseCalculator(qubits, big_endian, prep)
-            except FileNotFoundError:
-                print("ERROR: CUDA NOT INSTALLED. SWITCHING TO BASE...")
-                self.gpu = False
-                self.sparse = False
-                self.calculator = BaseCalculator(qubits, big_endian, prep)
-
-        elif self.sparse:
-            self.calculator = SparseCalculator(qubits, big_endian, prep)
-
-        elif self.gpu:
+        if prep != "z" and prep != "y" and prep != "x":
+            raise InvalidQubitPrepError("Qubit prep is not x,y,or z")
+        if self.gpu:
             try:
                 subprocess.check_output(["nvcc", "--version"]).decode()
-                self.calculator = GpuCalculator(qubits, big_endian, prep)
             except FileNotFoundError:
-                print("ERROR: CUDA NOT INSTALLED. SWITCHING TO BASE...")
+                raise CudaNotInstalledWarning(
+                    "CUDA is not installed, please install before using the gpu flag"
+                )
                 self.gpu = False
-                self.calculator = BaseCalculator(qubits, big_endian, prep)
+        if self.sparse and self.gpu:
+            self.calculator = GpuSparseCalculator(qubits, big_endian, prep)
+        elif self.sparse:
+            self.calculator = SparseCalculator(qubits, big_endian, prep)
+        elif self.gpu:
+            self.calculator = GpuCalculator(qubits, big_endian, prep)
         else:
             self.calculator = BaseCalculator(qubits, big_endian, prep)
         self.circuit_drawing = CircuitDrawing(qubits)
@@ -61,8 +56,12 @@ class QuantumCircuit:
     def __add_single_drawing__(self, qubits_to_apply, gate: str) -> None:
         if not isinstance(qubits_to_apply, int):
             for qubit in qubits_to_apply:
+                if qubit not in range(self.calculator.qubits):
+                    OutOfRangeError("qubit is out of range of size of quantum circuit")
                 self.circuit_drawing.insert_single(gate, qubit)
-        else:
+        elif isinstance(qubits_to_apply, int):
+            if qubits_to_apply not in range(self.calculator.qubts):
+                OutOfRangeError("qubit is out of range of size of quantum circuit")
             self.circuit_drawing.insert_single(gate, qubits_to_apply)
 
     def set(self, circuit) -> None:

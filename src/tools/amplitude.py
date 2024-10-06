@@ -1,6 +1,5 @@
 from numpy import arcsin, around, power, sqrt, log2
 from .base import convert_state
-from ..exception.tools_exception import ToolsException
 
 
 def amplitude(quantumstate, show_bit=-1, round: int = 3, radian: bool = False):
