@@ -27,9 +27,6 @@ class QuantumCircuit:
             try:
                 subprocess.check_output(["nvcc", "--version"]).decode()
             except FileNotFoundError:
-                raise CudaNotInstalledWarning(
-                    "CUDA is not installed, please install before using the gpu flag"
-                )
                 self.gpu = False
         if self.sparse and self.gpu:
             self.calculator = GpuSparseCalculator(qubits, big_endian, prep)
