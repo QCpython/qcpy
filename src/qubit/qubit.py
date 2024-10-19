@@ -1,7 +1,8 @@
 import numpy as np
+from numpy.typing import NDArray
 
 
-def qubit(initial: chr = "z"):
+def qubit(initial: chr = "z") -> NDArray:
     if initial == "z":
         return np.array([[1 + 0j], [0 + 0j]], "F")
     elif initial == "y":
