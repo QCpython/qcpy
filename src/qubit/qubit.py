@@ -1,7 +1,16 @@
 import numpy as np
+from numpy.typing import NDArray
 
 
-def qubit(initial: chr = "z"):
+def qubit(initial: chr = "z") -> NDArray:
+    """Create a vector that represents an array.
+
+    Args:
+        initial (chr, optional): The initial orientation of the array. Defaults to "z".
+
+    Returns:
+        NDArray: Vector array.
+    """
     if initial == "z":
         return np.array([[1 + 0j], [0 + 0j]], "F")
     elif initial == "y":
