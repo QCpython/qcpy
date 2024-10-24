@@ -231,14 +231,19 @@ def sxdg() -> NDArray:
 def u(
     theta: float = np.pi / 2, phi: float = np.pi / 2, lmbda: float = np.pi / 2
 ) -> NDArray:
-    """
+    """U gate as a vector.
+
+    ```
     U = [cos(θ / 2), -1 * e^(i * λ) * sin(θ / 2)]
         [e^(i * φ) * sin(θ / 2), e^(i * (λ + φ)) * cos(θ / 2)]
-    ...
+    ```
     Args:
-        theta: default pi / 2.
-        phi: default pi / 2.
-        lmbda: default pi / 2.
+        theta (float, optional): Rotation angle (0 to π) determining the degree of rotation. Defaults to np.pi/2.
+        phi (float, optional): Phase shift affecting the qubit's state on the Bloch sphere. Defaults to np.pi/2.
+        lmbda (float, optional): Additional phase shift influencing interference patterns. Defaults to np.pi/2.
+
+    Returns:
+        NDArray: Vectorized U gate.
     """
     return np.array(
         [
@@ -254,27 +259,32 @@ def u(
 
 def r1(theta: float = np.pi / 2) -> NDArray:
     """
-    r1 =    [1, 0],
-            [0, exp(iθ)]
-    ...
+    R1 gate as a vector.
+
+    ```
+    R1 = [1, 0]
+         [0, e^(i * θ)]
+    ```
     Args:
-        theta: default pi / 2.
+        theta (float, optional): Rotation angle. Defaults to np.pi/2.
+
+    Returns:
+        NDArray: Vectorized R1 gate.
     """
     return np.array([[1 + 0j, 0 + 0j], [0 + 0j, 0 + (1j * np.exp(theta))]], "F")
 
 
 def cnot() -> NDArray:
-    """
-    Matrix:
-        CNOT little endian = [1, 0, 0, 0]
-                             [0, 0, 0, 1]
-                             [0, 0, 1, 0]
-                             [0, 1, 0, 0]
+    """CNOT gate as a vector.
 
-        CNOT big endian = [1, 0, 0, 0]
-                          [0, 1, 0, 0]
-                          [0, 0, 0, 1]
-                          [0, 0, 1, 0]
+    ```
+    CNOT = [1, 0, 0, 0]
+            [0, 1, 0, 0]
+            [0, 0, 0, 1]
+            [0, 0, 1, 0]
+    ```
+    Returns:
+        NDArray: Vectorized CNOT gate.
     """
     return np.array(
         [
@@ -288,12 +298,16 @@ def cnot() -> NDArray:
 
 
 def swap() -> NDArray:
-    """
-    Matrix:
-        Swap = [1, 0, 0, 0]
-               [0, 0, 1, 0]
-               [0, 1, 0, 0]
-               [0, 0, 0, 1]
+    """Swap gate as a vector.
+
+    ```
+    Swap = [1, 0, 0, 0]
+            [0, 0, 1, 0]
+            [0, 1, 0, 0]
+            [0, 0, 0, 1]
+    ```
+    Returns:
+        NDArray: Vectorized swap gate.
     """
     return np.array(
         [
@@ -307,16 +321,20 @@ def swap() -> NDArray:
 
 
 def toffoli() -> NDArray:
-    """
-    Matrix:
-        Toffoli = [1, 0, 0, 0, 0, 0, 0, 0]
-                  [0, 1, 0, 0, 0, 0, 0, 0]
-                  [0, 0, 1, 0, 0, 0, 0, 0]
-                  [0, 0, 0, 1, 0, 0, 0, 0]
-                  [0, 0, 0, 0, 1, 0, 0, 0]
-                  [0, 0, 0, 0, 0, 1, 0, 0]
-                  [0, 0, 0, 0, 0, 0, 0, 1]
-                  [0, 0, 0, 0, 0, 0, 1, 0]
+    """Toffoli gate as a vector.
+
+    ```
+    Toffoli = [1, 0, 0, 0, 0, 0, 0, 0]
+                [0, 1, 0, 0, 0, 0, 0, 0]
+                [0, 0, 1, 0, 0, 0, 0, 0]
+                [0, 0, 0, 1, 0, 0, 0, 0]
+                [0, 0, 0, 0, 1, 0, 0, 0]
+                [0, 0, 0, 0, 0, 1, 0, 0]
+                [0, 0, 0, 0, 0, 0, 0, 1]
+                [0, 0, 0, 0, 0, 0, 1, 0]
+    ```
+    Returns:
+        NDArray: Vectorized toffoli gate.
     """
     return np.array(
         [
@@ -334,15 +352,19 @@ def toffoli() -> NDArray:
 
 
 def rxx(theta: float = np.pi / 2) -> NDArray:
-    """
-    Matrix:
-        RXX = [cos(θ / 2), 0, 0, -i * sin(θ / 2)]
-              [0, cos(θ / 2), -i * sin(θ / 2), 0]
-              [0, -i * sin(θ / 2), cos(θ / 2), 0]
-              [-i * sin(θ / 2), 0, 0, cos(θ / 2)]
-    ...
+    """RXX gate as a vector.
+
+    ```
+    RXX(θ) = [cos(θ / 2), 0, 0, -i * sin(θ / 2)]
+                [0, cos(θ / 2), -i * sin(θ / 2), 0]
+                [0, -i * sin(θ / 2), cos(θ / 2), 0]
+                [-i * sin(θ / 2), 0, 0, cos(θ / 2)]
+    ```
     Args:
-        theta: default np.pi / 2
+        theta (float, optional): Rotation angle. Defaults to np.pi/2.
+
+    Returns:
+        NDArray: Matrix representation of the RXX gate.
     """
     return np.array(
         [
@@ -356,15 +378,19 @@ def rxx(theta: float = np.pi / 2) -> NDArray:
 
 
 def rzz(theta: float = np.pi / 2) -> NDArray:
-    """
-    Matrix:
-        RZZ = [e^(-i * (θ / 2)), 0, 0, 0]
-              [0,  e^(i * (θ / 2)), 0, 0]
-              [0, 0,  e^(i * (θ / 2)), 0]
-              [0, 0, 0, e^(-i * (θ / 2))]
-    ...
+    """RZZ gate as a matrix.
+
+    ```
+    RZZ = [e^(-i * (θ / 2)), 0, 0, 0]
+          [0,  e^(i * (θ / 2)), 0, 0]
+          [0, 0,  e^(i * (θ / 2)), 0]
+          [0, 0, 0, e^(-i * (θ / 2))]
+    ```
     Args:
-        theta: default np.pi / 2
+        theta (float, optional): Rotation angle. Defaults to np.pi/2.
+
+    Returns:
+        NDArray: Matrix representation of the RZZ gate.
     """
     return np.array(
         [
@@ -378,15 +404,19 @@ def rzz(theta: float = np.pi / 2) -> NDArray:
 
 
 def cr(theta: float = np.pi / 2) -> NDArray:
-    """
-    Matrix:
-        CR = [1, 0, 0, 0]
-             [0, 1, 0, 0]
-             [0, 0, 1, 0]
-             [0, 0, 0, e^(θ * i)]
-    ...
+    """CR gate as a matrix.
+
+    ```
+    CR = [1, 0, 0, 0]
+         [0, 1, 0, 0]
+         [0, 0, 1, 0]
+         [0, 0, 0, e^(θ * i)]
+    ```
     Args:
-        theta: default np.pi / 2
+        theta (float, optional): Rotation angle. Defaults to np.pi/2.
+
+    Returns:
+        NDArray: Matrix representation of the CR gate.
     """
     return np.array(
         [
@@ -400,12 +430,16 @@ def cr(theta: float = np.pi / 2) -> NDArray:
 
 
 def cz() -> NDArray:
-    """
-    Matrix:
-        CZ = [1, 0, 0, 0]
-             [0, 1, 0, 0]
-             [0, 0, 1, 0]
-             [0, 0, 0, -1]
+    """CZ gate as a matrix.
+
+    ```
+    CZ = [1, 0, 0, 0]
+         [0, 1, 0, 0]
+         [0, 0, 1, 0]
+         [0, 0, 0, -1]
+    ```
+    Returns:
+        NDArray: Matrix representation of the CZ gate.
     """
     return np.array(
         [
