@@ -3,72 +3,72 @@ from numpy.typing import NDArray
 
 
 def identity() -> NDArray:
-    """Identity gate as a vector.
+    """Identity gate as a 2x2 matrix.
 
     ```
     I = [1, 0]
         [0, 1]
     ```
     Returns:
-        NDArray: Vectorized identity gate.
+        NDArray: Matrix representation of the identity gate.
     """
     return np.array([[1 + 0j, 0 + 0j], [0 + 0j, 1 + 0j]], "F")
 
 
 def paulix() -> NDArray:
-    """Pauli-X gate as a vector.
+    """Pauli-X gate as a 2x2 matrix.
 
     ```
     X = [0, 1]
         [1, 0]
     ```
     Returns:
-        NDArray: Vectorized pauli-x gate.
+        NDArray: Matrix representation of the pauli-x gate.
     """
     return np.array([[0 + 0j, 1 + 0j], [1 + 0j, 0 + 0j]], "F")
 
 
 def pauliy() -> NDArray:
-    """Pauli-Y gate as a vector.
+    """Pauli-Y gate as a 2x2 matrix.
 
     ```
     Y = [0, -i]
         [i,  0]
     ```
     Returns:
-        NDArray: Vectorized pauli-y gate.
+        NDArray: Matrix representation of the pauli-y gate.
     """
     return np.array([[0 + 0j, 0 - 1j], [0 + 1j, 0 + 0j]], "F")
 
 
 def pauliz() -> NDArray:
-    """Pauli-Z gate as a vector.
+    """Pauli-Z gate as a 2x2 matrix.
 
     ```
     Z = [1,  0]
         [0, -1]
     ```
     Returns:
-        NDArray: Vectorized pauli-z gate.
+        NDArray: Matrix representation of the pauli-z gate.
     """
     return np.array([[1 + 0j, 0 + 0j], [0 + 0j, -1 + 0j]], "F")
 
 
 def hadamard() -> NDArray:
-    """Hadamard gate as a vector.
+    """Hadamard gate as a 2x2 matrix.
 
     ```
     Hadamard = [1,  1]
                [1, -1] * (1/sqrt(2))
     ```
     Returns:
-        NDArray: Vectorized hadamard gate.
+        NDArray: Matrix representation of the hadamard gate.
     """
     return np.array([[1 + 0j, 1 + 0j], [1 + 0j, -1 + 0j]], "F") * (1 / np.sqrt(2))
 
 
 def phase(theta: float = np.pi / 2) -> NDArray:
-    """Phase gate as a vector.
+    """Phase gate as a 2x2 matrix.
 
     ```
     Phase = [1, 0]
@@ -78,65 +78,65 @@ def phase(theta: float = np.pi / 2) -> NDArray:
         theta (float, optional): Angle of vector. Defaults to np.pi/2.
 
     Returns:
-        NDArray: Vectorized phase gate.
+        NDArray: Matrix representation of the phase gate.
     """
     return np.array([[1 + 0j, 0 + 0j], [0 + 0j, np.exp(0 + 1j * theta)]], "F")
 
 
 def s() -> NDArray:
-    """S gate as a vector.
+    """S gate as a 2x2 matrix.
 
     ```
     S = [1, 0]
         [0, i]
     ```
     Returns:
-        NDArray: Vectorized S gate.
+        NDArray: Matrix representation of the S gate.
     """
     return np.array([[1 + 0j, 0 + 0j], [0 + 0j, 0 + 1j]], "F")
 
 
 def sdg() -> NDArray:
-    """SDG gate as a vector.
+    """SDG gate as a 2x2 matrix.
 
     ```
     SDG = [1, 0]
           [0, -i]
     ```
     Returns:
-        NDArray: Vectorized SDG gate.
+        NDArray: Matrix representation of the SDG gate.
     """
     return np.array([[1 + 0j, 0 + 0j], [0 + 0j, 0 - 1j]], "F")
 
 
 def t() -> NDArray:
-    """T gate as a vector.
+    """T gate as a 2x2 matrix.
 
     ```
     T = [1, 0]
         [0, e^((i * pi) / 4]
     ```
     Returns:
-        NDArray: Vectorized T gate.
+        NDArray: Matrix representation of the T gate.
     """
     return np.array([[1 + 0j, 0 + 0j], [0 + 0j, np.exp((0 + 1j * np.pi) / 4)]], "F")
 
 
 def tdg() -> NDArray:
-    """TDG gate as a vector.
+    """TDG gate as a 2x2 matrix.
 
     ```
     TDG = [1, 0]
           [0, e^((-i * pi) / 4]
     ```
     Returns:
-        NDArray: Vectorized TDG gate.
+        NDArray: Matrix representation of the TDG gate.
     """
     return np.array([[1 + 0j, 0 + 0j], [0 + 0j, np.exp((0 - 1j * np.pi) / 4)]], "F")
 
 
 def rz(theta: float = np.pi / 2) -> NDArray:
-    """RZ gate as a vector.
+    """RZ gate as a 2x2 matrix.
 
     ```
     RZ = [e^(-i * (θ / 2)), 0]
@@ -146,7 +146,7 @@ def rz(theta: float = np.pi / 2) -> NDArray:
         theta (float, optional): Angle of vector. Defaults to np.pi/2.
 
     Returns:
-        NDArray: Vectorized RZ gate.
+        NDArray: Matrix representation of the RZ gate.
     """
     return np.array(
         [
@@ -158,7 +158,7 @@ def rz(theta: float = np.pi / 2) -> NDArray:
 
 
 def rx(theta: float = np.pi / 2) -> NDArray:
-    """RX gate as a vector.
+    """RX gate as a 2x2 matrix.
 
     ```
     RX = [cos(θ / 2), -i * sin(θ / 2)]
@@ -168,7 +168,7 @@ def rx(theta: float = np.pi / 2) -> NDArray:
         theta (float, optional): Angle of vector. Defaults to np.pi/2.
 
     Returns:
-        NDArray: Vectorized RX gate.
+        NDArray: Matrix representation of the RX gate.
     """
     return np.array(
         [
@@ -180,7 +180,7 @@ def rx(theta: float = np.pi / 2) -> NDArray:
 
 
 def ry(theta: float = np.pi / 2) -> NDArray:
-    """RY gate as a vector.
+    """RY gate as a 2x2 matrix.
 
 
     ```
@@ -191,7 +191,7 @@ def ry(theta: float = np.pi / 2) -> NDArray:
         theta (float, optional): Angle of vector. Defaults to np.pi/2.
 
     Returns:
-        NDArray: Vectorized RY gate.
+        NDArray: Matrix representation of the RY gate.
     """
     return np.array(
         [
@@ -203,27 +203,27 @@ def ry(theta: float = np.pi / 2) -> NDArray:
 
 
 def sx() -> NDArray:
-    """SX gate as a vector.
+    """SX gate as a 2x2 matrix.
 
     ```
     SX = [1 + i, 1 - i]
           [1 - i, 1 + i] * (1 / 2)
     ```
     Returns:
-        NDArray: Vectorized SX gate.
+        NDArray: Matrix representation of the SX gate.
     """
     return np.array([[1 + 1j, 1 - 1j], [1 - 1j, 1 + 1j]], "F") * (1 / 2)
 
 
 def sxdg() -> NDArray:
-    """SXDG gate as a vector.
+    """SXDG gate as a 2x2 matrix.
 
     ```
     SXDG = [1 - i, 1 + i]
            [1 + i, 1 - i] * (1 / 2)
     ```
     Returns:
-        NDArray: Vectorized SXDG gate.
+        NDArray: Matrix representation of the SXDG gate.
     """
     return np.array([[1 - 1j, 1 + 1j], [1 + 1j, 1 - 1j]], "F") * (1 / 2)
 
@@ -231,7 +231,7 @@ def sxdg() -> NDArray:
 def u(
     theta: float = np.pi / 2, phi: float = np.pi / 2, lmbda: float = np.pi / 2
 ) -> NDArray:
-    """U gate as a vector.
+    """U gate as a 2x2 matrix.
 
     ```
     U = [cos(θ / 2), -1 * e^(i * λ) * sin(θ / 2)]
@@ -243,7 +243,7 @@ def u(
         lmbda (float, optional): Additional phase shift influencing interference patterns. Defaults to np.pi/2.
 
     Returns:
-        NDArray: Vectorized U gate.
+        NDArray: Matrix representation of the U gate.
     """
     return np.array(
         [
@@ -259,7 +259,7 @@ def u(
 
 def r1(theta: float = np.pi / 2) -> NDArray:
     """
-    R1 gate as a vector.
+    R1 gate as a 2x2 matrix.
 
     ```
     R1 = [1, 0]
@@ -269,13 +269,13 @@ def r1(theta: float = np.pi / 2) -> NDArray:
         theta (float, optional): Rotation angle. Defaults to np.pi/2.
 
     Returns:
-        NDArray: Vectorized R1 gate.
+        NDArray: Matrix representation of the R1 gate.
     """
     return np.array([[1 + 0j, 0 + 0j], [0 + 0j, 0 + (1j * np.exp(theta))]], "F")
 
 
 def cnot() -> NDArray:
-    """CNOT gate as a vector.
+    """CNOT gate as a 4x4 matrix.
 
     ```
     CNOT = [1, 0, 0, 0]
@@ -284,7 +284,7 @@ def cnot() -> NDArray:
             [0, 0, 1, 0]
     ```
     Returns:
-        NDArray: Vectorized CNOT gate.
+        NDArray: Matrix representation of the CNOT gate.
     """
     return np.array(
         [
@@ -298,7 +298,7 @@ def cnot() -> NDArray:
 
 
 def swap() -> NDArray:
-    """Swap gate as a vector.
+    """Swap gate as a 4x4 matrix.
 
     ```
     Swap = [1, 0, 0, 0]
@@ -307,7 +307,7 @@ def swap() -> NDArray:
             [0, 0, 0, 1]
     ```
     Returns:
-        NDArray: Vectorized swap gate.
+        NDArray: Matrix representation of the swap gate.
     """
     return np.array(
         [
@@ -321,7 +321,7 @@ def swap() -> NDArray:
 
 
 def toffoli() -> NDArray:
-    """Toffoli gate as a vector.
+    """Toffoli gate as a 8x8 matrix.
 
     ```
     Toffoli = [1, 0, 0, 0, 0, 0, 0, 0]
@@ -334,7 +334,7 @@ def toffoli() -> NDArray:
                 [0, 0, 0, 0, 0, 0, 1, 0]
     ```
     Returns:
-        NDArray: Vectorized toffoli gate.
+        NDArray: Matrix representation of the toffoli gate.
     """
     return np.array(
         [
@@ -352,7 +352,7 @@ def toffoli() -> NDArray:
 
 
 def rxx(theta: float = np.pi / 2) -> NDArray:
-    """RXX gate as a vector.
+    """RXX gate as a 4x4 matrix.
 
     ```
     RXX(θ) = [cos(θ / 2), 0, 0, -i * sin(θ / 2)]
@@ -378,7 +378,7 @@ def rxx(theta: float = np.pi / 2) -> NDArray:
 
 
 def rzz(theta: float = np.pi / 2) -> NDArray:
-    """RZZ gate as a matrix.
+    """RZZ gate as a 4x4 matrix.
 
     ```
     RZZ = [e^(-i * (θ / 2)), 0, 0, 0]
@@ -404,7 +404,7 @@ def rzz(theta: float = np.pi / 2) -> NDArray:
 
 
 def cr(theta: float = np.pi / 2) -> NDArray:
-    """CR gate as a matrix.
+    """CR gate as a 4x4 matrix.
 
     ```
     CR = [1, 0, 0, 0]
@@ -430,7 +430,7 @@ def cr(theta: float = np.pi / 2) -> NDArray:
 
 
 def cz() -> NDArray:
-    """CZ gate as a matrix.
+    """CZ gate as a 4x4 matrix.
 
     ```
     CZ = [1, 0, 0, 0]
