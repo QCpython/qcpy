@@ -36,7 +36,7 @@ def phase_angle(
 
     elif isinstance(show_bit, str):
         phaseangle = int(show_bit, 2)
-        if 2**circuit_size <= phase_angle:
+        if 2**size <= phase_angle:
             OutOfRangeError(
                 f"Cannot show bit of value {show_bit} as it is out of range"
             )
@@ -44,7 +44,7 @@ def phase_angle(
 
     elif isinstance(show_bit, int):
         phaseangle = show_bit
-        if 2**circuit_size <= phase_angle:
+        if 2**size <= phase_angle:
             OutOfRangeError(
                 f"Cannot show bit of value {show_bit} as it is out of range"
             )
