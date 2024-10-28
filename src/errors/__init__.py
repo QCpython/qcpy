@@ -150,3 +150,16 @@ class QubitsToApplyInvalidTypeError(TypeError):
     >>> qc.h('a')
     >>> Error
     """
+
+class RoundBelowZeroError(ValueError):
+    """
+    When a user tries to round a phase angle, probability, etc.
+    value from the tools and the rounding value is below 0.
+
+    Examples
+    --------
+    >>> from qcpy import quantumcircuit, amplitude
+    >>> qc = quantumcircuit(qubits = 3)
+    >>> amplitude(qc, round = -1)
+    >>> Error
+    """
