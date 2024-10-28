@@ -1,6 +1,6 @@
 from numpy import arange, random, log2, ndarray
 from numpy.typing import NDArray
-from typing import union
+from typing import Union
 from .probability import probability
 from .base import convert_state
 from ..errors import *
