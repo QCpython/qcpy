@@ -25,8 +25,8 @@ def phase_angle(
     Returns:
         NDArray: Phase angle array from given state.
     """
-    state = convert_state(state)
-    size = int(log2(state.size))
+    state = convert_state(quantumstate)
+    size = int(log2(quantumstate.size))
 
     if round < 0:
         RoundBelowZero(f"Cannot round to {round} needs to be 0 or greater")
