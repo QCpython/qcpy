@@ -151,6 +151,7 @@ class QubitsToApplyInvalidTypeError(TypeError):
     >>> Error
     """
 
+
 class RoundBelowZeroError(ValueError):
     """
     When a user tries to round a phase angle, probability, etc.
