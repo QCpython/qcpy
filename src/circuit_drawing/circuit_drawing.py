@@ -1,5 +1,6 @@
 from .drawings import *
 from .wire import Wire
+from typing import List
 
 
 class CircuitDrawing:
@@ -72,7 +73,7 @@ class CircuitDrawing:
             self.add_drawing(single_gate(gate), qubit)
         self.equal_length()
 
-    def two_qubit(self, qubit_1: int, qubit_2: int, gate: str) -> None:
+    def two_qubit(self, qubit_1: int, qubit_2: int, gate: str = "") -> None:
         """Adds a two qubit gate into the circuit drawing.
         Args:
             qubit_1 (int): start of range of two qubits.
@@ -95,7 +96,7 @@ class CircuitDrawing:
             self.add_drawing(swap_point(), qubit_2)
         self.equal_length()
 
-    def add_multi(self, gate: str, controls: arr, target: int) -> None:
+    def add_multi(self, gate: str, controls: List[int], target: int) -> None:
         """Adds a multi gate drawing (toffoli for example)
         Args:
             gate (str): Character symbol of the gate that is being inserted.
@@ -139,7 +140,7 @@ class CircuitDrawing:
         """
         self.two_qubit(qubit_1=control, qubit_2=target, gate=gate)
 
-    def add_block(self, gate: str, qubits: arr) -> None:
+    def add_block(self, gate: str, qubits: List[int]) -> None:
         """Adds a block drawing to the circuit drawing (example: RC3X).
         Args:
             gate (str): String that represents the gate.
@@ -157,7 +158,7 @@ class CircuitDrawing:
                 self.add_drawing(block_connect(), i)
         self.equal_length()
 
-    def make_wire(self, wire: arr, i: int) -> str:
+    def make_wire(self, wire: List[str], i: int) -> str:
         """Creates an entire row drawing to print for a singular qubit.
 
         Args:
