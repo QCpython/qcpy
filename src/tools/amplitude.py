@@ -29,7 +29,7 @@ def amplitude(
     size = int(log2(state.size))
 
     if round < 0:
-        RoundBelowZero(f"Cannot round to {round} needs to be 0 or greater")
+        raise RoundBelowZero(f"Cannot round to {round} needs to be 0 or greater")
 
     if isinstance(show_bit, int) and show_bit < 0:
         amplitude = sqrt(power(state.real, 2) + power(state.imag, 2))
@@ -37,7 +37,7 @@ def amplitude(
     elif isinstace(show_bit, str):
         amplitude = int(show_bit, 2)
         if 2**size <= amplitude:
-            OutOfRangeError(
+            raise OutOfRangeError(
                 f"Cannot show bit of value {show_bit} as it is out of range"
             )
         amplitude = sqrt(
@@ -47,7 +47,7 @@ def amplitude(
     elif isinstance(show_bit, int):
         amplitude = show_bit
         if 2**size <= amplitude:
-            OutOfRangeError(
+            raise OutOfRangeError(
                 f"Cannot show bit of value {show_bit} as it is out of range"
             )
         amplitude = sqrt(
