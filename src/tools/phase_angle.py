@@ -3,6 +3,7 @@ from numpy.typing import NDArray
 from .base import convert_state
 from typing import Union
 from ..quantum_circuit import QuantumCircuit
+from ..errors import *
 
 
 def phase_angle(
@@ -29,7 +30,7 @@ def phase_angle(
     size = int(log2(quantumstate.size))
 
     if round < 0:
-        RoundBelowZero(f"Cannot round to {round} needs to be 0 or greater")
+        raise RoundBelowZeroError(f"Cannot round to {round} needs to be 0 or greater")
 
     if isinstance(show_bit, int) and show_bit < 0:
         phaseangle = mod(angle(state), 2 * pi) * (180 / pi)
@@ -37,7 +38,7 @@ def phase_angle(
     elif isinstance(show_bit, str):
         phaseangle = int(show_bit, 2)
         if 2**size <= phase_angle:
-            OutOfRangeError(
+            raise OutOfRangeError(
                 f"Cannot show bit of value {show_bit} as it is out of range"
             )
         phaseangle = mod(angle(state[phaseangle]), 2 * pi) * (180 / pi)
@@ -45,7 +46,7 @@ def phase_angle(
     elif isinstance(show_bit, int):
         phaseangle = show_bit
         if 2**size <= phase_angle:
-            OutOfRangeError(
+            raise OutOfRangeError(
                 f"Cannot show bit of value {show_bit} as it is out of range"
             )
         phaseangle = mod(angle(state[phaseangle]), 2 * pi) * (180 / pi)
