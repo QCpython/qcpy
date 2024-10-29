@@ -11,7 +11,7 @@ def measure(quantumstate: Union[QuantumCircuit, ndarray]) -> NDArray:
     """Outputs the measure of a quantum circuit state.
     ```
     from qcpy import quantumcircuit, measure
-    measure(quantumcircuit(qubits = 2)
+    measure(quantumcircuit(qubits = 2))
     ```
     Returns:
         NDArray: Amplitude array from given state.
