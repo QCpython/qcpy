@@ -1,8 +1,24 @@
 from .drawings import *
 from .wire import Wire
+from typing import List
 
 
 class CircuitDrawing:
+    """Private handler of generating the circuit drawing.
+
+    Note:
+        This is a work in progress and may see some small bugs/invalid formations.
+        In other iterations, this will change functionality!
+
+    Args:
+        qubits (int): number of qubits.
+
+    Attributes:
+        qubits (int): Number of qubits from quantum circuit.
+        circuit_queue (arr): 2D-Queue of strings that format/generate the circuit drawing.
+        max_length (int): Value to compare when needing to extend rows to match lengths.
+    """
+
     def __init__(self, qubits: int):
         self.qubits = qubits
         self.circuit_queue = []
@@ -11,15 +27,37 @@ class CircuitDrawing:
             self.circuit_queue.append(Wire())
 
     def equal_length(self) -> None:
+        """Determines and sets all rows of strings to be equal after a gate insertion"""
         for i in range(self.qubits):
             while self.circuit_queue[i].length < self.max_length:
                 self.add_drawing(horizontal_line(), i)
 
     def add_drawing(self, drawing: str, qubit: int) -> None:
+        """Inserts drawing at specific qubit drawing row.
+
+        Args:
+            drawing (str): number of qubits.
+            qubit (int): Which qubit the drawing is inserted at.
+        """
         self.circuit_queue[qubit].add(drawing)
         self.max_length = max(self.max_length, self.circuit_queue[qubit].length)
 
     def insert_single(self, gate: str, qubit: int) -> None:
+        """Inserts a single gate drawing into a specific qubit row.
+
+        Note:
+            This is a work in progress and may see some small bugs/invalid formations.
+            In other iterations, this will change functionality!
+
+        Args:
+            qubits (int): number of qubits.
+
+        Attributes:
+            qubits (int): Number of qubits from quantum circuit.
+            circuit_queue (arr): 2D-Queue of strings that format/generate the circuit drawing.
+            max_length (int): Value to compare when needing to extend rows to match lengths.
+
+        """
         to_insert = self.max_length - 1
         if self.max_length:
             while (
@@ -35,7 +73,13 @@ class CircuitDrawing:
             self.add_drawing(single_gate(gate), qubit)
         self.equal_length()
 
-    def two_qubit(self, qubit_1: int, qubit_2: int, gate=None) -> None:
+    def two_qubit(self, qubit_1: int, qubit_2: int, gate: str = "") -> None:
+        """Adds a two qubit gate into the circuit drawing.
+        Args:
+            qubit_1 (int): start of range of two qubits.
+            qubit_2 (int): end of range of two qubits.
+            gate (str): The gate's symbol to be drawn.
+        """
         self.equal_length()
         start = min(qubit_1, qubit_2)
         end = max(qubit_1, qubit_2)
@@ -52,7 +96,13 @@ class CircuitDrawing:
             self.add_drawing(swap_point(), qubit_2)
         self.equal_length()
 
-    def add_multi(self, gate: str, controls, target: int) -> None:
+    def add_multi(self, gate: str, controls: List[int], target: int) -> None:
+        """Adds a multi gate drawing (toffoli for example)
+        Args:
+            gate (str): Character symbol of the gate that is being inserted.
+            controls (arr): array of controls on the gate.
+            target (int): Where the gate drawing will be inserted.
+        """
         controls.append(target)
         self.equal_length()
         for i in range(self.qubits):
@@ -74,12 +124,28 @@ class CircuitDrawing:
         self.equal_length()
 
     def add_swap(self, qubit_1, qubit_2) -> None:
+        """Draws a swap gate on a circuit drawing.
+        Args:
+            qubit_2 (int): first qubit to add 'x' drawing.
+            qubit_1 (int): second qubit to add 'x' drawing.
+        """
         self.two_qubit(qubit_1=qubit_1, qubit_2=qubit_2)
 
-    def add_control(self, gate, control, target) -> None:
+    def add_control(self, gate: str, control: int, target: int) -> None:
+        """Adds a gate that has a singular controlled qubit to the drawing.
+        Args:
+            gate (str): Character symbol for the target drawing.
+            control (int): Control qubit.
+            target (int): Target qubit.
+        """
         self.two_qubit(qubit_1=control, qubit_2=target, gate=gate)
 
-    def add_block(self, gate: str, qubits) -> None:
+    def add_block(self, gate: str, qubits: List[int]) -> None:
+        """Adds a block drawing to the circuit drawing (example: RC3X).
+        Args:
+            gate (str): String that represents the gate.
+            qubits (int): Which qubits to know the range of the gate.
+        """
         center = (max(qubits) + min(qubits)) // 2
         for i in range(self.qubits):
             if i == center:
@@ -92,7 +158,16 @@ class CircuitDrawing:
                 self.add_drawing(block_connect(), i)
         self.equal_length()
 
-    def make_wire(self, wire, i) -> str:
+    def make_wire(self, wire: List[str], i: int) -> str:
+        """Creates an entire row drawing to print for a singular qubit.
+
+        Args:
+            wire (arr): Array of strings to concatenate together.
+            i (int): Which qubit is being drawn.
+        Returns:
+            str: Returns a string of the generated qubit row.
+
+        """
         top = ["   "]
         middle = ["q" + str(i) + "─"]
         bottom = ["   "]
@@ -109,6 +184,10 @@ class CircuitDrawing:
         return "".join(top) + "\n" + "".join(middle) + "\n" + "".join(bottom) + "\n"
 
     def make(self) -> str:
+        """Generates the entirety of the string to print.
+        Returns:
+            str: Combination of all qubit strings in a single string.
+        """
         output = ""
         for i in range(len(self.circuit_queue)):
             output += self.make_wire(self.circuit_queue[i].content, i)
