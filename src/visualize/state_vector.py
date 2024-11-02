@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import rgb2hex
+from ..errors import *
 from .base.graph import graph
 from ..tools import amplitude, phaseangle
 from .base import color_bar, theme, light_mode
@@ -13,6 +14,18 @@ def state_vector(
     show: bool = True,
     light: bool = False,
 ):
+    """Outputs a state vector representation from a given quantum circuit in matplotlib.
+    Args:
+        quantum_state (ndarray/QuantumCircuit): State vector array or qcpy quantum circuit.
+        path (str): The path in which the image file will be saved when save is set true.
+        save (bool): Will save an image in the working directory when this boolean is true.
+        show (bool): Boolean to turn on/off the qsphere being opened in matplotlib.
+        light (bool): Will change the default dark theme mode to a light theme mode.
+    Returns:
+        None
+    """
+    if save and re.search(r"[<>:/\\|?*]", path) or len(filename) > 255:
+        raise InvalidSavePathError("Invalid file name")
     amplitudes = amplitude(circuit)
     phase_angles = phaseangle(circuit)
     num_qubits = int(np.log2(amplitudes.size))
@@ -28,7 +41,6 @@ def state_vector(
     plt.xlabel("Computational basis states", color=theme.TEXT_COLOR)
     plt.ylabel("Amplitutde", labelpad=5, color=theme.TEXT_COLOR)
     plt.title("State Vector", pad=10, color=theme.TEXT_COLOR)
-
     plt.tight_layout()
     if save:
         plt.savefig(path)
