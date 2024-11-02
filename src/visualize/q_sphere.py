@@ -4,6 +4,7 @@ import math
 import re
 from typing import Union
 from ..quantum_circuit import QuantumCircuit
+from ..errors import *
 from .base import (
     sphere,
     color_bar,
