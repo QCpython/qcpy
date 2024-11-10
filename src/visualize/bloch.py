@@ -22,7 +22,7 @@ def bloch(
     Returns:
         None
     """
-    if save and re.search(r"[<>:/\\|?*]", path) or len(filename) > 255:
+    if save and re.search(r"[<>:/\\|?*]", path) or len(path) > 255:
         raise InvalidSavePathError("Invalid file name")
     amplitudes = amplitude(quantumstate)
     phase_angles = probability(quantumstate, False)
