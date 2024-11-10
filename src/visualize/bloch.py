@@ -1,8 +1,11 @@
+import re
+
 import matplotlib.pyplot as plt
 import numpy as np
-from .base import sphere, theme, light_mode
-from ..tools import probability, amplitude
-from ..errors import InvalidSavePathError, BlochSphereOutOfRangeError
+
+from ..errors import BlochSphereOutOfRangeError, InvalidSavePathError
+from ..tools import amplitude, probability
+from .base import light_mode, sphere, theme
 
 
 def bloch(
