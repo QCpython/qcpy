@@ -1,8 +1,11 @@
+import re
+
 import matplotlib.pyplot as plt
 import numpy as np
+
 from ..errors import InvalidSavePathError
-from .base import graph, light_mode, theme
 from ..tools import probability as prob
+from .base import graph, light_mode, theme
 
 
 def probability(
