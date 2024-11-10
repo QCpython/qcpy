@@ -31,7 +31,7 @@ def q_sphere(
     Returns:
         None
     """
-    if save and re.search(r"[<>:/\\|?*]", path) or len(filename) > 255:
+    if save and re.search(r"[<>:/\\|?*]", path) or len(path) > 255:
         raise InvalidSavePathError("Invalid file name")
     colors = plt.get_cmap("hsv")
     norm = plt.Normalize(0, pi * 2)
