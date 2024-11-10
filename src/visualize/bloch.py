@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from .base import sphere, theme, light_mode
 from ..tools import probability, amplitude
-from ..errors import *
+from ..errors import InvalidSavePathError, BlochSphereOutOfRangeError
 
 
 def bloch(
