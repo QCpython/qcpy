@@ -22,7 +22,7 @@ def probability(
     Returns:
         None
     """
-    if save and re.search(r"[<>:/\\|?*]", path) or len(filename) > 255:
+    if save and re.search(r"[<>:/\\|?*]", path) or len(path) > 255:
         raise InvalidSavePathError("Invalid file name")
     probabilities = prob(state)
     num_qubits = int(np.log2(probabilities.size))
