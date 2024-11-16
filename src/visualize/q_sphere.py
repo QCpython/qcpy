@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 from numpy import pi, log2, ndarray, cos, sin, linspace
 import math
+import re
 from typing import Union
 from ..quantum_circuit import QuantumCircuit
+from ..errors import InvalidSavePathError
 from .base import (
     sphere,
     color_bar,
@@ -19,6 +21,18 @@ def q_sphere(
     show: bool = True,
     light: bool = False,
 ) -> None:
+    """Creates a qsphere visualization that can be interacted with.
+    Args:
+        quantum_state (ndarray/QuantumCircuit): State vector array or qcpy quantum circuit.
+        path (str): The path in which the image file will be saved when save is set true.
+        save (bool): Will save an image in the working directory when this boolean is true.
+        show (bool): Boolean to turn on/off the qsphere being opened in matplotlib.
+        light (bool): Will change the default dark theme mode to a light theme mode.
+    Returns:
+        None
+    """
+    if save and re.search(r"[<>:/\\|?*]", path) or len(path) > 255:
+        raise InvalidSavePathError("Invalid file name")
     colors = plt.get_cmap("hsv")
     norm = plt.Normalize(0, pi * 2)
     ax = sphere(theme.BACKGROUND_COLOR)
