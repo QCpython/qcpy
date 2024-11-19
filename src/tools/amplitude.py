@@ -3,7 +3,7 @@ from numpy.typing import NDArray
 from .base import convert_state
 from typing import Union
 from ..quantum_circuit import QuantumCircuit
-from ..errors import *
+from ..errors import RoundBelowZeroError, OutOfRangeError
 
 
 def amplitude(
@@ -29,7 +29,7 @@ def amplitude(
     size = int(log2(state.size))
 
     if round < 0:
-        raise RoundBelowZero(f"Cannot round to {round} needs to be 0 or greater")
+        raise RoundBelowZeroError(f"Cannot round to {round} needs to be 0 or greater")
 
     if isinstance(show_bit, int) and show_bit < 0:
         amplitude = sqrt(power(state.real, 2) + power(state.imag, 2))
