@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from numpy import pi, log2, ndarray, cos, sin, linspace
+from numpy import pi, log2, ndarray, cos, sin, linspace, ndarray
 import math
 import re
 from typing import Union

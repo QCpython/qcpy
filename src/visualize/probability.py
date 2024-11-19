@@ -1,7 +1,7 @@
 import re
 from typing import Union
 import matplotlib.pyplot as plt
-import numpy as np
+from numpy import ndarray, log2
 from ..quantum_circuit import QuantumCircuit
 from ..errors import InvalidSavePathError
 from ..tools import probability as prob
@@ -28,7 +28,7 @@ def probability(
     if save and re.search(r"[<>:/\\|?*]", path) or len(path) > 255:
         raise InvalidSavePathError("Invalid file name")
     probabilities = prob(quantumstate)
-    num_qubits = int(np.log2(probabilities.size))
+    num_qubits = int(log2(probabilities.size))
     state_list = [format(i, "b").zfill(num_qubits) for i in range(2**num_qubits)]
     percents = [i * 100 for i in probabilities]
     plt.clf()
