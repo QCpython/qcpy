@@ -1,20 +1,20 @@
 import re
-
+from typing import Union
 import matplotlib.pyplot as plt
-import numpy as np
-
+from numpy import ndarray, log2
+from ..quantum_circuit import QuantumCircuit
 from ..errors import InvalidSavePathError
 from ..tools import probability as prob
 from .base import graph, light_mode, theme
 
 
 def probability(
-    state: any,
+    quantumstate: Union[ndarray, QuantumCircuit],
     path: str = "probabilities.png",
     save: bool = False,
     show: bool = True,
     light: bool = False,
-):
+) -> None:
     """Creates a probability representation of a given quantum circuit in matplotlib.
     Args:
         quantum_state (ndarray/QuantumCircuit): State vector array or qcpy quantum circuit.
@@ -27,8 +27,8 @@ def probability(
     """
     if save and re.search(r"[<>:/\\|?*]", path) or len(path) > 255:
         raise InvalidSavePathError("Invalid file name")
-    probabilities = prob(state)
-    num_qubits = int(np.log2(probabilities.size))
+    probabilities = prob(quantumstate)
+    num_qubits = int(log2(probabilities.size))
     state_list = [format(i, "b").zfill(num_qubits) for i in range(2**num_qubits)]
     percents = [i * 100 for i in probabilities]
     plt.clf()
