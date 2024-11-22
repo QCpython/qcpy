@@ -1,20 +1,21 @@
 import re
-
 import matplotlib.pyplot as plt
 import numpy as np
-
+from typing import Union
+from numpy._core.multiarray import ndarray
+from ..quantum_circuit import QuantumCircuit
 from ..errors import BlochSphereOutOfRangeError, InvalidSavePathError
 from ..tools import amplitude, probability
 from .base import light_mode, sphere, theme
 
 
 def bloch(
-    quantumstate: any,
+    quantumstate: Union[ndarray, QuantumCircuit],
     path: str = "BlochSphere.png",
     save: bool = False,
     show: bool = True,
     light: bool = False,
-):
+) -> None:
     """Creates a qsphere visualization that can be interacted with.
     Args:
         quantum_state (ndarray/QuantumCircuit): State vector array or qcpy quantum circuit.
