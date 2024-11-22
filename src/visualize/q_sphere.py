@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from numpy import pi, log2, ndarray, cos, sin, linspace
+from numpy import pi, log2, ndarray, cos, sin, linspace, ndarray
 import math
 import re
 from typing import Union
@@ -15,7 +15,7 @@ from ..tools import probability, phaseangle
 
 
 def q_sphere(
-    quantum_state: Union[ndarray, QuantumCircuit],
+    quantumstate: Union[ndarray, QuantumCircuit],
     path: str = "qsphere.png",
     save: bool = False,
     show: bool = True,
@@ -38,8 +38,8 @@ def q_sphere(
     ax = sphere(theme.BACKGROUND_COLOR)
     light_mode(light)
     color_bar(plt, theme.TEXT_COLOR, theme.ACCENT_COLOR, colors, norm)
-    prob_values = probability(quantum_state)
-    phase_values = phaseangle(quantum_state)
+    prob_values = probability(quantumstate)
+    phase_values = phaseangle(quantumstate)
     num_qubits = int(log2(len(prob_values)))
     bucket_array = [0] * (num_qubits + 1)
     phi_values = linspace(0, pi, num_qubits + 1)
