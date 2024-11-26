@@ -1,5 +1,5 @@
 import numpy as np
-from ...quantum_gate import *
+from ...quantum_gate import identity
 from ..interface import MultiGateInterface
 
 
