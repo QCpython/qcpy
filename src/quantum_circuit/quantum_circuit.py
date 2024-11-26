@@ -1,13 +1,34 @@
+import subprocess
+from typing import List, Union
+
 import numpy as np
-from typing import Union, List
+
+from ..quantum_gate import (
+    hadamard,
+    identity,
+    paulix,
+    pauliy,
+    pauliz,
+    phase,
+    r1,
+    rx,
+    ry,
+    rz,
+    s,
+    sdg,
+    sx,
+    sxdg,
+    t,
+    tdg,
+    u,
+)
+
+from ..circuit_drawing import CircuitDrawing
+from ..errors import InvalidQubitPrepError, OutOfRangeError
 from .base import BaseCalculator
-from .sparse import SparseCalculator
 from .gpu import GpuCalculator
 from .gpu_sparse import GpuSparseCalculator
-import subprocess
-from ..circuit_drawing import CircuitDrawing
-from ..quantum_gate import *
-from ..errors import InvalidQubitPrepError, OutOfRangeError
+from .sparse import SparseCalculator
 
 
 class QuantumCircuit:
