@@ -9,7 +9,7 @@ from ..errors import RoundBelowZeroError, OutOfRangeError
 def amplitude(
     quantumstate: Union[ndarray, QuantumCircuit],
     show_bit: Union[int, str] = -1,
-    round: int = 3,
+    rounds: int = 3,
     radian: bool = False,
 ) -> NDArray:
     """Outputs the amplitude of a quantum circuit state.
@@ -28,7 +28,7 @@ def amplitude(
     state = convert_state(quantumstate)
     size = int(log2(state.size))
 
-    if round < 0:
+    if rounds < 0:
         raise RoundBelowZeroError(f"Cannot round to {round} needs to be 0 or greater")
 
     if isinstance(show_bit, int) and show_bit < 0:
@@ -58,4 +58,4 @@ def amplitude(
     if radian:
         amplitude = arcsin(amplitude) * 2
 
-    return around(amplitude, decimals=round)
+    return around(amplitude, decimals=rounds)
