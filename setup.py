@@ -18,12 +18,12 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     url="https://github.com/QCpython/qcpy",
-    packages=find_packages(exclude=['test']),
+    packages=find_packages(exclude=["test"]),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.9",
-    install_requires=requirements
+    install_requires=requirements,
 )
