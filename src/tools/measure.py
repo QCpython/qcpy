@@ -1,14 +1,11 @@
 from typing import Union
-
 from numpy import arange, log2, ndarray, random
-from numpy.typing import NDArray
-
 from ..quantum_circuit import QuantumCircuit
 from .base import convert_state
 from .probability import probability
 
 
-def measure(quantumstate: Union[QuantumCircuit, ndarray]) -> NDArray:
+def measure(quantumstate: Union[QuantumCircuit, ndarray]) -> str:
     """Outputs the measure of a quantum circuit state.
     ```
     from qcpy import quantumcircuit, measure

@@ -1,5 +1,5 @@
 import subprocess
-from typing import List, Union
+from typing import List
 from .qlog.qlog import *
 import numpy as np
 
@@ -378,7 +378,7 @@ class QuantumCircuit:
         self.circuit_drawing.add_control("R1", control, target)
 
     def multicustom(self, gate: np.array, control: int, target: int) -> None:
-        """Sets the current state to a given one.
+        """Insert a custom controlled gate into the quantum circuit.
         Args:
             gate (np.array) gate to insert.
             control (int): qubit to act as the control for the gate.
@@ -388,7 +388,7 @@ class QuantumCircuit:
         self.circuit_drawing.add_control("C", control, target)
 
     def ccx(self, control_one: int, control_two: int, target: int) -> None:
-        """Sets the current state to a given one.
+        """Insert a CCX (Toffoli) gate into the quantum circuit.
         Args:
             control_one (int): qubit to act as the control one for the gate.
             control_two (int): qubit to act as the control two for the gate.
