@@ -1,6 +1,6 @@
 import subprocess
 from typing import List, Union
-
+from .qlog.qlog import *
 import numpy as np
 
 from ..quantum_gate import (
@@ -60,6 +60,7 @@ class QuantumCircuit:
         sparse: bool = False,
         gpu: bool = False,
     ):
+        self.qlog = QLog(qubits)
         self.calculator = None
         self.sparse = sparse
         self.gpu = gpu
