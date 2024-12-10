@@ -1,6 +1,6 @@
 import subprocess
 from typing import List
-
+from .qlog.qlog import *
 import numpy as np
 
 from ..quantum_gate import (
@@ -60,6 +60,7 @@ class QuantumCircuit:
         sparse: bool = False,
         gpu: bool = False,
     ):
+        self.qlog = QLog(qubits)
         self.calculator = None
         self.sparse = sparse
         self.gpu = gpu
@@ -161,8 +162,10 @@ class QuantumCircuit:
         Args:
             qubits_to_apply (int, arr[int]): qubits to apply the gate to.
         """
+        qubits_to_apply = [qubits_to_apply]
         self.calculator.pass_single_gate(qubits_to_apply, identity())
         self.__add_single_drawing__(qubits_to_apply, "I")
+        self.qlog.append(qubits_to_apply, len(qubits_to_apply), 0, 0)
 
     def h(self, qubits_to_apply) -> None:
         """Use the hadamard gate on the quantum circuit.
