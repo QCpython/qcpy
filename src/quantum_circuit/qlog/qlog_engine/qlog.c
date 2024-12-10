@@ -5,13 +5,12 @@
 #define MAX_QLOG_QUBITS (256)
 
 struct qlog_def* qlog_init(uint8_t qubits) {
-  printf("Setting up qlog with qubits %d...\n", qubits);
   struct qlog_def* qlog = (struct qlog_def*)malloc(sizeof(struct qlog_def));
   if (qlog == NULL) {
     return NULL;
   }
   qlog->qlog_qubit_cnt = qubits;
-  qlog->qlog_size = EMPTY_QLOG;
+  qlog->qlog_size = 0;
   qlog->qlog_entries = (qlog_entry_def**)malloc(MAX_QLOG_LENGTH * sizeof(qlog_entry_def*));
   if (qlog->qlog_entries == NULL) {
     free(qlog);
@@ -35,7 +34,7 @@ void qlog_delete(struct qlog_def* qlog) {
   return; 
 }
 
-uint16_t qlog_end(struct qlog_def *qlog) {
+uint16_t qlog_size(struct qlog_def *qlog) {
   return !qlog ? (uint16_t)EMPTY_QLOG : qlog->qlog_size;
 }
 
@@ -69,9 +68,15 @@ qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_
 }
 
 struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits) {
-  assert(num_qubits <= qlog_qubits);
-  struct qlog_entry_def* qlog_entry;
-  memcpy(qlog_entry->qlog_entry_qubits, qubits, num_qubits);
+  struct qlog_entry_def* qlog_entry = (struct qlog_entry_def*)malloc(sizeof(struct qlog_entry_def));
+  if (!qlog_entry) {
+    return NULL;
+  }
+  qlog_entry->qlog_entry_qubits = (uint8_t*)malloc(num_qubits * sizeof(uint8_t));
+  if (!qlog_entry->qlog_entry_qubits) {
+    return NULL;
+  }
+  memcpy(qubits, qlog_entry->qlog_entry_qubits, num_qubits);
   for (uint8_t i = 0; i < num_qubits; ++i) {
     qlog_entry->qlog_entry_qubits[i] = qubits[i];
   }

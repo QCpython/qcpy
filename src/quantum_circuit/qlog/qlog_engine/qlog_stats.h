@@ -9,7 +9,6 @@ typedef struct qlog_stats_def {
 } qlog_stats;
 
 typedef struct qlog_entry_stats_def {
-
 } qlog_entry_stats;
 
 #endif 

@@ -1,15 +1,18 @@
 import ctypes
 import os
-from numpy import uint16, uint8
-from .qlog_stat_lib import qlog_stats_def, qlog_entry_stats_def
 from enum import IntEnum
 
-
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
-print(FILE_PATH)
 QLOG_SO_FILE_PATH = str(FILE_PATH) + "/qlog_engine/qlog_engine.so"
-
 qlog_cross = ctypes.CDLL(QLOG_SO_FILE_PATH)
+
+
+class qlog_stats_def(ctypes.Structure):
+    _fields_ = [("test", ctypes.c_int)]
+
+
+class qlog_entry_stats_def(ctypes.Structure):
+    _fields = []
 
 
 class qg_entry_gate(IntEnum):
@@ -56,7 +59,7 @@ class qg_entry_type(IntEnum):
     ALGORITHM = 4
 
 
-class qg_append_res(IntEnum):
+class qlog_append_res(IntEnum):
     QLOG_APPEND_SUCCESS = 0
     QLOG_APPEND_FULL = 1
     QLOG_APPEND_ERROR = 2
@@ -81,5 +84,26 @@ class qlog_def(ctypes.Structure):
     ]
 
 
-qlog_cross.qlog_init.argtypes = (ctypes.c_uint8,)
+qlog_cross.qlog_init.argtypes = [ctypes.c_uint8]
 qlog_cross.qlog_init.restype = ctypes.POINTER(qlog_def)
+
+qlog_cross.qlog_delete.argtypes = [ctypes.POINTER(qlog_def)]
+
+qlog_cross.qlog_size.argtypes = [ctypes.POINTER(qlog_def)]
+qlog_cross.qlog_size.restype = ctypes.c_uint16
+
+qlog_cross.qlog_append.argtypes = [
+    ctypes.POINTER(qlog_def),
+    ctypes.POINTER(ctypes.c_uint8),
+    ctypes.c_uint8,
+    ctypes.c_int,
+    ctypes.c_int,
+]
+qlog_cross.qlog_append.restype = qlog_append_res
+
+qlog_cross.qlog_optimize_set.argtypes = [ctypes.POINTER(qlog_def)]
+qlog_cross.qlog_optimize_set.restype = ctypes.POINTER(qlog_def)
+
+
+def convert_qubits_qlog_append(qubits_to_apply):
+    return (ctypes.c_uint8 * len(qubits_to_apply))(*qubits_to_apply)

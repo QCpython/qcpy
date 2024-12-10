@@ -5,7 +5,9 @@
 #include <stdbool.h>
 #include <assert.h>
 #include "qlog_stats.h"
-
+/*
+ * Declared in Python:
+ * */
 typedef enum {
   QLOG_ENTRY_GATE_IDENTITY,
   QLOG_ENTRY_GATE_HADAMARD,
@@ -80,11 +82,19 @@ typedef struct qlog_entry_def {
   struct qlog_entry_stats_def qlog_entry_stat; // entry stats
 } qlog_entry_def;
 
+
 struct qlog_def* qlog_init(uint8_t qubits);
 void qlog_delete(struct qlog_def *qlog);
-uint16_t qlog_end(struct qlog_def *qlog);
+uint16_t qlog_size(struct qlog_def *qlog);
 qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_qubits, int type, int gate);
+void qlog_print_content(struct qlog_def *qlog);
 void qlog_clear();
+
+
+/*
+ * "Private" functions/types
+ * */
+
 
 struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits);
 void qlog_entry_delete(struct qlog_entry_def *qlog_entry);
